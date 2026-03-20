@@ -1,0 +1,1354 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>World Forge</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0a0908;--bg2:#110f0d;--bg3:#1a1713;--bg4:#221e19;
+  --border:#2e2820;--border2:#3d3529;
+  --text:#e8e0d0;--text2:#a09080;--text3:#5a5048;
+  --gold:#c9a84c;--gold2:#8a6e2f;--gold3:#e8c97a;
+  --red:#8b3a2a;--red2:#c4522e;
+  --blue:#2a4a6b;--blue2:#3d6fa0;
+  --purple:#3a2a5a;--purple2:#6a4a9a;
+  --font-display:'Cinzel',serif;--font-body:'Crimson Pro',serif;--font-mono:'JetBrains Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:16px;min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:9999;opacity:0.4;}
+.app{display:flex;height:100vh;}
+.sidebar{width:220px;min-width:220px;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;position:relative;overflow:hidden;}
+.sidebar::after{content:'';position:absolute;top:0;right:0;width:1px;height:100%;background:linear-gradient(to bottom,transparent,var(--gold2),transparent);opacity:0.4;}
+.logo{padding:22px 22px 14px;border-bottom:1px solid var(--border);}
+.logo-title{font-family:var(--font-display);font-size:17px;font-weight:900;letter-spacing:0.15em;color:var(--gold3);text-transform:uppercase;}
+.logo-sub{font-family:var(--font-mono);font-size:9px;color:var(--text3);letter-spacing:0.2em;text-transform:uppercase;margin-top:2px;}
+.save-ind{font-family:var(--font-mono);font-size:8px;color:#3d7a52;letter-spacing:0.1em;margin-top:4px;opacity:0;transition:opacity 0.4s;}
+.save-ind.show{opacity:1;}
+.novel-selector{padding:12px 12px 10px;border-bottom:1px solid var(--border);}
+.novel-label{font-family:var(--font-mono);font-size:9px;color:var(--text3);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:6px;}
+.novel-tabs{display:flex;flex-direction:column;gap:3px;}
+.novel-tab{padding:5px 9px;border-radius:4px;cursor:pointer;font-family:var(--font-body);font-size:13px;color:var(--text2);border:1px solid transparent;transition:all 0.2s;display:flex;align-items:center;gap:7px;}
+.novel-tab:hover{background:var(--bg3);color:var(--text);}
+.novel-tab.active{background:var(--bg4);border-color:var(--border2);color:var(--gold3);}
+.novel-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.nav{padding:10px 10px;flex:1;overflow-y:auto;}
+.nav-section{margin-bottom:16px;}
+.nav-section-label{font-family:var(--font-mono);font-size:9px;color:var(--text3);letter-spacing:0.2em;text-transform:uppercase;padding:0 8px;margin-bottom:4px;}
+.nav-item{display:flex;align-items:center;gap:8px;padding:6px 9px;border-radius:4px;cursor:pointer;font-family:var(--font-body);font-size:13px;color:var(--text2);transition:all 0.2s;border:1px solid transparent;}
+.nav-item:hover{background:var(--bg3);color:var(--text);}
+.nav-item.active{background:var(--bg4);border-color:var(--border2);color:var(--gold);}
+.nav-icon{font-size:13px;opacity:0.8;}
+.sidebar-footer{padding:10px 12px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:5px;}
+.exp-btn{width:100%;padding:6px;border-radius:3px;background:transparent;border:1px solid var(--border2);color:var(--text3);font-family:var(--font-mono);font-size:9px;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;}
+.exp-btn:hover{color:var(--text);border-color:var(--text3);}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.topbar{height:50px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 22px;background:var(--bg);flex-shrink:0;}
+.topbar-title{font-family:var(--font-display);font-size:12px;letter-spacing:0.15em;color:var(--text2);text-transform:uppercase;}
+.topbar-novel{font-family:var(--font-mono);font-size:9px;color:var(--gold2);letter-spacing:0.1em;}
+.btn{padding:6px 13px;border-radius:3px;cursor:pointer;font-family:var(--font-mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;transition:all 0.2s;border:none;}
+.btn-primary{background:var(--gold2);color:var(--bg);}
+.btn-primary:hover{background:var(--gold);}
+.btn-ghost{background:transparent;color:var(--text2);border:1px solid var(--border2);}
+.btn-ghost:hover{color:var(--text);border-color:var(--text3);}
+.btn-danger{background:transparent;color:var(--red2);border:1px solid var(--red);}
+.btn-ai{background:linear-gradient(135deg,var(--purple),var(--blue));color:var(--text);border:none;}
+.btn-ai:hover{opacity:0.85;}
+.stats-bar{display:flex;gap:14px;padding:9px 22px;border-bottom:1px solid var(--border);background:var(--bg2);flex-shrink:0;}
+.stat{display:flex;flex-direction:column;gap:1px;}
+.stat-val{font-family:var(--font-mono);font-size:16px;color:var(--gold);}
+.stat-label{font-family:var(--font-mono);font-size:8px;letter-spacing:0.15em;text-transform:uppercase;color:var(--text3);}
+.stat-div{width:1px;background:var(--border);align-self:stretch;}
+.content{flex:1;overflow-y:auto;padding:22px;}
+.content::-webkit-scrollbar{width:4px;}
+.content::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
+.section{display:none;}
+.section.active{display:block;}
+.section-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px;}
+.section-title{font-family:var(--font-display);font-size:19px;font-weight:600;color:var(--text);letter-spacing:0.05em;}
+.section-sub{font-family:var(--font-body);font-size:13px;color:var(--text3);font-style:italic;margin-top:1px;}
+.filters{display:flex;gap:6px;margin:12px 0;flex-wrap:wrap;}
+.filter-btn{padding:4px 11px;border-radius:3px;cursor:pointer;font-family:var(--font-mono);font-size:9px;letter-spacing:0.12em;text-transform:uppercase;background:var(--bg2);color:var(--text3);border:1px solid var(--border);transition:all 0.2s;}
+.filter-btn:hover{color:var(--text2);}
+.filter-btn.active{background:var(--bg4);color:var(--gold);border-color:var(--gold2);}
+.chars-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:13px;margin-top:14px;}
+.char-card{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:16px;cursor:pointer;transition:all 0.25s;position:relative;overflow:hidden;}
+.char-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;}
+.char-card.role-protagoniste::before{background:var(--gold);}
+.char-card.role-secondaire::before{background:var(--blue2);}
+.char-card.role-antagoniste::before{background:var(--red2);}
+.char-card.role-figurant::before{background:var(--text3);}
+.char-card:hover{border-color:var(--border2);transform:translateY(-2px);}
+.char-avatar{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:15px;font-weight:900;margin-bottom:9px;}
+.char-name{font-family:var(--font-display);font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px;}
+.char-role-badge{font-family:var(--font-mono);font-size:9px;letter-spacing:0.12em;text-transform:uppercase;padding:2px 6px;border-radius:2px;display:inline-block;margin-bottom:7px;}
+.role-protagoniste .char-role-badge{background:rgba(201,168,76,0.15);color:var(--gold);}
+.role-secondaire .char-role-badge{background:rgba(61,111,160,0.15);color:var(--blue2);}
+.role-antagoniste .char-role-badge{background:rgba(196,82,46,0.15);color:var(--red2);}
+.role-figurant .char-role-badge{background:rgba(90,80,72,0.15);color:var(--text3);}
+.char-desc{font-size:12px;color:var(--text2);line-height:1.5;font-style:italic;}
+.char-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px;}
+.tag{font-family:var(--font-mono);font-size:9px;padding:2px 6px;border-radius:2px;background:var(--bg4);color:var(--text3);border:1px solid var(--border);}
+.places-layout{display:grid;grid-template-columns:1fr 300px;gap:16px;margin-top:14px;}
+.places-list{display:flex;flex-direction:column;gap:8px;}
+.place-card{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:12px 14px;cursor:pointer;transition:all 0.2s;display:flex;gap:11px;align-items:flex-start;}
+.place-card:hover{border-color:var(--border2);}
+.place-card.selected{border-color:var(--gold2);background:var(--bg3);}
+.place-icon{width:34px;height:34px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.place-name{font-family:var(--font-display);font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px;}
+.place-type-badge{font-family:var(--font-mono);font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);margin-bottom:3px;}
+.place-desc{font-size:12px;color:var(--text2);font-style:italic;line-height:1.4;}
+.place-detail{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:18px;position:sticky;top:0;max-height:75vh;overflow-y:auto;}
+.place-detail::-webkit-scrollbar{width:3px;}
+.place-detail::-webkit-scrollbar-thumb{background:var(--border2);}
+.detail-section{margin-bottom:14px;}
+.detail-label{font-family:var(--font-mono);font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--text3);margin-bottom:4px;}
+.detail-text{font-size:13px;color:var(--text);line-height:1.6;}
+.char-pill{font-family:var(--font-mono);font-size:9px;padding:2px 7px;border-radius:20px;background:var(--bg4);border:1px solid var(--border2);color:var(--text2);}
+.detail-link-chars{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px;}
+.timeline-wrap{margin-top:14px;position:relative;}
+.timeline-line{position:absolute;left:120px;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,transparent,var(--border2) 5%,var(--border2) 95%,transparent);}
+.timeline-events{display:flex;flex-direction:column;}
+.timeline-event{display:flex;position:relative;padding-bottom:18px;}
+.event-date{width:110px;min-width:110px;text-align:right;padding-right:20px;padding-top:9px;font-family:var(--font-mono);font-size:9px;color:var(--text3);}
+.event-dot{width:20px;min-width:20px;display:flex;align-items:flex-start;justify-content:center;padding-top:13px;position:relative;z-index:1;}
+.event-dot-inner{width:8px;height:8px;border-radius:50%;border:2px solid var(--bg);}
+.event-content{flex:1;padding-left:16px;padding-top:5px;}
+.event-card{background:var(--bg2);border:1px solid var(--border);border-radius:5px;padding:11px 13px;transition:all 0.2s;}
+.event-card:hover{border-color:var(--border2);}
+.event-title{font-family:var(--font-display);font-size:12px;font-weight:600;color:var(--text);margin-bottom:3px;}
+.event-desc{font-size:12px;color:var(--text2);line-height:1.5;font-style:italic;}
+.event-meta{display:flex;gap:6px;margin-top:7px;flex-wrap:wrap;}
+.event-type-badge{font-family:var(--font-mono);font-size:9px;letter-spacing:0.1em;text-transform:uppercase;padding:2px 6px;border-radius:2px;}
+/* SCENES */
+.scenes-layout{display:grid;grid-template-columns:260px 1fr;gap:16px;margin-top:14px;height:calc(100vh - 210px);}
+.scenes-list{display:flex;flex-direction:column;gap:6px;overflow-y:auto;padding-right:3px;}
+.scenes-list::-webkit-scrollbar{width:3px;}
+.scenes-list::-webkit-scrollbar-thumb{background:var(--border2);}
+.scene-item{background:var(--bg2);border:1px solid var(--border);border-radius:5px;padding:11px 13px;cursor:pointer;transition:all 0.2s;}
+.scene-item:hover{border-color:var(--border2);}
+.scene-item.active{border-color:var(--gold2);background:var(--bg3);}
+.scene-item-title{font-family:var(--font-display);font-size:12px;font-weight:600;color:var(--text);margin-bottom:2px;}
+.scene-item-meta{font-family:var(--font-mono);font-size:9px;color:var(--text3);}
+.scene-item-preview{font-size:11px;color:var(--text3);font-style:italic;margin-top:3px;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.scene-editor{display:flex;flex-direction:column;background:var(--bg2);border:1px solid var(--border);border-radius:6px;overflow:hidden;height:100%;}
+.scene-editor-header{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;gap:9px;align-items:center;background:var(--bg3);}
+.scene-editor-title-input{flex:1;background:transparent;border:none;font-family:var(--font-display);font-size:14px;font-weight:600;color:var(--text);outline:none;}
+.scene-editor-title-input::placeholder{color:var(--text3);}
+.scene-meta-bar{padding:7px 16px;border-bottom:1px solid var(--border);display:flex;gap:9px;background:var(--bg3);}
+.scene-meta-sel{background:var(--bg4);border:1px solid var(--border);border-radius:3px;color:var(--text2);font-family:var(--font-mono);font-size:9px;padding:3px 7px;outline:none;}
+.scene-textarea{flex:1;background:transparent;border:none;color:var(--text);font-family:var(--font-body);font-size:15px;padding:18px 20px;outline:none;resize:none;line-height:1.8;}
+.scene-textarea::placeholder{color:var(--text3);font-style:italic;}
+.scene-footer{padding:9px 16px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;background:var(--bg3);}
+.word-count{font-family:var(--font-mono);font-size:9px;color:var(--text3);}
+.scene-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:var(--text3);font-style:italic;font-size:13px;text-align:center;gap:10px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;}
+/* GRAPHE */
+.graph-wrap{position:relative;width:100%;height:calc(100vh - 220px);margin-top:14px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;overflow:hidden;}
+#graphCanvas{width:100%;height:100%;}
+.graph-tooltip{position:absolute;background:var(--bg3);border:1px solid var(--border2);border-radius:4px;padding:7px 11px;pointer-events:none;font-family:var(--font-mono);font-size:10px;color:var(--text);z-index:10;display:none;max-width:180px;}
+.graph-controls{position:absolute;bottom:10px;right:10px;display:flex;flex-direction:column;gap:5px;}
+.graph-ctrl{width:26px;height:26px;background:var(--bg3);border:1px solid var(--border2);border-radius:3px;color:var(--text2);font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;}
+.graph-ctrl:hover{color:var(--text);background:var(--bg4);}
+.graph-legend{display:flex;gap:14px;margin-top:10px;flex-wrap:wrap;}
+.legend-item{display:flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);}
+.legend-line{width:18px;height:2px;}
+/* RECHERCHES */
+.research-layout{display:grid;grid-template-columns:200px 1fr;gap:16px;margin-top:14px;}
+.research-cats{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:12px;height:fit-content;}
+.cat-title{font-family:var(--font-mono);font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--text3);margin-bottom:8px;}
+.cat-item{padding:5px 8px;border-radius:3px;cursor:pointer;font-size:12px;color:var(--text2);transition:all 0.2s;display:flex;justify-content:space-between;align-items:center;}
+.cat-item:hover{background:var(--bg3);color:var(--text);}
+.cat-item.active{background:var(--bg4);color:var(--gold);}
+.cat-count{font-family:var(--font-mono);font-size:9px;color:var(--text3);background:var(--bg3);padding:1px 5px;border-radius:8px;}
+.research-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:11px;}
+.ref-card{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:13px;transition:all 0.2s;cursor:pointer;}
+.ref-card:hover{border-color:var(--border2);transform:translateY(-1px);}
+.ref-type-icon{font-size:17px;margin-bottom:7px;}
+.ref-title{font-family:var(--font-display);font-size:12px;font-weight:600;color:var(--text);margin-bottom:4px;line-height:1.3;}
+.ref-content{font-size:12px;color:var(--text2);line-height:1.5;font-style:italic;margin-bottom:7px;}
+.ref-meta{display:flex;justify-content:space-between;align-items:center;}
+.ref-cat{font-family:var(--font-mono);font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);}
+.search-bar{display:flex;gap:8px;margin-bottom:12px;}
+.search-input{flex:1;background:var(--bg2);border:1px solid var(--border);border-radius:4px;color:var(--text);font-family:var(--font-body);font-size:13px;padding:6px 11px;outline:none;transition:border-color 0.2s;}
+.search-input:focus{border-color:var(--gold2);}
+.search-input::placeholder{color:var(--text3);font-style:italic;}
+/* IA */
+.ia-layout{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:14px;}
+.ia-card{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:18px;}
+.ia-card-title{font-family:var(--font-display);font-size:13px;font-weight:600;color:var(--gold3);margin-bottom:3px;}
+.ia-card-sub{font-size:12px;color:var(--text3);font-style:italic;margin-bottom:14px;}
+.ia-result{background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:13px;margin-top:12px;min-height:70px;font-size:13px;color:var(--text);line-height:1.7;}
+.ia-result.loading{color:var(--text3);font-style:italic;}
+.ia-result.empty{color:var(--text3);font-style:italic;}
+.ia-row{display:flex;gap:7px;margin-bottom:9px;}
+.ia-select{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:3px;color:var(--text2);font-family:var(--font-body);font-size:13px;padding:6px 9px;outline:none;}
+.ia-select:focus{border-color:var(--gold2);}
+.ia-names-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:9px;}
+.ia-name-pill{background:var(--bg3);border:1px solid var(--border);border-radius:3px;padding:6px 9px;font-family:var(--font-display);font-size:11px;color:var(--text);text-align:center;cursor:pointer;transition:all 0.2s;}
+.ia-name-pill:hover{border-color:var(--gold2);color:var(--gold3);}
+.ia-full{grid-column:1/-1;}
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);backdrop-filter:blur(4px);z-index:1000;display:none;align-items:center;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:8px;width:660px;max-width:95vw;max-height:88vh;overflow-y:auto;}
+.modal::-webkit-scrollbar{width:4px;}
+.modal::-webkit-scrollbar-thumb{background:var(--border2);}
+.modal-header{padding:18px 22px 14px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg2);z-index:1;display:flex;align-items:center;justify-content:space-between;}
+.modal-title{font-family:var(--font-display);font-size:14px;font-weight:600;color:var(--gold3);}
+.modal-close{background:none;border:none;color:var(--text3);font-size:17px;cursor:pointer;}
+.modal-close:hover{color:var(--text);}
+.modal-body{padding:18px 22px;}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.field{display:flex;flex-direction:column;gap:4px;}
+.field.full{grid-column:1/-1;}
+label{font-family:var(--font-mono);font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--text3);}
+input,textarea,select{background:var(--bg3);border:1px solid var(--border);border-radius:3px;color:var(--text);font-family:var(--font-body);font-size:13px;padding:6px 9px;outline:none;transition:border-color 0.2s;width:100%;}
+input:focus,textarea:focus,select:focus{border-color:var(--gold2);}
+select option{background:var(--bg3);}
+textarea{resize:vertical;min-height:65px;line-height:1.5;}
+.form-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px;padding-top:14px;border-top:1px solid var(--border);}
+.empty-state{text-align:center;padding:45px 20px;color:var(--text3);}
+.empty-icon{font-size:34px;margin-bottom:9px;opacity:0.35;}
+.empty-text{font-family:var(--font-body);font-size:13px;font-style:italic;}
+.naples{color:#4a8fd4;}.zima{color:#b04040;}.heritiers{color:#8a5cc7;}
+/* SUIVI */
+.suivi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px;}
+.suivi-novel-card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:20px;position:relative;overflow:hidden;}
+.suivi-novel-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.suivi-novel-name{font-family:var(--font-display);font-size:15px;font-weight:600;color:var(--text);margin-bottom:14px;}
+.progress-wrap{margin-bottom:14px;}
+.progress-label{font-family:var(--font-mono);font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:var(--text3);margin-bottom:5px;display:flex;justify-content:space-between;}
+.progress-bar{height:6px;background:var(--bg4);border-radius:3px;overflow:hidden;}
+.progress-fill{height:100%;border-radius:3px;transition:width 0.5s ease;}
+.chap-list{display:flex;flex-direction:column;gap:5px;margin-top:12px;}
+.chap-row{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text2);}
+.chap-num{font-family:var(--font-mono);font-size:9px;color:var(--text3);width:40px;flex-shrink:0;}
+.chap-status{width:8px;height:8px;border-radius:50%;flex-shrink:0;cursor:pointer;border:1px solid;}
+.chap-title-input{flex:1;background:transparent;border:none;color:var(--text2);font-family:var(--font-body);font-size:12px;outline:none;cursor:pointer;}
+.chap-title-input:focus{color:var(--text);background:var(--bg3);border-radius:2px;padding:0 4px;cursor:text;}
+.suivi-meta{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
+.suivi-meta-item{background:var(--bg3);border-radius:4px;padding:8px 10px;}
+.suivi-meta-val{font-family:var(--font-mono);font-size:14px;color:var(--gold);}
+.suivi-meta-label{font-family:var(--font-mono);font-size:8px;letter-spacing:0.15em;text-transform:uppercase;color:var(--text3);margin-top:2px;}
+.objectif-input{background:var(--bg3);border:1px solid var(--border);border-radius:3px;color:var(--text);font-family:var(--font-mono);font-size:12px;padding:5px 8px;outline:none;width:100%;}
+.objectif-input:focus{border-color:var(--gold2);}
+/* COHÉRENCE */
+.coherence-layout{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px;}
+.coherence-card{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:18px;}
+.coherence-card-title{font-family:var(--font-display);font-size:13px;font-weight:600;color:var(--gold3);margin-bottom:3px;}
+.coherence-card-sub{font-size:12px;color:var(--text3);font-style:italic;margin-bottom:14px;}
+.glossaire-list{display:flex;flex-direction:column;gap:7px;max-height:320px;overflow-y:auto;}
+.glossaire-list::-webkit-scrollbar{width:3px;}
+.glossaire-list::-webkit-scrollbar-thumb{background:var(--border2);}
+.glossaire-item{background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:9px 12px;}
+.glossaire-term{font-family:var(--font-display);font-size:12px;font-weight:600;color:var(--text);margin-bottom:2px;}
+.glossaire-def{font-size:12px;color:var(--text2);font-style:italic;line-height:1.4;}
+.glossaire-roman{font-family:var(--font-mono);font-size:9px;margin-top:4px;}
+.questions-list{display:flex;flex-direction:column;gap:7px;max-height:320px;overflow-y:auto;}
+.questions-list::-webkit-scrollbar{width:3px;}
+.questions-list::-webkit-scrollbar-thumb{background:var(--border2);}
+.question-item{background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:9px 12px;display:flex;gap:9px;align-items:flex-start;}
+.question-check{width:14px;height:14px;border-radius:3px;border:1px solid var(--border2);flex-shrink:0;cursor:pointer;margin-top:2px;display:flex;align-items:center;justify-content:center;font-size:9px;}
+.question-check.done{background:var(--green2);border-color:var(--green2);color:var(--bg);}
+.question-text{font-size:13px;color:var(--text);line-height:1.5;flex:1;}
+.question-text.done{color:var(--text3);text-decoration:line-through;}
+.question-roman{font-family:var(--font-mono);font-size:9px;color:var(--text3);margin-top:3px;}
+.conflict-list{display:flex;flex-direction:column;gap:7px;max-height:320px;overflow-y:auto;}
+.conflict-list::-webkit-scrollbar{width:3px;}
+.conflict-list::-webkit-scrollbar-thumb{background:var(--border2);}
+.conflict-item{background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:9px 12px;}
+.conflict-pair{font-family:var(--font-display);font-size:12px;font-weight:600;color:var(--text);margin-bottom:3px;}
+.conflict-desc{font-size:12px;color:var(--text2);font-style:italic;line-height:1.4;}
+.coherence-full{grid-column:1/-1;}
+/* MOODBOARD */
+.moodboard-layout{margin-top:16px;}
+.moodboard-filters{display:flex;gap:7px;margin-bottom:14px;flex-wrap:wrap;}
+.moodboard-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;}
+.mood-card{background:var(--bg2);border:1px solid var(--border);border-radius:6px;overflow:hidden;transition:all 0.2s;position:relative;}
+.mood-card:hover{border-color:var(--border2);transform:translateY(-2px);}
+.mood-img{width:100%;height:140px;object-fit:cover;display:block;background:var(--bg3);}
+.mood-img-placeholder{width:100%;height:140px;display:flex;align-items:center;justify-content:center;background:var(--bg3);font-size:28px;color:var(--text3);}
+.mood-body{padding:10px 12px;}
+.mood-title{font-family:var(--font-display);font-size:11px;font-weight:600;color:var(--text);margin-bottom:3px;}
+.mood-meta{display:flex;justify-content:space-between;align-items:center;}
+.mood-tag{font-family:var(--font-mono);font-size:9px;color:var(--text3);}
+.mood-actions{position:absolute;top:6px;right:6px;display:flex;gap:4px;opacity:0;transition:opacity 0.2s;}
+.mood-card:hover .mood-actions{opacity:1;}
+.mood-action-btn{width:22px;height:22px;border-radius:3px;background:rgba(10,9,8,0.7);border:1px solid var(--border2);color:var(--text2);font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.playlist-list{display:flex;flex-direction:column;gap:8px;margin-top:14px;}
+.playlist-item{background:var(--bg2);border:1px solid var(--border);border-radius:5px;padding:12px 14px;display:flex;gap:12px;align-items:center;transition:all 0.2s;}
+.playlist-item:hover{border-color:var(--border2);}
+.playlist-icon{font-size:22px;flex-shrink:0;}
+.playlist-name{font-family:var(--font-display);font-size:13px;font-weight:600;color:var(--text);}
+.playlist-sub{font-size:12px;color:var(--text3);font-style:italic;}
+.playlist-actions{margin-left:auto;display:flex;gap:6px;}
+
+/* ========== RESPONSIVE MOBILE ========== */
+.bottom-nav{display:none;}
+
+@media (max-width: 768px) {
+  /* Layout */
+  .app{flex-direction:column;height:100vh;height:100dvh;}
+  .sidebar{display:none !important;}
+  .main{flex:1;min-height:0;padding-bottom:64px;}
+
+  /* Topbar mobile */
+  .topbar{height:52px;padding:0 14px;}
+  .topbar-title{font-size:11px;}
+  .topbar-novel{font-size:8px;}
+  .btn{padding:6px 11px;font-size:9px;}
+
+  /* Stats bar — scroll horizontal */
+  .stats-bar{overflow-x:auto;gap:10px;padding:8px 14px;-webkit-overflow-scrolling:touch;}
+  .stats-bar::-webkit-scrollbar{display:none;}
+  .stat-val{font-size:15px;}
+  .stat-label{font-size:7px;}
+
+  /* Content */
+  .content{padding:14px;}
+
+  /* Section headers */
+  .section-title{font-size:17px;}
+  .section-sub{font-size:12px;}
+  .section-header{flex-direction:column;gap:8px;align-items:flex-start;}
+
+  /* PERSONNAGES — 1 colonne */
+  .chars-grid{grid-template-columns:1fr;}
+
+  /* LIEUX — colonne unique, no split */
+  .places-layout{grid-template-columns:1fr !important;}
+  .place-detail{position:static !important;max-height:none;}
+
+  /* TIMELINE */
+  .timeline-line{left:80px;}
+  .event-date{width:72px;min-width:72px;font-size:8px;padding-right:14px;}
+  .event-content{padding-left:12px;}
+  .event-title{font-size:12px;}
+  .event-desc{font-size:11px;}
+
+  /* SCÈNES — empilé vertical */
+  .scenes-layout{grid-template-columns:1fr !important;height:auto !important;}
+  .scenes-list{max-height:200px;overflow-y:auto;}
+  #sceneEditorWrap{height:60vh;}
+  .scene-editor{height:100%;}
+  .scene-textarea{font-size:15px;padding:14px;}
+  .scene-meta-bar{flex-wrap:wrap;gap:6px;}
+
+  /* GRAPHE */
+  .graph-wrap{height:55vw;min-height:260px;}
+
+  /* SUIVI — 1 colonne */
+  .suivi-grid{grid-template-columns:1fr !important;}
+
+  /* COHÉRENCE — 1 colonne */
+  .coherence-layout{grid-template-columns:1fr !important;}
+  .coherence-full{grid-column:1/-1;}
+  .glossaire-list,.questions-list,.conflict-list{max-height:260px;}
+
+  /* MOODBOARD */
+  .moodboard-grid{grid-template-columns:repeat(2,1fr) !important;}
+  /* Moodboard layout: stack vertical */
+  #section-moodboard > div{grid-template-columns:1fr !important;}
+
+  /* RÉFÉRENCES */
+  .research-layout{grid-template-columns:1fr !important;}
+  .research-cats{max-height:none;}
+  .research-grid{grid-template-columns:1fr !important;}
+
+  /* IA */
+  .ia-layout{grid-template-columns:1fr !important;}
+  .ia-full{grid-column:1/-1;}
+
+  /* MODALS */
+  .modal{width:96vw !important;max-height:92vh;border-radius:12px;}
+  .modal-body{padding:14px 16px;}
+  .form-grid{grid-template-columns:1fr !important;}
+  .field.full{grid-column:1/-1;}
+
+  /* Filters wrap */
+  .filters{gap:5px;}
+  .filter-btn{padding:5px 10px;font-size:8px;}
+
+  /* Touch targets */
+  .btn,.filter-btn,.nav-item,.novel-tab,.cat-item{min-height:38px;}
+  .chap-status{width:12px;height:12px;}
+
+  /* BOTTOM NAV */
+  .bottom-nav{
+    display:flex;
+    position:fixed;
+    bottom:0;left:0;right:0;
+    height:64px;
+    background:var(--bg2);
+    border-top:1px solid var(--border);
+    z-index:100;
+    align-items:stretch;
+    padding:0 4px;
+    padding-bottom:env(safe-area-inset-bottom);
+  }
+  .bn-item{
+    flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:3px;cursor:pointer;border-radius:8px;margin:4px 2px;
+    transition:all 0.15s;color:var(--text3);
+    -webkit-tap-highlight-color:transparent;
+  }
+  .bn-item.active{background:var(--bg4);color:var(--gold);}
+  .bn-item:active{opacity:0.6;}
+  .bn-icon{font-size:18px;line-height:1;}
+  .bn-label{font-family:var(--font-mono);font-size:8px;letter-spacing:0.05em;text-transform:uppercase;}
+
+  /* Drawer (sidebar sur mobile) */
+  .mobile-drawer{
+    position:fixed;inset:0;z-index:200;display:none;
+  }
+  .mobile-drawer.open{display:block;}
+  .drawer-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.6);}
+  .drawer-panel{
+    position:absolute;left:0;top:0;bottom:0;width:80vw;max-width:300px;
+    background:var(--bg2);border-right:1px solid var(--border2);
+    display:flex;flex-direction:column;overflow-y:auto;
+    transform:translateX(-100%);transition:transform 0.25s ease;
+  }
+  .mobile-drawer.open .drawer-panel{transform:translateX(0);}
+  .drawer-close{padding:16px;display:flex;justify-content:flex-end;}
+  .drawer-close button{background:none;border:none;color:var(--text3);font-size:20px;cursor:pointer;padding:4px;}
+
+  /* Menu burger dans topbar */
+  .burger-btn{display:flex;align-items:center;justify-content:center;width:36px;height:36px;background:transparent;border:1px solid var(--border2);border-radius:4px;cursor:pointer;color:var(--text2);font-size:16px;-webkit-tap-highlight-color:transparent;}
+}
+
+@media (min-width:769px){
+  .bottom-nav,.mobile-drawer,.burger-btn{display:none !important;}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="logo">
+    <div class="logo-title">World Forge</div>
+    <div class="logo-sub">Atelier narratif</div>
+    <div class="save-ind" id="saveInd">✓ sauvegardé</div>
+  </div>
+  <div class="novel-selector">
+    <div class="novel-label">Roman actif</div>
+    <div class="novel-tabs">
+      <div class="novel-tab active" onclick="switchNovel('naples',this)"><span class="novel-dot" style="background:#4a8fd4"></span>Naples</div>
+      <div class="novel-tab" onclick="switchNovel('zima',this)"><span class="novel-dot" style="background:#b04040"></span>Zima Bratva</div>
+      <div class="novel-tab" onclick="switchNovel('heritiers',this)"><span class="novel-dot" style="background:#8a5cc7"></span>Héritiers d'Albion</div>
+      <div class="novel-tab" onclick="switchNovel('all',this)"><span class="novel-dot" style="background:#c9a84c"></span>Tous</div>
+    </div>
+  </div>
+  <nav class="nav">
+    <div class="nav-section">
+      <div class="nav-section-label">Création</div>
+      <div class="nav-item active" onclick="showSection('personnages',this)"><span class="nav-icon">◈</span>Personnages</div>
+      <div class="nav-item" onclick="showSection('lieux',this)"><span class="nav-icon">◎</span>Lieux</div>
+      <div class="nav-item" onclick="showSection('timeline',this)"><span class="nav-icon">◇</span>Timeline</div>
+      <div class="nav-item" onclick="showSection('scenes',this)"><span class="nav-icon">✍</span>Scènes</div>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-label">Analyse</div>
+      <div class="nav-item" onclick="showSection('graphe',this)"><span class="nav-icon">◉</span>Relations</div>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-label">Ressources</div>
+      <div class="nav-item" onclick="showSection('recherches',this)"><span class="nav-icon">⊡</span>Références</div>
+      <div class="nav-item" onclick="showSection('moodboard',this)"><span class="nav-icon">◧</span>Moodboard</div>
+      <div class="nav-item" onclick="showSection('ia',this)"><span class="nav-icon">✦</span>Assistant IA</div>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-label">Pilotage</div>
+      <div class="nav-item" onclick="showSection('suivi',this)"><span class="nav-icon">◫</span>Suivi</div>
+      <div class="nav-item" onclick="showSection('coherence',this)"><span class="nav-icon">◬</span>Cohérence</div>
+    </div>
+  </nav>
+  <div class="sidebar-footer">
+    <button class="exp-btn" onclick="exportData()">↓ Exporter JSON</button>
+    <button class="exp-btn" onclick="importData()">↑ Importer JSON</button>
+    <input type="file" id="importFile" accept=".json" style="display:none" onchange="loadImport(this)">
+  </div>
+</aside>
+<main class="main">
+  <div class="topbar">
+    <div style="display:flex;align-items:center;gap:10px">
+      <button class="burger-btn" onclick="openDrawer()">☰</button>
+      <div>
+        <div class="topbar-title" id="topbarTitle">Personnages</div>
+        <div class="topbar-novel" id="topbarNovel">Roman Naples — Elio &amp; Thalia</div>
+      </div>
+    </div>
+    <button class="btn btn-primary" id="addBtn" onclick="openAddModal()">+ Ajouter</button>
+  </div>
+  <div class="stats-bar">
+    <div class="stat"><div class="stat-val" id="statP">3</div><div class="stat-label">Personnages</div></div>
+    <div class="stat-div"></div>
+    <div class="stat"><div class="stat-val" id="statL">4</div><div class="stat-label">Lieux</div></div>
+    <div class="stat-div"></div>
+    <div class="stat"><div class="stat-val" id="statE">5</div><div class="stat-label">Événements</div></div>
+    <div class="stat-div"></div>
+    <div class="stat"><div class="stat-val" id="statS">0</div><div class="stat-label">Scènes</div></div>
+    <div class="stat-div"></div>
+    <div class="stat"><div class="stat-val" id="statR">6</div><div class="stat-label">Références</div></div>
+  </div>
+  <div class="content">
+    <!-- PERSONNAGES -->
+    <div class="section active" id="section-personnages">
+      <div class="section-header"><div><div class="section-title">Personnages</div><div class="section-sub">Fiches détaillées du cast</div></div></div>
+      <div class="filters" id="charFilters">
+        <button class="filter-btn active" onclick="filterChars('all',this)">Tous</button>
+        <button class="filter-btn" onclick="filterChars('protagoniste',this)">Protagonistes</button>
+        <button class="filter-btn" onclick="filterChars('secondaire',this)">Secondaires</button>
+        <button class="filter-btn" onclick="filterChars('antagoniste',this)">Antagonistes</button>
+      </div>
+      <div class="chars-grid" id="charsGrid"></div>
+    </div>
+    <!-- LIEUX -->
+    <div class="section" id="section-lieux">
+      <div class="section-header"><div><div class="section-title">Lieux</div><div class="section-sub">Géographie de vos univers</div></div></div>
+      <div class="places-layout">
+        <div class="places-list" id="placesList"></div>
+        <div class="place-detail" id="placeDetail"><div style="display:flex;align-items:center;justify-content:center;height:120px;color:var(--text3);font-style:italic;font-size:13px;">Sélectionnez un lieu</div></div>
+      </div>
+    </div>
+    <!-- TIMELINE -->
+    <div class="section" id="section-timeline">
+      <div class="section-header"><div><div class="section-title">Timeline</div><div class="section-sub">Chronologie narrative</div></div></div>
+      <div class="filters" id="timelineFilters">
+        <button class="filter-btn active" onclick="filterTimeline('all',this)">Tous</button>
+        <button class="filter-btn" onclick="filterTimeline('plot',this)">Intrigue</button>
+        <button class="filter-btn" onclick="filterTimeline('relation',this)">Relation</button>
+        <button class="filter-btn" onclick="filterTimeline('action',this)">Action</button>
+        <button class="filter-btn" onclick="filterTimeline('backstory',this)">Backstory</button>
+      </div>
+      <div class="timeline-wrap"><div class="timeline-line"></div><div class="timeline-events" id="timelineEvents"></div></div>
+    </div>
+    <!-- SCENES -->
+    <div class="section" id="section-scenes">
+      <div class="section-header"><div><div class="section-title">Scènes</div><div class="section-sub">Éditeur de scènes et chapitres</div></div></div>
+      <div class="scenes-layout">
+        <div class="scenes-list" id="scenesList"></div>
+        <div id="sceneEditorWrap" style="height:100%">
+          <div class="scene-empty" id="sceneEmpty"><div style="font-size:32px;opacity:0.3">✍</div><div>Sélectionnez une scène<br>ou créez-en une nouvelle</div></div>
+          <div class="scene-editor" id="sceneEditor" style="display:none">
+            <div class="scene-editor-header">
+              <input class="scene-editor-title-input" id="sceneTitleInput" placeholder="Titre de la scène…" oninput="saveCurrentScene()">
+              <button class="btn btn-ghost" style="font-size:9px;padding:4px 9px" onclick="deleteCurrentScene()">Suppr.</button>
+            </div>
+            <div class="scene-meta-bar">
+              <select class="scene-meta-sel" id="sceneNovelSel" onchange="saveCurrentScene()">
+                <option value="naples">Naples</option>
+                <option value="zima">Zima Bratva</option>
+                <option value="heritiers">Héritiers d'Albion</option>
+              </select>
+              <select class="scene-meta-sel" id="sceneChapSel" onchange="saveCurrentScene()">
+                <option value="">Chapitre…</option>
+                <option value="1">Ch. 1</option><option value="2">Ch. 2</option><option value="3">Ch. 3</option>
+                <option value="4">Ch. 4</option><option value="5">Ch. 5</option><option value="6">Ch. 6</option>
+                <option value="7">Ch. 7</option><option value="8">Ch. 8</option><option value="9">Ch. 9</option>
+                <option value="10">Ch. 10</option><option value="11">Ch. 11</option><option value="12">Ch. 12</option>
+              </select>
+              <select class="scene-meta-sel" id="sceneTypeSel" onchange="saveCurrentScene()">
+                <option value="action">Action</option>
+                <option value="dialogue">Dialogue</option>
+                <option value="introspection">Introspection</option>
+                <option value="romance">Romance</option>
+                <option value="tension">Tension</option>
+              </select>
+            </div>
+            <textarea class="scene-textarea" id="sceneTextarea" placeholder="Écrivez votre scène ici…" oninput="saveCurrentScene();updateWordCount()"></textarea>
+            <div class="scene-footer">
+              <div class="word-count" id="wordCount">0 mots</div>
+              <div id="autoSaveLabel" style="font-family:var(--font-mono);font-size:9px;color:var(--text3)">—</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- GRAPHE -->
+    <div class="section" id="section-graphe">
+      <div class="section-header">
+        <div><div class="section-title">Graphe de Relations</div><div class="section-sub">Visualisation des liens entre personnages</div></div>
+        <button class="btn btn-ghost" onclick="openRelModal()">+ Relation</button>
+      </div>
+      <div class="graph-legend">
+        <div class="legend-item"><div class="legend-line" style="background:var(--gold)"></div>Amour</div>
+        <div class="legend-item"><div class="legend-line" style="background:var(--blue2)"></div>Amitié / Alliance</div>
+        <div class="legend-item"><div class="legend-line" style="background:var(--red2)"></div>Conflit</div>
+        <div class="legend-item"><div class="legend-line" style="background:var(--text3)"></div>Neutre</div>
+      </div>
+      <div class="graph-wrap">
+        <canvas id="graphCanvas"></canvas>
+        <div class="graph-tooltip" id="graphTooltip"></div>
+        <div class="graph-controls">
+          <button class="graph-ctrl" onclick="zoomG(1.2)">+</button>
+          <button class="graph-ctrl" onclick="zoomG(0.8)">−</button>
+          <button class="graph-ctrl" onclick="resetG()">⌖</button>
+        </div>
+      </div>
+    </div>
+    <!-- RECHERCHES -->
+    <div class="section" id="section-recherches">
+      <div class="section-header"><div><div class="section-title">Références</div><div class="section-sub">Documentation et sources d'inspiration</div></div></div>
+      <div class="research-layout">
+        <div class="research-cats"><div class="cat-title">Catégories</div><div id="catList"></div></div>
+        <div>
+          <div class="search-bar"><input class="search-input" placeholder="Rechercher…" oninput="searchRefs(this.value)"></div>
+          <div class="research-grid" id="researchGrid"></div>
+        </div>
+      </div>
+    </div>
+    <!-- IA -->
+    <div class="section" id="section-ia">
+      <div class="section-header"><div><div class="section-title">Assistant IA</div><div class="section-sub">Génération d'idées et de noms via Claude</div></div></div>
+      <div class="ia-layout">
+        <div class="ia-card">
+          <div class="ia-card-title">✦ Générateur de noms</div>
+          <div class="ia-card-sub">Noms cohérents avec l'univers du roman</div>
+          <div class="ia-row">
+            <select class="ia-select" id="nameNovel"><option value="naples">Naples (napolitain)</option><option value="zima">Zima (russe/slave)</option><option value="heritiers">Héritiers (celtique/fantasy)</option></select>
+            <select class="ia-select" id="nameGender"><option value="mixte">Mixte</option><option value="masculin">Masculin</option><option value="féminin">Féminin</option></select>
+          </div>
+          <button class="btn btn-ai" style="width:100%" onclick="generateNames()">Générer des noms</button>
+          <div class="ia-names-grid" id="namesGrid"></div>
+        </div>
+        <div class="ia-card">
+          <div class="ia-card-title">✦ Idées de scènes</div>
+          <div class="ia-card-sub">Propositions basées sur vos personnages</div>
+          <div class="ia-row">
+            <select class="ia-select" id="sceneIdeaNovel"><option value="naples">Naples</option><option value="zima">Zima Bratva</option><option value="heritiers">Héritiers d'Albion</option></select>
+            <select class="ia-select" id="sceneIdeaType"><option value="tension">Tension</option><option value="romance">Romance</option><option value="conflit">Conflit</option><option value="révélation">Révélation</option><option value="tournant">Tournant</option></select>
+          </div>
+          <button class="btn btn-ai" style="width:100%" onclick="generateSceneIdeas()">Générer des idées</button>
+          <div class="ia-result empty" id="sceneIdeasResult">Les idées apparaîtront ici</div>
+        </div>
+        <div class="ia-card ia-full">
+          <div class="ia-card-title">✦ Brainstorming narratif</div>
+          <div class="ia-card-sub">Décrivez un blocage — l'IA propose 3 directions</div>
+          <textarea class="ia-select" style="width:100%;min-height:75px;font-size:13px;resize:vertical;margin-bottom:9px" id="brainstormInput" placeholder="Ex: Je ne sais pas comment faire évoluer la relation entre Elio et Marco après le derby…"></textarea>
+          <button class="btn btn-ai" onclick="generateBrainstorm()">Brainstormer</button>
+          <div class="ia-result empty" id="brainstormResult">Les suggestions apparaîtront ici</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+</div>
+
+    <!-- MOODBOARD -->
+    <div class="section" id="section-moodboard" style="display:none">
+      <div class="section-header">
+        <div><div class="section-title">Moodboard</div><div class="section-sub">Visuels et playlists d'inspiration</div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 320px;gap:18px;margin-top:16px">
+        <div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+            <div class="moodboard-filters" style="margin-bottom:0" id="moodFilters">
+              <button class="filter-btn active" onclick="filterMood('all',this)">Tous</button>
+              <button class="filter-btn" onclick="filterMood('naples',this)">Naples</button>
+              <button class="filter-btn" onclick="filterMood('zima',this)">Zima</button>
+              <button class="filter-btn" onclick="filterMood('heritiers',this)">Héritiers</button>
+            </div>
+            <button class="btn btn-ghost" style="font-size:9px" onclick="openMoodModal()">+ Image</button>
+          </div>
+          <div class="moodboard-grid" id="moodGrid"></div>
+        </div>
+        <div>
+          <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--text3);margin-bottom:10px">Playlists</div>
+          <button class="btn btn-ghost" style="width:100%;margin-bottom:10px;font-size:9px" onclick="openPlaylistModal()">+ Playlist</button>
+          <div class="playlist-list" id="playlistList"></div>
+        </div>
+      </div>
+    </div>
+    <!-- SUIVI -->
+    <div class="section" id="section-suivi" style="display:none">
+      <div class="section-header"><div><div class="section-title">Suivi de progression</div><div class="section-sub">Avancement par roman et statut des chapitres</div></div></div>
+      <div class="suivi-grid" id="suiviGrid"></div>
+    </div>
+    <!-- COHÉRENCE -->
+    <div class="section" id="section-coherence" style="display:none">
+      <div class="section-header">
+        <div><div class="section-title">Cohérence</div><div class="section-sub">Glossaire, questions en suspens, conflits</div></div>
+      </div>
+      <div class="coherence-layout">
+        <div class="coherence-card">
+          <div class="coherence-card-title">📖 Glossaire de l'univers</div>
+          <div class="coherence-card-sub">Termes propres à chaque roman</div>
+          <div style="display:flex;gap:7px;margin-bottom:10px">
+            <select class="ia-select" id="glossNovelFilter" onchange="renderGlossaire()">
+              <option value="all">Tous</option><option value="naples">Naples</option><option value="zima">Zima</option><option value="heritiers">Héritiers</option>
+            </select>
+            <button class="btn btn-ghost" style="font-size:9px;white-space:nowrap" onclick="openGlossModal()">+ Terme</button>
+          </div>
+          <div class="glossaire-list" id="glossaireList"></div>
+        </div>
+        <div class="coherence-card">
+          <div class="coherence-card-title">❓ Questions en suspens</div>
+          <div class="coherence-card-sub">Points non résolus de l'intrigue</div>
+          <div style="display:flex;gap:7px;margin-bottom:10px">
+            <select class="ia-select" id="questNovelFilter" onchange="renderQuestions()">
+              <option value="all">Tous</option><option value="naples">Naples</option><option value="zima">Zima</option><option value="heritiers">Héritiers</option>
+            </select>
+            <button class="btn btn-ghost" style="font-size:9px;white-space:nowrap" onclick="openQuestModal()">+ Question</button>
+          </div>
+          <div class="questions-list" id="questionsList"></div>
+        </div>
+        <div class="coherence-card coherence-full">
+          <div class="coherence-card-title">⚔️ Fiches de conflit</div>
+          <div class="coherence-card-sub">Tensions entre personnages documentées</div>
+          <div style="display:flex;gap:7px;margin-bottom:10px">
+            <select class="ia-select" id="conflictNovelFilter" onchange="renderConflicts()">
+              <option value="all">Tous</option><option value="naples">Naples</option><option value="zima">Zima</option><option value="heritiers">Héritiers</option>
+            </select>
+            <button class="btn btn-ghost" style="font-size:9px;white-space:nowrap" onclick="openConflictModal()">+ Conflit</button>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:9px" id="conflictList"></div>
+        </div>
+      </div>
+    </div>
+
+<!-- MODALS NOUVELLES -->
+<div class="modal-overlay" id="modalMood">
+  <div class="modal" style="width:500px">
+    <div class="modal-header"><div class="modal-title">Nouvelle image</div><button class="modal-close" onclick="closeModal('modalMood')">✕</button></div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="field full"><label>Titre</label><input id="moodTitle" placeholder="Ambiance Curva Sud"></div>
+        <div class="field full"><label>URL de l'image</label><input id="moodUrl" placeholder="https://i.pinimg.com/…"></div>
+        <div class="field"><label>Roman</label><select id="moodNovel"><option value="naples">Naples</option><option value="zima">Zima Bratva</option><option value="heritiers">Héritiers d'Albion</option><option value="all">Tous</option></select></div>
+        <div class="field"><label>Thème</label><input id="moodTag" placeholder="ambiance, lieu, personnage…"></div>
+      </div>
+      <div class="form-actions"><button class="btn btn-ghost" onclick="closeModal('modalMood')">Annuler</button><button class="btn btn-primary" onclick="saveMood()">Ajouter</button></div>
+    </div>
+  </div>
+</div>
+<div class="modal-overlay" id="modalPlaylist">
+  <div class="modal" style="width:500px">
+    <div class="modal-header"><div class="modal-title">Nouvelle playlist</div><button class="modal-close" onclick="closeModal('modalPlaylist')">✕</button></div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="field full"><label>Nom</label><input id="playlistName" placeholder="Naples — Matchday"></div>
+        <div class="field full"><label>Lien (Spotify, YouTube…)</label><input id="playlistUrl" placeholder="https://open.spotify.com/…"></div>
+        <div class="field"><label>Roman</label><select id="playlistNovel"><option value="naples">Naples</option><option value="zima">Zima Bratva</option><option value="heritiers">Héritiers d'Albion</option><option value="all">Tous</option></select></div>
+        <div class="field"><label>Description</label><input id="playlistDesc" placeholder="Scènes de match…"></div>
+      </div>
+      <div class="form-actions"><button class="btn btn-ghost" onclick="closeModal('modalPlaylist')">Annuler</button><button class="btn btn-primary" onclick="savePlaylist()">Ajouter</button></div>
+    </div>
+  </div>
+</div>
+<div class="modal-overlay" id="modalGloss">
+  <div class="modal" style="width:480px">
+    <div class="modal-header"><div class="modal-title" id="glossModalTitle">Nouveau terme</div><button class="modal-close" onclick="closeModal('modalGloss')">✕</button></div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="field"><label>Terme</label><input id="glossTerm" placeholder="Tifo, Bratva, Glamour…"></div>
+        <div class="field"><label>Roman</label><select id="glossNovel"><option value="naples">Naples</option><option value="zima">Zima Bratva</option><option value="heritiers">Héritiers d'Albion</option></select></div>
+        <div class="field full"><label>Définition</label><textarea id="glossDef" placeholder="Signification dans l'univers du roman…"></textarea></div>
+      </div>
+      <div class="form-actions"><button class="btn btn-ghost" onclick="closeModal('modalGloss')">Annuler</button><button class="btn btn-primary" onclick="saveGloss()">Enregistrer</button></div>
+    </div>
+  </div>
+</div>
+<div class="modal-overlay" id="modalQuest">
+  <div class="modal" style="width:480px">
+    <div class="modal-header"><div class="modal-title">Question en suspens</div><button class="modal-close" onclick="closeModal('modalQuest')">✕</button></div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="field full"><label>Question</label><textarea id="questText" placeholder="Pourquoi Thalia ne publie-t-elle pas l'article ?"></textarea></div>
+        <div class="field"><label>Roman</label><select id="questNovel"><option value="naples">Naples</option><option value="zima">Zima Bratva</option><option value="heritiers">Héritiers d'Albion</option></select></div>
+      </div>
+      <div class="form-actions"><button class="btn btn-ghost" onclick="closeModal('modalQuest')">Annuler</button><button class="btn btn-primary" onclick="saveQuest()">Enregistrer</button></div>
+    </div>
+  </div>
+</div>
+<div class="modal-overlay" id="modalConflict">
+  <div class="modal" style="width:500px">
+    <div class="modal-header"><div class="modal-title" id="conflictModalTitle">Nouveau conflit</div><button class="modal-close" onclick="closeModal('modalConflict')">✕</button></div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="field"><label>Personnage A</label><select id="conflictA" style="width:100%"></select></div>
+        <div class="field"><label>Personnage B</label><select id="conflictB" style="width:100%"></select></div>
+        <div class="field"><label>Roman</label><select id="conflictNovel"><option value="naples">Naples</option><option value="zima">Zima Bratva</option><option value="heritiers">Héritiers d'Albion</option></select></div>
+        <div class="field"><label>Intensité (1–5)</label><input type="number" id="conflictStr" min="1" max="5" value="3"></div>
+        <div class="field full"><label>Nature du conflit</label><textarea id="conflictDesc" placeholder="Ce qui les oppose, l'enjeu…"></textarea></div>
+        <div class="field full"><label>Résolution envisagée</label><input id="conflictRes" placeholder="Comment ce conflit pourrait se résoudre…"></div>
+      </div>
+      <div class="form-actions"><button class="btn btn-ghost" onclick="closeModal('modalConflict')">Annuler</button><button class="btn btn-primary" onclick="saveConflict()">Enregistrer</button></div>
+    </div>
+  </div>
+</div>
+<div class="modal-overlay" id="modalPersonnage">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title" id="mPTitle">Nouveau personnage</div><button class="modal-close" onclick="closeModal('modalPersonnage')">✕</button></div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="field"><label>Prénom / Nom</label><input id="charName" placeholder="Elio Ferrara"></div>
+        <div class="field"><label>Roman</label><select id="charNovel"><option value="naples">Naples</option><option value="zima">Zima Bratva</option><option value="heritiers">Héritiers d'Albion</option></select></div>
+        <div class="field"><label>Rôle</label><select id="charRole"><option value="protagoniste">Protagoniste</option><option value="secondaire">Secondaire</option><option value="antagoniste">Antagoniste</option><option value="figurant">Figurant</option></select></div>
+        <div class="field"><label>Âge</label><input id="charAge" placeholder="27 ans"></div>
+        <div class="field full"><label>Description courte</label><input id="charDesc"></div>
+        <div class="field full"><label>Physique</label><textarea id="charPhysique"></textarea></div>
+        <div class="field full"><label>Psychologie</label><textarea id="charPsycho"></textarea></div>
+        <div class="field full"><label>Backstory</label><textarea id="charBackstory"></textarea></div>
+        <div class="field full"><label>Arc narratif</label><textarea id="charArc"></textarea></div>
+        <div class="field full"><label>Tags (virgules)</label><input id="charTags" placeholder="ultra, Naples…"></div>
+        <div class="field"><label>Couleur avatar</label><select id="charColor"><option value="#2a4a6b">Bleu nuit</option><option value="#4a2a2a">Rouge sombre</option><option value="#2a4a35">Vert forêt</option><option value="#3a2a5a">Violet profond</option><option value="#4a3a1a">Or brûlé</option></select></div>
+      </div>
+      <div class="form-actions"><button class="btn btn-ghost" onclick="closeModal('modalPersonnage')">Annuler</button><button class="btn btn-primary" onclick="savePersonnage()">Enregistrer</button></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modalLieu">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title">Nouveau lieu</div><button class="modal-close" onclick="closeModal('modalLieu')">✕</button></div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="field"><label>Nom</label><input id="lieuName"></div>
+        <div class="field"><label>Roman</label><select id="lieuNovel"><option value="naples">Naples</option><option value="zima">Zima Bratva</option><option value="heritiers">Héritiers d'Albion</option></select></div>
+        <div class="field"><label>Type</label><select id="lieuType"><option value="ville">Ville</option><option value="stade">Stade</option><option value="batiment">Bâtiment</option><option value="nature">Nature</option><option value="symbolique">Symbolique</option></select></div>
+        <div class="field"><label>Icône</label><select id="lieuIcon"><option value="🏟️">🏟️</option><option value="🏙️">🏙️</option><option value="🏚️">🏚️</option><option value="⛪">⛪</option><option value="🌊">🌊</option><option value="🏔️">🏔️</option><option value="🍕">🍕</option><option value="🎭">🎭</option><option value="🔥">🔥</option></select></div>
+        <div class="field full"><label>Description</label><textarea id="lieuDesc"></textarea></div>
+        <div class="field full"><label>Importance narrative</label><textarea id="lieuImportance"></textarea></div>
+        <div class="field full"><label>Personnages liés</label><input id="lieuChars" placeholder="Elio, Thalia"></div>
+      </div>
+      <div class="form-actions"><button class="btn btn-ghost" onclick="closeModal('modalLieu')">Annuler</button><button class="btn btn-primary" onclick="saveLieu()">Enregistrer</button></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modalEvent">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title">Nouvel événement</div><button class="modal-close" onclick="closeModal('modalEvent')">✕</button></div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="field"><label>Titre</label><input id="eventTitle"></div>
+        <div class="field"><label>Roman</label><select id="eventNovel"><option value="naples">Naples</option><option value="zima">Zima Bratva</option><option value="heritiers">Héritiers d'Albion</option></select></div>
+        <div class="field"><label>Date / Période</label><input id="eventDate" placeholder="Chap. 1 · Été 2023"></div>
+        <div class="field"><label>Type</label><select id="eventType"><option value="plot">Intrigue</option><option value="relation">Relation</option><option value="action">Action</option><option value="backstory">Backstory</option></select></div>
+        <div class="field full"><label>Description</label><textarea id="eventDesc"></textarea></div>
+        <div class="field full"><label>Personnages impliqués</label><input id="eventChars" placeholder="Elio, Thalia"></div>
+      </div>
+      <div class="form-actions"><button class="btn btn-ghost" onclick="closeModal('modalEvent')">Annuler</button><button class="btn btn-primary" onclick="saveEvent()">Enregistrer</button></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modalRef">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title">Nouvelle référence</div><button class="modal-close" onclick="closeModal('modalRef')">✕</button></div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="field"><label>Titre</label><input id="refTitle"></div>
+        <div class="field"><label>Type</label><select id="refType"><option value="article">📄 Article</option><option value="video">🎥 Vidéo</option><option value="image">🖼️ Image</option><option value="livre">📚 Livre</option><option value="citation">💬 Citation</option><option value="note">📝 Note</option></select></div>
+        <div class="field"><label>Catégorie</label><input id="refCat" placeholder="Ultra culture…"></div>
+        <div class="field"><label>Roman</label><select id="refNovel"><option value="naples">Naples</option><option value="zima">Zima</option><option value="heritiers">Héritiers</option><option value="all">Tous</option></select></div>
+        <div class="field full"><label>Contenu / Résumé</label><textarea id="refContent"></textarea></div>
+        <div class="field full"><label>Lien</label><input id="refUrl" placeholder="https://…"></div>
+        <div class="field full"><label>Chapitres / Thèmes</label><input id="refChapter"></div>
+      </div>
+      <div class="form-actions"><button class="btn btn-ghost" onclick="closeModal('modalRef')">Annuler</button><button class="btn btn-primary" onclick="saveRef()">Enregistrer</button></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modalRelation">
+  <div class="modal" style="width:480px">
+    <div class="modal-header"><div class="modal-title">Nouvelle relation</div><button class="modal-close" onclick="closeModal('modalRelation')">✕</button></div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="field"><label>Personnage A</label><select id="relCharA" style="width:100%"></select></div>
+        <div class="field"><label>Personnage B</label><select id="relCharB" style="width:100%"></select></div>
+        <div class="field"><label>Type</label><select id="relType"><option value="amour">Amour / Attirance</option><option value="amitie">Amitié / Alliance</option><option value="conflit">Conflit / Tension</option><option value="neutre">Neutre</option></select></div>
+        <div class="field"><label>Intensité (1–5)</label><input type="number" id="relStr" min="1" max="5" value="3"></div>
+        <div class="field full"><label>Description</label><input id="relDesc" placeholder="Nature de la relation…"></div>
+      </div>
+      <div class="form-actions"><button class="btn btn-ghost" onclick="closeModal('modalRelation')">Annuler</button><button class="btn btn-primary" onclick="saveRelation()">Enregistrer</button></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modalCharDetail">
+  <div class="modal" style="width:700px">
+    <div class="modal-header"><div class="modal-title" id="dCharName">—</div><button class="modal-close" onclick="closeModal('modalCharDetail')">✕</button></div>
+    <div class="modal-body" id="dCharBody"></div>
+  </div>
+</div>
+
+<script>
+const SKEY='worldforge_v2';
+let cNovel='naples',cSection='personnages',cCharFilter='all',cTimelineFilter='all',cCat='all',editId=null,cSceneId=null,selPlace=null,searchQ='';
+let gZoom=1,gOff={x:0,y:0},gDrag=false,gDragStart={x:0,y:0},gOffStart={x:0,y:0};
+const nNames={naples:'Naples — Elio & Thalia',zima:'Zima Bratva',heritiers:'Héritiers d\'Albion',all:'Tous les romans'};
+
+let D={
+  personnages:[
+    {id:1,name:'Elio Ferrara',novel:'naples',role:'protagoniste',age:'27 ans',desc:'Capitaine de la Curva Sud, tiraillé entre loyauté et amour interdit',physique:'Grand, mâchoire carrée, tatouages napolitains, regard sombre.',psycho:'Fier, protecteur, loyal. Cache une sensibilité profonde.',backstory:'Né à Spaccanapoli, grandi dans les tribunes du Maradona.',arc:'Apprend à distinguer amour véritable et loyauté aveugle.',tags:['ultra','capitaine','Naples','amour interdit'],color:'#2a4a6b'},
+    {id:2,name:'Thalia Moreau',novel:'naples',role:'protagoniste',age:'25 ans',desc:'Journaliste française à Naples, infiltre la culture ultra',physique:'Brune aux yeux clairs, allure déterminée.',psycho:'Curieuse, obsessionnelle, indépendante.',backstory:'Envoyée par un magazine parisien pour un reportage sur les ultras.',arc:'Comprend que certaines vérités ne doivent pas être publiées.',tags:['journaliste','française','Naples'],color:'#4a3a1a'},
+    {id:3,name:'Marco De Luca',novel:'naples',role:'secondaire',age:'30 ans',desc:'Bras droit d\'Elio, méfiant envers Thalia',physique:'Trapu, barbe épaisse, cicatrice sur le sourcil.',psycho:'Instinctif, protecteur du groupe.',backstory:'Ami d\'enfance d\'Elio. Connaît chaque secret de la Curva.',arc:'Finit par accepter Thalia quand il réalise ce qu\'elle protège.',tags:['ultra','ami','méfiant'],color:'#3a2a5a'}
+  ],
+  lieux:[
+    {id:1,novel:'naples',name:'Stade Diego Armando Maradona',type:'stade',icon:'🏟️',desc:'Cœur battant de la Curva Sud.',importance:'Presque tous les moments décisifs s\'y déroulent.',chars:['Elio','Thalia','Marco']},
+    {id:2,novel:'naples',name:'Spaccanapoli',type:'ville',icon:'🏙️',desc:'Quartier d\'enfance d\'Elio. Ruelles étroites, autels à Maradona.',importance:'Représente les racines d\'Elio.',chars:['Elio','Marco']},
+    {id:3,novel:'naples',name:'Bar Nilo',type:'batiment',icon:'☕',desc:'Bar mythique Via San Biagio. La relique de Maradona y est exposée.',importance:'Première vraie conversation entre Elio et Thalia.',chars:['Elio','Thalia']},
+    {id:4,novel:'naples',name:'Golfe de Naples',type:'nature',icon:'🌊',desc:'Vue sur le Vésuve. Lieu de fuite et de vérité.',importance:'Scène-clé de l\'aveu entre les protagonistes.',chars:['Elio','Thalia']}
+  ],
+  timeline:[
+    {id:1,novel:'naples',title:'Arrivée de Thalia à Naples',date:'Chap. 1 · Septembre',type:'plot',desc:'Thalia débarque avec sa mission : un reportage sur les ultras.',chars:['Thalia']},
+    {id:2,novel:'naples',title:'Premier match — Curva Sud',date:'Chap. 2 · Semaine 1',type:'plot',desc:'Thalia assiste à son premier match. Elle croise le regard d\'Elio dans un chaos de fumigènes.',chars:['Elio','Thalia']},
+    {id:3,novel:'naples',title:'La méfiance de Marco',date:'Chap. 3 · Semaine 2',type:'relation',desc:'Marco interpelle Thalia et l\'avertit de ne pas jouer avec le groupe.',chars:['Marco','Thalia']},
+    {id:4,novel:'naples',title:'Nuit au Bar Nilo',date:'Chap. 5 · Semaine 3',type:'relation',desc:'Premier moment seul entre Elio et Thalia. Il lui parle de son père et de Maradona.',chars:['Elio','Thalia']},
+    {id:5,novel:'naples',title:'Le Derby — Point de non-retour',date:'Chap. 12 · Décembre',type:'action',desc:'Des violences éclatent. Thalia est témoin de quelque chose qu\'elle ne peut pas publier.',chars:['Elio','Thalia','Marco']}
+  ],
+  scenes:[],
+  references:[
+    {id:1,novel:'naples',title:'Documentaire Arte — Ultras de Naples',type:'video',cat:'Ultra culture',content:'Reportage Curva B et Sud. Ambiance, codes, hiérarchie.',url:'',chapter:'Roman entier'},
+    {id:2,novel:'naples',title:'SSC Napoli et le mythe Maradona',type:'article',cat:'Histoire Naples',content:'Maradona comme religion napolitaine. Impact sociologique.',url:'',chapter:'Chapitres 1-3'},
+    {id:3,novel:'naples',title:'Chants de la Curva Sud',type:'note',cat:'Ultra culture',content:'Paroles et traductions. Pour authenticité des scènes de match.',url:'',chapter:'Chapitres 2, 8, 12'},
+    {id:4,novel:'naples',title:'Rivalités Napoli — Roma/Juve',type:'article',cat:'Rivalités',content:'Contexte historique et dimension nord/sud.',url:'',chapter:'Chapitre 12'},
+    {id:5,novel:'zima',title:'Bratva — Structure des organisations',type:'livre',cat:'Mafia russe',content:'Hiérarchie, codes, rites. Vorovskoy zakon.',url:'',chapter:'Structure de Zima'},
+    {id:6,novel:'heritiers',title:'Folklore celtique français',type:'note',cat:'Mythologie',content:'Légendes régionales françaises pour les clans magiques.',url:'',chapter:'Worldbuilding'}
+  ],
+  relations:[
+    {id:1,charA:1,charB:2,type:'amour',strength:4,desc:'Attirance complexe — loyauté contre liberté'},
+    {id:2,charA:1,charB:3,type:'amitie',strength:5,desc:'Amis d\'enfance, loyauté absolue'},
+    {id:3,charA:2,charB:3,type:'conflit',strength:3,desc:'Méfiance mutuelle initiale'}
+  ],
+  moodboard:[],
+  playlists:[],
+  glossaire:[
+    {id:1,novel:'naples',term:'Tifo',def:'Grande chorégraphie visuelle déployée par les ultras en tribune. Drapeaux, banderoles, fumigènes.'},
+    {id:2,novel:'naples',term:'Curva Sud',def:'Tribune sud du Stade Maradona, fief des ultras les plus ardents de la SSC Napoli.'},
+    {id:3,novel:'zima',term:'Bratva',def:'Organisation criminelle russe (fratrie). Structure hiérarchique stricte régie par le Vorovskoy zakon.'},
+    {id:4,novel:'heritiers',term:'Glamour',def:'Dans la tradition celtique : enchantement visuel, illusion magique. Don de certains clans.'}
+  ],
+  questions:[
+    {id:1,novel:'naples',text:'Pourquoi Thalia choisit-elle de ne pas publier l\'article final ?',done:false},
+    {id:2,novel:'naples',text:'Quel est le passé exact d\'Elio avec les affrontements inter-groupes ?',done:false}
+  ],
+  conflicts:[
+    {id:1,charA:1,charB:2,novel:'naples',strength:4,desc:'Elio perçoit Thalia comme une menace pour le groupe ; Thalia doit choisir entre vérité professionnelle et sentiment.',resolution:'Résolution au chapitre 12 lors du derby.'}
+  ],
+  suivi:{
+    naples:{objectif:80000,chapitres:Array.from({length:12},(_,i)=>({num:i+1,titre:'',status:'a-ecrire'}))},
+    zima:{objectif:90000,chapitres:Array.from({length:12},(_,i)=>({num:i+1,titre:'',status:'a-ecrire'}))},
+    heritiers:{objectif:100000,chapitres:Array.from({length:12},(_,i)=>({num:i+1,titre:'',status:'a-ecrire'}))}
+  }
+};
+
+// SAVE/LOAD
+function saveD(){try{localStorage.setItem(SKEY,JSON.stringify(D));const i=document.getElementById('saveInd');i.classList.add('show');setTimeout(()=>i.classList.remove('show'),2000);}catch(e){}}
+function loadD(){try{const s=localStorage.getItem(SKEY);if(s)D=JSON.parse(s);}catch(e){}}
+function exportData(){const b=new Blob([JSON.stringify(D,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='world-forge.json';a.click();}
+function importData(){document.getElementById('importFile').click();}
+function loadImport(inp){const f=inp.files[0];if(!f)return;const r=new FileReader();r.onload=e=>{try{D=JSON.parse(e.target.result);saveD();renderSection(cSection);updateStats();alert('Import réussi !');}catch(err){alert('Fichier invalide.');}};r.readAsText(f);}
+
+// UTILS
+function uid(){return Date.now()+Math.random();}
+function nColor(n){return{naples:'#4a8fd4',zima:'#b04040',heritiers:'#8a5cc7',all:'#c9a84c'}[n]||'#c9a84c';}
+function nClass(n){return{naples:'naples',zima:'zima',heritiers:'heritiers'}[n]||'';}
+function eColor(t){return{plot:'#4a8fd4',relation:'#c9a84c',action:'#b04040',backstory:'#8a5cc7'}[t]||'#5a5048';}
+function tIcon(t){return{article:'📄',video:'🎥',image:'🖼️',livre:'📚',citation:'💬',note:'📝'}[t]||'📝';}
+function fil(arr){if(cNovel==='all')return arr;return arr.filter(i=>i.novel===cNovel||i.novel==='all');}
+
+// NAV
+function showSection(name,el){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  const sec=document.getElementById('section-'+name);
+  if(sec){sec.classList.add('active');sec.style.display='block';}
+  document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active'));
+  el.classList.add('active');
+  cSection=name;
+  const titles={personnages:'Personnages',lieux:'Lieux',timeline:'Timeline',scenes:'Scènes',graphe:'Relations',recherches:'Références',moodboard:'Moodboard',suivi:'Suivi',coherence:'Cohérence',ia:'Assistant IA'};
+  document.getElementById('topbarTitle').textContent=titles[name];
+  const addL={personnages:'+ Personnage',lieux:'+ Lieu',timeline:'+ Événement',scenes:'+ Scène',graphe:'+ Relation',recherches:'+ Référence',moodboard:'+ Image',suivi:'',coherence:'',ia:''};
+  const ab=document.getElementById('addBtn');
+  ab.textContent=addL[name]||'+ Ajouter';ab.style.display=(name==='ia'||name==='suivi'||name==='coherence')?'none':'';
+  renderSection(name);
+}
+function switchNovel(n,el){cNovel=n;document.querySelectorAll('.novel-tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');document.getElementById('topbarNovel').textContent=nNames[n];renderSection(cSection);updateStats();}
+function openAddModal(){
+  const m={personnages:'modalPersonnage',lieux:'modalLieu',timeline:'modalEvent',recherches:'modalRef'};
+  if(cSection==='scenes'){addScene();return;}
+  if(cSection==='graphe'){openRelModal();return;}
+  if(cSection==='moodboard'){openMoodModal();return;}
+  const id=m[cSection];if(id){editId=null;document.getElementById(id).classList.add('open');}
+}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+
+// PERSONNAGES
+function renderPersonnages(){
+  const grid=document.getElementById('charsGrid');
+  let list=fil(D.personnages);
+  if(cCharFilter!=='all')list=list.filter(c=>c.role===cCharFilter);
+  if(!list.length){grid.innerHTML='<div class="empty-state"><div class="empty-icon">◈</div><div class="empty-text">Aucun personnage.</div></div>';return;}
+  grid.innerHTML=list.map(c=>`<div class="char-card role-${c.role}" onclick="openCharDetail(${c.id})"><div class="char-avatar" style="background:${c.color}20;color:${c.color}">${c.name.split(' ').map(w=>w[0]).join('').slice(0,2)}</div><div class="char-name">${c.name}</div><div class="char-role-badge">${c.role} · ${c.age}</div><div class="char-desc">${c.desc}</div><div class="char-tags">${(c.tags||[]).map(t=>`<span class="tag">${t}</span>`).join('')}</div></div>`).join('');
+}
+function filterChars(f,el){cCharFilter=f;document.querySelectorAll('#charFilters .filter-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');renderPersonnages();}
+function openCharDetail(id){
+  const c=D.personnages.find(p=>p.id===id);if(!c)return;
+  document.getElementById('dCharName').textContent=c.name;
+  const rc={amour:'var(--gold)',amitie:'var(--blue2)',conflit:'var(--red2)',neutre:'var(--text3)'};
+  const rels=D.relations.filter(r=>r.charA===id||r.charB===id).map(r=>{const oid=r.charA===id?r.charB:r.charA;const o=D.personnages.find(p=>p.id===oid);return o?`<div style="display:flex;align-items:center;gap:8px;background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:6px 11px;font-size:13px;color:var(--text2)"><span style="color:${rc[r.type]};font-size:10px">●</span>${o.name}<span style="color:var(--text3);font-size:11px">${r.desc}</span></div>`:''}).join('');
+  document.getElementById('dCharBody').innerHTML=`<div style="display:flex;gap:16px;align-items:center;margin-bottom:18px"><div class="char-avatar" style="width:54px;height:54px;font-size:20px;background:${c.color}20;color:${c.color}">${c.name.split(' ').map(w=>w[0]).join('').slice(0,2)}</div><div><div class="char-role-badge role-${c.role}" style="margin-bottom:4px">${c.role}</div><div style="font-size:13px;color:var(--text2)">${c.age} · <span class="${nClass(c.novel)}">${nNames[c.novel]}</span></div><div style="font-size:13px;font-style:italic;margin-top:3px">${c.desc}</div></div></div>${c.physique?`<div class="detail-section"><div class="detail-label">Physique</div><div class="detail-text">${c.physique}</div></div>`:''} ${c.psycho?`<div class="detail-section"><div class="detail-label">Psychologie</div><div class="detail-text">${c.psycho}</div></div>`:''} ${c.backstory?`<div class="detail-section"><div class="detail-label">Backstory</div><div class="detail-text">${c.backstory}</div></div>`:''} ${c.arc?`<div class="detail-section"><div class="detail-label">Arc narratif</div><div class="detail-text">${c.arc}</div></div>`:''} ${rels?`<div class="detail-section"><div class="detail-label">Relations</div><div style="display:flex;flex-direction:column;gap:5px;margin-top:5px">${rels}</div></div>`:''} ${c.tags?.length?`<div class="detail-section"><div class="detail-label">Tags</div><div class="char-tags">${c.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div></div>`:''}<div style="display:flex;gap:8px;margin-top:16px;padding-top:13px;border-top:1px solid var(--border)"><button class="btn btn-ghost" onclick="editP(${c.id})">Modifier</button><button class="btn btn-danger" onclick="deleteP(${c.id})">Supprimer</button></div>`;
+  document.getElementById('modalCharDetail').classList.add('open');
+}
+function editP(id){const c=D.personnages.find(p=>p.id===id);if(!c)return;editId=id;['charName','charNovel','charRole','charAge','charDesc','charPhysique','charPsycho','charBackstory','charArc'].forEach(k=>{const f=document.getElementById(k);const prop=k.replace('char','').toLowerCase();const map={charname:'name',charnovel:'novel',charrole:'role',charage:'age',chardesc:'desc',charphysique:'physique',charpsycho:'psycho',charbackstory:'backstory',chararc:'arc'};f.value=c[map[k.toLowerCase()]]||'';});document.getElementById('charTags').value=(c.tags||[]).join(', ');document.getElementById('charColor').value=c.color;document.getElementById('mPTitle').textContent='Modifier — '+c.name;closeModal('modalCharDetail');document.getElementById('modalPersonnage').classList.add('open');}
+function deleteP(id){if(!confirm('Supprimer ?'))return;D.personnages=D.personnages.filter(p=>p.id!==id);D.relations=D.relations.filter(r=>r.charA!==id&&r.charB!==id);saveD();closeModal('modalCharDetail');renderPersonnages();updateStats();}
+function savePersonnage(){
+  const name=document.getElementById('charName').value.trim();if(!name)return;
+  const obj={id:editId||uid(),name,novel:document.getElementById('charNovel').value,role:document.getElementById('charRole').value,age:document.getElementById('charAge').value,desc:document.getElementById('charDesc').value,physique:document.getElementById('charPhysique').value,psycho:document.getElementById('charPsycho').value,backstory:document.getElementById('charBackstory').value,arc:document.getElementById('charArc').value,tags:document.getElementById('charTags').value.split(',').map(t=>t.trim()).filter(Boolean),color:document.getElementById('charColor').value};
+  if(editId){const i=D.personnages.findIndex(p=>p.id===editId);D.personnages[i]=obj;}else{D.personnages.push(obj);}
+  saveD();closeModal('modalPersonnage');renderPersonnages();updateStats();
+}
+
+// LIEUX
+function renderLieux(){
+  const items=fil(D.lieux);const list=document.getElementById('placesList');
+  if(!items.length){list.innerHTML='<div class="empty-state"><div class="empty-icon">◎</div><div class="empty-text">Aucun lieu.</div></div>';return;}
+  list.innerHTML=items.map(p=>`<div class="place-card ${selPlace===p.id?'selected':''}" onclick="selP(${p.id})"><div class="place-icon" style="background:${nColor(p.novel)}18">${p.icon}</div><div><div class="place-name">${p.name}</div><div class="place-type-badge">${p.type} · <span class="${nClass(p.novel)}">${nNames[p.novel]}</span></div><div class="place-desc">${p.desc}</div></div></div>`).join('');
+  if(selPlace)showPD(selPlace);
+}
+function selP(id){selPlace=id;renderLieux();}
+function showPD(id){const p=D.lieux.find(l=>l.id===id);if(!p)return;document.getElementById('placeDetail').innerHTML=`<div style="display:flex;align-items:center;gap:11px;margin-bottom:16px"><div class="place-icon" style="background:${nColor(p.novel)}18;font-size:20px;width:44px;height:44px">${p.icon}</div><div><div style="font-family:var(--font-display);font-size:14px;font-weight:600;color:var(--text)">${p.name}</div><div style="font-family:var(--font-mono);font-size:9px;color:var(--text3);letter-spacing:0.1em;text-transform:uppercase;margin-top:2px">${p.type}</div></div></div><div class="detail-section"><div class="detail-label">Description</div><div class="detail-text">${p.desc}</div></div><div class="detail-section"><div class="detail-label">Importance</div><div class="detail-text">${p.importance||'—'}</div></div><div class="detail-section"><div class="detail-label">Personnages liés</div><div class="detail-link-chars">${(p.chars||[]).map(c=>`<span class="char-pill">${c}</span>`).join('')}</div></div><div style="display:flex;gap:8px;margin-top:14px;padding-top:12px;border-top:1px solid var(--border)"><button class="btn btn-ghost" onclick="editL(${p.id})">Modifier</button><button class="btn btn-danger" onclick="delL(${p.id})">Supprimer</button></div>`;}
+function editL(id){const p=D.lieux.find(l=>l.id===id);if(!p)return;editId=id;document.getElementById('lieuName').value=p.name;document.getElementById('lieuNovel').value=p.novel;document.getElementById('lieuType').value=p.type;document.getElementById('lieuIcon').value=p.icon;document.getElementById('lieuDesc').value=p.desc;document.getElementById('lieuImportance').value=p.importance||'';document.getElementById('lieuChars').value=(p.chars||[]).join(', ');document.getElementById('modalLieu').querySelector('.modal-title').textContent='Modifier — '+p.name;document.getElementById('modalLieu').classList.add('open');}
+function delL(id){if(!confirm('Supprimer ?'))return;D.lieux=D.lieux.filter(l=>l.id!==id);selPlace=null;saveD();renderLieux();updateStats();}
+function saveLieu(){const name=document.getElementById('lieuName').value.trim();if(!name)return;const obj={id:editId||uid(),name,novel:document.getElementById('lieuNovel').value,type:document.getElementById('lieuType').value,icon:document.getElementById('lieuIcon').value,desc:document.getElementById('lieuDesc').value,importance:document.getElementById('lieuImportance').value,chars:document.getElementById('lieuChars').value.split(',').map(t=>t.trim()).filter(Boolean)};if(editId){const i=D.lieux.findIndex(l=>l.id===editId);D.lieux[i]=obj;selPlace=editId;}else{D.lieux.push(obj);}editId=null;document.getElementById('modalLieu').querySelector('.modal-title').textContent='Nouveau lieu';saveD();closeModal('modalLieu');renderLieux();updateStats();}
+
+// TIMELINE
+function renderTimeline(){
+  let list=fil(D.timeline);if(cTimelineFilter!=='all')list=list.filter(e=>e.type===cTimelineFilter);
+  const ev=document.getElementById('timelineEvents');
+  if(!list.length){ev.innerHTML='<div class="empty-state"><div class="empty-icon">◇</div><div class="empty-text">Aucun événement.</div></div>';return;}
+  ev.innerHTML=list.map(e=>{const c=eColor(e.type);return`<div class="timeline-event"><div class="event-date">${e.date}</div><div class="event-dot"><div class="event-dot-inner" style="background:${c}"></div></div><div class="event-content"><div class="event-card"><div class="event-title">${e.title}</div><div class="event-desc">${e.desc}</div><div class="event-meta"><span class="event-type-badge" style="background:${c}20;color:${c}">${e.type}</span>${(e.chars||[]).map(ch=>`<span class="char-pill">${ch}</span>`).join('')}</div><div style="display:flex;gap:7px;margin-top:9px"><button class="btn btn-ghost" style="font-size:9px;padding:3px 9px" onclick="editEv(${e.id})">Modifier</button><button class="btn btn-danger" style="font-size:9px;padding:3px 9px" onclick="delEv(${e.id})">Supprimer</button></div></div></div></div>`;}).join('');
+}
+function filterTimeline(f,el){cTimelineFilter=f;document.querySelectorAll('#timelineFilters .filter-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');renderTimeline();}
+function editEv(id){const e=D.timeline.find(t=>t.id===id);if(!e)return;editId=id;document.getElementById('eventTitle').value=e.title;document.getElementById('eventNovel').value=e.novel;document.getElementById('eventDate').value=e.date;document.getElementById('eventType').value=e.type;document.getElementById('eventDesc').value=e.desc;document.getElementById('eventChars').value=(e.chars||[]).join(', ');document.getElementById('modalEvent').querySelector('.modal-title').textContent='Modifier — '+e.title;document.getElementById('modalEvent').classList.add('open');}
+function delEv(id){if(!confirm('Supprimer ?'))return;D.timeline=D.timeline.filter(t=>t.id!==id);saveD();renderTimeline();updateStats();}
+function saveEvent(){const title=document.getElementById('eventTitle').value.trim();if(!title)return;const obj={id:editId||uid(),title,novel:document.getElementById('eventNovel').value,date:document.getElementById('eventDate').value,type:document.getElementById('eventType').value,desc:document.getElementById('eventDesc').value,chars:document.getElementById('eventChars').value.split(',').map(t=>t.trim()).filter(Boolean)};if(editId){const i=D.timeline.findIndex(t=>t.id===editId);D.timeline[i]=obj;}else{D.timeline.push(obj);}editId=null;document.getElementById('modalEvent').querySelector('.modal-title').textContent='Nouvel événement';saveD();closeModal('modalEvent');renderTimeline();updateStats();}
+
+// SCENES
+function renderScenes(){
+  const list=document.getElementById('scenesList');const scenes=fil(D.scenes);
+  if(!scenes.length){list.innerHTML='<div class="empty-state" style="padding:25px 10px"><div class="empty-icon" style="font-size:26px">✍</div><div class="empty-text" style="font-size:11px">Aucune scène.</div></div>';showSceneEd(null);return;}
+  list.innerHTML=scenes.map(s=>`<div class="scene-item ${cSceneId===s.id?'active':''}" onclick="showSceneEd(${s.id})"><div class="scene-item-title">${s.title||'Sans titre'}</div><div class="scene-item-meta">${nNames[s.novel]||s.novel}${s.chapter?' · Ch.'+s.chapter:''}</div><div class="scene-item-preview">${s.text||'…'}</div></div>`).join('');
+}
+function addScene(){const s={id:uid(),novel:cNovel==='all'?'naples':cNovel,title:'Nouvelle scène',chapter:'',type:'action',text:''};D.scenes.push(s);saveD();renderScenes();showSceneEd(s.id);}
+function showSceneEd(id){
+  cSceneId=id;const empty=document.getElementById('sceneEmpty');const ed=document.getElementById('sceneEditor');
+  if(!id){empty.style.display='flex';ed.style.display='none';return;}
+  const s=D.scenes.find(sc=>sc.id===id);if(!s)return;
+  empty.style.display='none';ed.style.display='flex';
+  document.getElementById('sceneTitleInput').value=s.title||'';
+  document.getElementById('sceneNovelSel').value=s.novel||'naples';
+  document.getElementById('sceneChapSel').value=s.chapter||'';
+  document.getElementById('sceneTypeSel').value=s.type||'action';
+  document.getElementById('sceneTextarea').value=s.text||'';
+  updateWordCount();renderScenes();
+}
+function saveCurrentScene(){if(!cSceneId)return;const s=D.scenes.find(sc=>sc.id===cSceneId);if(!s)return;s.title=document.getElementById('sceneTitleInput').value;s.novel=document.getElementById('sceneNovelSel').value;s.chapter=document.getElementById('sceneChapSel').value;s.type=document.getElementById('sceneTypeSel').value;s.text=document.getElementById('sceneTextarea').value;saveD();const l=document.getElementById('autoSaveLabel');l.textContent='✓ sauvegardé';setTimeout(()=>l.textContent='',2000);renderScenes();}
+function deleteCurrentScene(){if(!cSceneId||!confirm('Supprimer ?'))return;D.scenes=D.scenes.filter(s=>s.id!==cSceneId);cSceneId=null;saveD();renderScenes();showSceneEd(null);updateStats();}
+function updateWordCount(){const t=document.getElementById('sceneTextarea').value||'';const w=t.trim()?t.trim().split(/\s+/).length:0;document.getElementById('wordCount').textContent=w+' mot'+(w!==1?'s':'');}
+
+// GRAPHE
+function renderGraphe(){
+  const canvas=document.getElementById('graphCanvas');const cont=canvas.parentElement;
+  canvas.width=cont.offsetWidth;canvas.height=cont.offsetHeight;
+  const ctx=canvas.getContext('2d');ctx.clearRect(0,0,canvas.width,canvas.height);
+  const chars=fil(D.personnages);
+  if(!chars.length){ctx.fillStyle='rgba(90,80,72,0.4)';ctx.font='13px serif';ctx.textAlign='center';ctx.fillText('Aucun personnage à afficher',canvas.width/2,canvas.height/2);return;}
+  const cx=canvas.width/2+gOff.x,cy=canvas.height/2+gOff.y;
+  const rad=Math.min(canvas.width,canvas.height)*0.3*gZoom;
+  const nodes={};
+  chars.forEach((c,i)=>{const a=(i/chars.length)*Math.PI*2-Math.PI/2;nodes[c.id]={x:cx+Math.cos(a)*rad,y:cy+Math.sin(a)*rad,c};});
+  const rCol={amour:'rgba(201,168,76,',amitie:'rgba(61,111,160,',conflit:'rgba(196,82,46,',neutre:'rgba(90,80,72,'};
+  D.relations.filter(r=>nodes[r.charA]&&nodes[r.charB]).forEach(r=>{
+    const a=nodes[r.charA],b=nodes[r.charB];
+    const mx=(a.x+b.x)/2,my=(a.y+b.y)/2;
+    const dx=b.x-a.x,dy=b.y-a.y,nx=-dy*0.15,ny=dx*0.15;
+    ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.quadraticCurveTo(mx+nx,my+ny,b.x,b.y);
+    ctx.strokeStyle=(rCol[r.type]||'rgba(90,80,72,')+(r.strength/5*0.85)+')';
+    ctx.lineWidth=(r.strength||3)*gZoom*0.7;ctx.stroke();
+    ctx.fillStyle=(rCol[r.type]||'rgba(90,80,72,')+'0.65)';
+    ctx.font=`${9*gZoom}px JetBrains Mono,monospace`;ctx.textAlign='center';
+    ctx.fillText(r.desc||r.type,mx+nx*0.5,my+ny*0.5);
+  });
+  Object.values(nodes).forEach(({x,y,c})=>{
+    const nr=20*gZoom;
+    ctx.beginPath();ctx.arc(x,y,nr+3,0,Math.PI*2);ctx.strokeStyle=c.color+'70';ctx.lineWidth=1.5;ctx.stroke();
+    ctx.beginPath();ctx.arc(x,y,nr,0,Math.PI*2);ctx.fillStyle=c.color+'28';ctx.fill();ctx.strokeStyle=c.color;ctx.lineWidth=2;ctx.stroke();
+    ctx.fillStyle=c.color;ctx.font=`bold ${11*gZoom}px Cinzel,serif`;ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText(c.name.split(' ').map(w=>w[0]).join('').slice(0,2),x,y);
+    ctx.fillStyle='rgba(232,224,208,0.8)';ctx.font=`${10*gZoom}px Crimson Pro,serif`;ctx.textBaseline='top';
+    ctx.fillText(c.name,x,y+nr+4*gZoom);
+  });
+}
+function zoomG(f){gZoom=Math.max(0.3,Math.min(2.5,gZoom*f));renderGraphe();}
+function resetG(){gZoom=1;gOff={x:0,y:0};renderGraphe();}
+const gc=document.getElementById('graphCanvas');
+gc.addEventListener('mousedown',e=>{gDrag=true;gDragStart={x:e.clientX,y:e.clientY};gOffStart={...gOff};});
+gc.addEventListener('mousemove',e=>{
+  if(gDrag){gOff.x=gOffStart.x+(e.clientX-gDragStart.x);gOff.y=gOffStart.y+(e.clientY-gDragStart.y);renderGraphe();return;}
+  const rect=gc.getBoundingClientRect(),mx=e.clientX-rect.left,my=e.clientY-rect.top;
+  const chars=fil(D.personnages),cx=gc.width/2+gOff.x,cy=gc.height/2+gOff.y;
+  const r=Math.min(gc.width,gc.height)*0.3*gZoom;
+  const tip=document.getElementById('graphTooltip');let found=false;
+  chars.forEach((c,i)=>{const a=(i/chars.length)*Math.PI*2-Math.PI/2;const nx=cx+Math.cos(a)*r,ny=cy+Math.sin(a)*r;if(Math.sqrt((mx-nx)**2+(my-ny)**2)<22*gZoom){tip.style.display='block';tip.style.left=(mx+12)+'px';tip.style.top=(my-10)+'px';tip.innerHTML=`<strong>${c.name}</strong><br>${c.role} · ${c.age}`;found=true;}});
+  if(!found)tip.style.display='none';
+});
+gc.addEventListener('mouseup',()=>gDrag=false);
+gc.addEventListener('mouseleave',()=>gDrag=false);
+function openRelModal(){const opts=D.personnages.map(c=>`<option value="${c.id}">${c.name}</option>`).join('');document.getElementById('relCharA').innerHTML=opts;document.getElementById('relCharB').innerHTML=opts;document.getElementById('modalRelation').classList.add('open');}
+function saveRelation(){const a=parseInt(document.getElementById('relCharA').value),b=parseInt(document.getElementById('relCharB').value);if(a===b){alert('Deux personnages différents.');return;}D.relations.push({id:uid(),charA:a,charB:b,type:document.getElementById('relType').value,strength:parseInt(document.getElementById('relStr').value)||3,desc:document.getElementById('relDesc').value});saveD();closeModal('modalRelation');renderGraphe();}
+
+// RECHERCHES
+function renderSearches(){renderCats();renderRefs();}
+function renderCats(){const all=fil(D.references);const cats={};all.forEach(r=>{cats[r.cat]=(cats[r.cat]||0)+1;});document.getElementById('catList').innerHTML=`<div class="cat-item ${cCat==='all'?'active':''}" onclick="selCat('all',this)">Toutes<span class="cat-count">${all.length}</span></div>`+Object.entries(cats).map(([c,n])=>`<div class="cat-item ${cCat===c?'active':''}" onclick="selCat('${c.replace(/'/g,"\\'")}',this)">${c}<span class="cat-count">${n}</span></div>`).join('');}
+function selCat(cat,el){cCat=cat;document.querySelectorAll('.cat-item').forEach(i=>i.classList.remove('active'));el.classList.add('active');renderRefs();}
+function renderRefs(){let list=fil(D.references);if(cCat!=='all')list=list.filter(r=>r.cat===cCat);if(searchQ)list=list.filter(r=>r.title.toLowerCase().includes(searchQ)||r.content.toLowerCase().includes(searchQ));const grid=document.getElementById('researchGrid');if(!list.length){grid.innerHTML='<div class="empty-state"><div class="empty-icon">⊡</div><div class="empty-text">Aucune référence.</div></div>';return;}grid.innerHTML=list.map(r=>`<div class="ref-card" style="border-bottom:2px solid ${nColor(r.novel)}40"><div class="ref-type-icon">${tIcon(r.type)}</div><div class="ref-title">${r.title}</div><div class="ref-content">${r.content}</div><div class="ref-meta"><span class="ref-cat">${r.cat}</span><span style="font-family:var(--font-mono);font-size:9px;padding:2px 6px;border-radius:2px;background:var(--bg4);color:${nColor(r.novel)}">${nNames[r.novel]||r.novel}</span></div>${r.chapter?`<div style="font-family:var(--font-mono);font-size:9px;color:var(--text3);margin-top:6px">${r.chapter}</div>`:''}<div style="display:flex;gap:7px;margin-top:10px;padding-top:9px;border-top:1px solid var(--border)"><button class="btn btn-ghost" style="font-size:9px;padding:3px 9px" onclick="editRef(${r.id})">Modifier</button><button class="btn btn-danger" style="font-size:9px;padding:3px 9px" onclick="delRef(${r.id})">Supprimer</button></div></div>`).join('');}
+function editRef(id){const r=D.references.find(x=>x.id===id);if(!r)return;editId=id;document.getElementById('refTitle').value=r.title;document.getElementById('refType').value=r.type;document.getElementById('refCat').value=r.cat;document.getElementById('refNovel').value=r.novel;document.getElementById('refContent').value=r.content;document.getElementById('refUrl').value=r.url||'';document.getElementById('refChapter').value=r.chapter||'';document.getElementById('modalRef').querySelector('.modal-title').textContent='Modifier — '+r.title;document.getElementById('modalRef').classList.add('open');}
+function delRef(id){if(!confirm('Supprimer ?'))return;D.references=D.references.filter(r=>r.id!==id);saveD();renderSearches();updateStats();}
+function searchRefs(v){searchQ=v.toLowerCase();renderRefs();}
+function saveRef(){const title=document.getElementById('refTitle').value.trim();if(!title)return;const obj={id:editId||uid(),title,type:document.getElementById('refType').value,cat:document.getElementById('refCat').value||'Général',novel:document.getElementById('refNovel').value,content:document.getElementById('refContent').value,url:document.getElementById('refUrl').value,chapter:document.getElementById('refChapter').value};if(editId){const i=D.references.findIndex(r=>r.id===editId);D.references[i]=obj;}else{D.references.push(obj);}editId=null;document.getElementById('modalRef').querySelector('.modal-title').textContent='Nouvelle référence';saveD();closeModal('modalRef');renderSearches();updateStats();}
+
+// IA
+const nCtx={
+  naples:'Roman romance football à Naples, Italie. Univers ultra SSC Napoli, culture napolitaine passionnée.',
+  zima:'Roman mafia russe (Bratva). Noms slaves/russes. Ambiance sombre, Europe de l\'Est.',
+  heritiers:'Roman fantasy celtique français. Clans magiques liés aux villes françaises. Noms celtiques/bretons.'
+};
+async function callIA(prompt){
+  const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})});
+  const d=await r.json();return d.content?.[0]?.text||'Erreur.';
+}
+async function generateNames(){
+  const novel=document.getElementById('nameNovel').value,gender=document.getElementById('nameGender').value;
+  const grid=document.getElementById('namesGrid');
+  grid.innerHTML='<div style="grid-column:1/-1;font-family:var(--font-mono);font-size:10px;color:var(--text3);padding:8px 0">Génération…</div>';
+  try{const t=await callIA(`Contexte: ${nCtx[novel]}\nGénère exactement 9 prénoms ${gender==='mixte'?'(mixtes masculins/féminins)':gender+'s'} cohérents avec cet univers.\nRéponds UNIQUEMENT avec les 9 prénoms séparés par des virgules, sans numéros ni explications.`);const names=t.split(',').map(n=>n.trim()).filter(Boolean).slice(0,9);grid.innerHTML=names.map(n=>`<div class="ia-name-pill">${n}</div>`).join('');}catch(e){grid.innerHTML='<div style="grid-column:1/-1;color:var(--red2);font-size:12px">Erreur IA.</div>';}
+}
+async function generateSceneIdeas(){
+  const novel=document.getElementById('sceneIdeaNovel').value,type=document.getElementById('sceneIdeaType').value;
+  const res=document.getElementById('sceneIdeasResult');res.className='ia-result loading';res.textContent='Génération…';
+  const chars=fil(D.personnages).map(c=>c.name).join(', ');
+  try{const t=await callIA(`Contexte: ${nCtx[novel]}\nPersonnages: ${chars||'non définis'}.\nPropose 3 idées de scènes de type "${type}". Format: une idée par ligne commençant par "—". Max 2 lignes par idée.`);res.className='ia-result';res.innerHTML=t.split('\n').filter(l=>l.trim()).map(l=>`<div style="margin-bottom:7px">${l}</div>`).join('');}catch(e){res.className='ia-result';res.textContent='Erreur IA.';}
+}
+async function generateBrainstorm(){
+  const input=document.getElementById('brainstormInput').value.trim();const res=document.getElementById('brainstormResult');
+  if(!input){alert('Décrivez votre blocage d\'abord.');return;}
+  res.className='ia-result loading';res.textContent='Réflexion…';
+  const chars=D.personnages.map(c=>`${c.name} (${c.role}, ${c.novel})`).join(', ');
+  try{const t=await callIA(`Tu es un assistant narratif expert.\nRomans en cours: Naples (romance football ultras SSC Napoli), Zima Bratva (mafia russe), Héritiers d'Albion (fantasy celtique).\nPersonnages: ${chars}.\nBlocage: "${input}"\nPropose 3 directions narratives concrètes et différentes. Numérote 1. 2. 3.`);res.className='ia-result';res.innerHTML=t.split('\n').filter(l=>l.trim()).map(l=>`<div style="margin-bottom:9px">${l}</div>`).join('');}catch(e){res.className='ia-result';res.textContent='Erreur IA.';}
+}
+
+// STATS
+function updateStats(){
+  document.getElementById('statP').textContent=fil(D.personnages).length;
+  document.getElementById('statL').textContent=fil(D.lieux).length;
+  document.getElementById('statE').textContent=fil(D.timeline).length;
+  document.getElementById('statS').textContent=fil(D.scenes).length;
+  document.getElementById('statR').textContent=fil(D.references).length;
+}
+function renderSection(name){
+  if(name==='personnages')renderPersonnages();
+  else if(name==='lieux')renderLieux();
+  else if(name==='timeline')renderTimeline();
+  else if(name==='scenes')renderScenes();
+  else if(name==='graphe')renderGraphe();
+  else if(name==='recherches')renderSearches();
+  else if(name==='moodboard')renderMoodboard();
+  else if(name==='suivi')renderSuivi();
+  else if(name==='coherence'){renderGlossaire();renderQuestions();renderConflicts();}
+  updateStats();
+}
+
+document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
+window.addEventListener('resize',()=>{if(cSection==='graphe')renderGraphe();});
+
+// MOODBOARD
+let moodFilter='all';
+function filterMood(f,el){moodFilter=f;document.querySelectorAll('#moodFilters .filter-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');renderMoodboard();}
+function openMoodModal(){editId=null;document.getElementById('modalMood').classList.add('open');}
+function saveMood(){const title=document.getElementById('moodTitle').value.trim();if(!title)return;D.moodboard.push({id:uid(),title,url:document.getElementById('moodUrl').value.trim(),novel:document.getElementById('moodNovel').value,tag:document.getElementById('moodTag').value.trim()});saveD();closeModal('modalMood');document.getElementById('moodTitle').value='';document.getElementById('moodUrl').value='';renderMoodboard();}
+function deleteMood(id){if(!confirm('Supprimer ?'))return;D.moodboard=D.moodboard.filter(m=>m.id!==id);saveD();renderMoodboard();}
+function renderMoodboard(){
+  let list=D.moodboard;
+  if(moodFilter!=='all')list=list.filter(m=>m.novel===moodFilter||m.novel==='all');
+  const grid=document.getElementById('moodGrid');
+  if(!list.length){grid.innerHTML='<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">◧</div><div class="empty-text">Aucune image.<br>Collez une URL depuis Pinterest, Unsplash…</div></div>';return;}
+  grid.innerHTML=list.map(m=>`<div class="mood-card"><div class="mood-actions"><button class="mood-action-btn" onclick="deleteMood(${m.id})" title="Supprimer">✕</button></div>${m.url?`<img class="mood-img" src="${m.url}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" alt="${m.title}"><div class="mood-img-placeholder" style="display:none">🖼️</div>`:'<div class="mood-img-placeholder">🖼️</div>'}<div class="mood-body"><div class="mood-title">${m.title}</div><div class="mood-meta"><span class="mood-tag">${m.tag||''}</span><span style="font-family:var(--font-mono);font-size:9px;color:${nColor(m.novel)}">${m.novel==='all'?'Tous':m.novel}</span></div></div></div>`).join('');
+  // Playlists
+  let plist=D.playlists;
+  const pl=document.getElementById('playlistList');
+  if(!plist.length){pl.innerHTML='<div style="font-size:13px;color:var(--text3);font-style:italic;text-align:center;padding:20px 0">Aucune playlist.</div>';return;}
+  pl.innerHTML=plist.map(p=>{const icons={naples:'⚽',zima:'🎸',heritiers:'🎶',all:'🎵'};return`<div class="playlist-item"><div class="playlist-icon">${icons[p.novel]||'🎵'}</div><div><div class="playlist-name">${p.name}</div><div class="playlist-sub">${p.desc||''}</div></div><div class="playlist-actions">${p.url?`<a href="${p.url}" target="_blank" class="btn btn-ghost" style="font-size:9px;padding:3px 9px;text-decoration:none">↗</a>`:''}<button class="btn btn-danger" style="font-size:9px;padding:3px 9px" onclick="deletePlaylist(${p.id})">✕</button></div></div>`;}).join('');
+}
+function openPlaylistModal(){document.getElementById('modalPlaylist').classList.add('open');}
+function savePlaylist(){const name=document.getElementById('playlistName').value.trim();if(!name)return;D.playlists.push({id:uid(),name,url:document.getElementById('playlistUrl').value.trim(),novel:document.getElementById('playlistNovel').value,desc:document.getElementById('playlistDesc').value.trim()});saveD();closeModal('modalPlaylist');document.getElementById('playlistName').value='';renderMoodboard();}
+function deletePlaylist(id){if(!confirm('Supprimer ?'))return;D.playlists=D.playlists.filter(p=>p.id!==id);saveD();renderMoodboard();}
+
+// SUIVI
+function renderSuivi(){
+  const novels=[{key:'naples',name:'Naples — Elio & Thalia',color:'#4a8fd4'},{key:'zima',name:'Zima Bratva',color:'#b04040'},{key:'heritiers',name:'Héritiers d\'Albion',color:'#8a5cc7'}];
+  const grid=document.getElementById('suiviGrid');
+  grid.innerHTML=novels.map(n=>{
+    const suivi=D.suivi[n.key]||(D.suivi[n.key]={objectif:80000,chapitres:Array.from({length:12},(_,i)=>({num:i+1,titre:'',status:'a-ecrire'}))});
+    const scenes=D.scenes.filter(s=>s.novel===n.key);
+    const words=scenes.reduce((acc,s)=>acc+(s.text?s.text.trim().split(/\s+/).filter(Boolean).length:0),0);
+    const pct=Math.min(100,Math.round(words/suivi.objectif*100));
+    const statusColors={'a-ecrire':'var(--text3)','en-cours':'var(--gold)','termine':'#3d7a52','a-reviser':'var(--blue2)'};
+    const statusLabels={'a-ecrire':'À écrire','en-cours':'En cours','termine':'Terminé','a-reviser':'À réviser'};
+    const chapsDone=suivi.chapitres.filter(c=>c.status==='termine').length;
+    return`<div class="suivi-novel-card" style="border-top:3px solid ${n.color}">
+      <div class="suivi-novel-name" style="color:${n.color}">${n.name}</div>
+      <div class="suivi-meta">
+        <div class="suivi-meta-item"><div class="suivi-meta-val">${words.toLocaleString('fr')}</div><div class="suivi-meta-label">Mots écrits</div></div>
+        <div class="suivi-meta-item"><div class="suivi-meta-val">${chapsDone}/12</div><div class="suivi-meta-label">Chapitres OK</div></div>
+      </div>
+      <div class="progress-wrap">
+        <div class="progress-label"><span>Progression mots</span><span>${pct}%</span></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:${pct}%;background:${n.color}"></div></div>
+      </div>
+      <div class="progress-wrap">
+        <div class="detail-label" style="margin-bottom:4px">Objectif (mots)</div>
+        <input class="objectif-input" type="number" value="${suivi.objectif}" min="1000" step="1000" onchange="updateObjectif('${n.key}',this.value)">
+      </div>
+      <div class="detail-label" style="margin:10px 0 6px">Chapitres</div>
+      <div class="chap-list">${suivi.chapitres.map(c=>`<div class="chap-row">
+        <span class="chap-num">Ch. ${c.num}</span>
+        <div class="chap-status" style="background:${statusColors[c.status]};border-color:${statusColors[c.status]}" title="${statusLabels[c.status]}" onclick="cycleChapStatus('${n.key}',${c.num-1})"></div>
+        <input class="chap-title-input" value="${c.titre||''}" placeholder="Titre…" onchange="updateChapTitle('${n.key}',${c.num-1},this.value)">
+        <span style="font-family:var(--font-mono);font-size:8px;color:${statusColors[c.status]}">${statusLabels[c.status]}</span>
+      </div>`).join('')}</div>
+    </div>`;
+  }).join('');
+}
+function updateObjectif(novel,val){if(!D.suivi[novel])D.suivi[novel]={objectif:80000,chapitres:Array.from({length:12},(_,i)=>({num:i+1,titre:'',status:'a-ecrire'}))};D.suivi[novel].objectif=parseInt(val)||80000;saveD();renderSuivi();}
+function cycleChapStatus(novel,idx){const statuses=['a-ecrire','en-cours','termine','a-reviser'];if(!D.suivi[novel])return;const cur=D.suivi[novel].chapitres[idx].status;const next=statuses[(statuses.indexOf(cur)+1)%statuses.length];D.suivi[novel].chapitres[idx].status=next;saveD();renderSuivi();}
+function updateChapTitle(novel,idx,val){if(!D.suivi[novel])return;D.suivi[novel].chapitres[idx].titre=val;saveD();}
+
+// COHÉRENCE
+function renderGlossaire(){
+  const f=document.getElementById('glossNovelFilter').value;
+  let list=D.glossaire;if(f!=='all')list=list.filter(g=>g.novel===f);
+  const el=document.getElementById('glossaireList');
+  if(!list.length){el.innerHTML='<div style="font-size:13px;color:var(--text3);font-style:italic;text-align:center;padding:16px 0">Aucun terme.</div>';return;}
+  el.innerHTML=list.map(g=>`<div class="glossaire-item"><div style="display:flex;justify-content:space-between;align-items:flex-start"><div><div class="glossaire-term">${g.term}</div><div class="glossaire-def">${g.def}</div><div class="glossaire-roman" style="color:${nColor(g.novel)}">${nNames[g.novel]||g.novel}</div></div><button class="btn btn-danger" style="font-size:9px;padding:2px 7px;flex-shrink:0;margin-left:8px" onclick="delGloss(${g.id})">✕</button></div></div>`).join('');
+}
+function openGlossModal(){editId=null;document.getElementById('glossModalTitle').textContent='Nouveau terme';document.getElementById('modalGloss').classList.add('open');}
+function saveGloss(){const term=document.getElementById('glossTerm').value.trim();if(!term)return;D.glossaire.push({id:uid(),term,novel:document.getElementById('glossNovel').value,def:document.getElementById('glossDef').value});saveD();closeModal('modalGloss');document.getElementById('glossTerm').value='';document.getElementById('glossDef').value='';renderGlossaire();}
+function delGloss(id){if(!confirm('Supprimer ?'))return;D.glossaire=D.glossaire.filter(g=>g.id!==id);saveD();renderGlossaire();}
+
+function renderQuestions(){
+  const f=document.getElementById('questNovelFilter').value;
+  let list=D.questions;if(f!=='all')list=list.filter(q=>q.novel===f);
+  const el=document.getElementById('questionsList');
+  if(!list.length){el.innerHTML='<div style="font-size:13px;color:var(--text3);font-style:italic;text-align:center;padding:16px 0">Aucune question.</div>';return;}
+  el.innerHTML=list.map(q=>`<div class="question-item"><div class="question-check ${q.done?'done':''}" onclick="toggleQuest(${q.id})">${q.done?'✓':''}</div><div><div class="question-text ${q.done?'done':''}">${q.text}</div><div class="question-roman" style="color:${nColor(q.novel)}">${nNames[q.novel]||q.novel}</div></div><button class="btn btn-danger" style="font-size:9px;padding:2px 7px;margin-left:auto;flex-shrink:0" onclick="delQuest(${q.id})">✕</button></div>`).join('');
+}
+function openQuestModal(){document.getElementById('modalQuest').classList.add('open');}
+function saveQuest(){const text=document.getElementById('questText').value.trim();if(!text)return;D.questions.push({id:uid(),text,novel:document.getElementById('questNovel').value,done:false});saveD();closeModal('modalQuest');document.getElementById('questText').value='';renderQuestions();}
+function toggleQuest(id){const q=D.questions.find(x=>x.id===id);if(q){q.done=!q.done;saveD();renderQuestions();}}
+function delQuest(id){if(!confirm('Supprimer ?'))return;D.questions=D.questions.filter(q=>q.id!==id);saveD();renderQuestions();}
+
+function renderConflicts(){
+  const f=document.getElementById('conflictNovelFilter').value;
+  let list=D.conflicts;if(f!=='all')list=list.filter(c=>c.novel===f);
+  const el=document.getElementById('conflictList');
+  if(!list.length){el.innerHTML='<div style="font-size:13px;color:var(--text3);font-style:italic;text-align:center;padding:16px 0;grid-column:1/-1">Aucun conflit documenté.</div>';return;}
+  const intColors=['','var(--text3)','var(--text2)','var(--gold)','var(--red2)','var(--red2)'];
+  el.innerHTML=list.map(c=>{const a=D.personnages.find(p=>p.id===c.charA),b=D.personnages.find(p=>p.id===c.charB);return`<div class="conflict-item"><div style="display:flex;justify-content:space-between;align-items:flex-start"><div class="conflict-pair">${a?a.name:'?'} <span style="color:${intColors[c.strength||3]}">⚔</span> ${b?b.name:'?'}</div><button class="btn btn-danger" style="font-size:9px;padding:2px 7px" onclick="delConflict(${c.id})">✕</button></div><div class="conflict-desc">${c.desc}</div>${c.resolution?`<div style="font-family:var(--font-mono);font-size:9px;color:var(--green2);margin-top:5px">→ ${c.resolution}</div>`:''}<div style="font-family:var(--font-mono);font-size:9px;color:${nColor(c.novel)};margin-top:4px">${nNames[c.novel]||c.novel}</div></div>`;}).join('');
+}
+function openConflictModal(){editId=null;document.getElementById('conflictModalTitle').textContent='Nouveau conflit';const opts=D.personnages.map(c=>`<option value="${c.id}">${c.name}</option>`).join('');document.getElementById('conflictA').innerHTML=opts;document.getElementById('conflictB').innerHTML=opts;document.getElementById('modalConflict').classList.add('open');}
+function saveConflict(){const a=parseInt(document.getElementById('conflictA').value),b=parseInt(document.getElementById('conflictB').value);if(a===b){alert('Deux personnages différents.');return;}D.conflicts.push({id:uid(),charA:a,charB:b,novel:document.getElementById('conflictNovel').value,strength:parseInt(document.getElementById('conflictStr').value)||3,desc:document.getElementById('conflictDesc').value,resolution:document.getElementById('conflictRes').value});saveD();closeModal('modalConflict');renderConflicts();}
+function delConflict(id){if(!confirm('Supprimer ?'))return;D.conflicts=D.conflicts.filter(c=>c.id!==id);saveD();renderConflicts();}
+
+loadD();
+renderSection('personnages');
+
+// MOBILE DRAWER & BOTTOM NAV
+function openDrawer(){document.getElementById('mobileDrawer').classList.add('open');}
+function closeDrawer(){document.getElementById('mobileDrawer').classList.remove('open');}
+
+function mobileNav(name,el){
+  document.querySelectorAll('.bn-item').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  // find matching nav-item in sidebar and trigger
+  const navItems=document.querySelectorAll('.nav-item');
+  navItems.forEach(ni=>{if(ni.getAttribute('onclick')&&ni.getAttribute('onclick').includes("'"+name+"'"))showSection(name,ni);});
+}
+
+function drawerNav(name){
+  closeDrawer();
+  const navItems=document.querySelectorAll('.nav-item');
+  navItems.forEach(ni=>{if(ni.getAttribute('onclick')&&ni.getAttribute('onclick').includes("'"+name+"'"))showSection(name,ni);});
+  // update bottom nav active if visible
+  document.querySelectorAll('.bn-item').forEach(b=>{
+    if(b.getAttribute('data-section')===name)b.classList.add('active');
+    else b.classList.remove('active');
+  });
+}
+
+document.getElementById('mobileDrawer').querySelector('.drawer-overlay').addEventListener('click',closeDrawer);
+</script>
+
+<!-- BOTTOM NAV MOBILE -->
+<nav class="bottom-nav" id="bottomNav">
+  <div class="bn-item active" data-section="personnages" onclick="mobileNav('personnages',this)">
+    <span class="bn-icon">◈</span><span class="bn-label">Cast</span>
+  </div>
+  <div class="bn-item" data-section="scenes" onclick="mobileNav('scenes',this)">
+    <span class="bn-icon">✍</span><span class="bn-label">Scènes</span>
+  </div>
+  <div class="bn-item" data-section="timeline" onclick="mobileNav('timeline',this)">
+    <span class="bn-icon">◇</span><span class="bn-label">Timeline</span>
+  </div>
+  <div class="bn-item" data-section="suivi" onclick="mobileNav('suivi',this)">
+    <span class="bn-icon">◫</span><span class="bn-label">Suivi</span>
+  </div>
+  <div class="bn-item" data-section="recherches" onclick="mobileNav('recherches',this)">
+    <span class="bn-icon">⊡</span><span class="bn-label">Refs</span>
+  </div>
+</nav>
+
+<!-- DRAWER MOBILE -->
+<div class="mobile-drawer" id="mobileDrawer">
+  <div class="drawer-overlay"></div>
+  <div class="drawer-panel">
+    <div class="drawer-close"><button onclick="closeDrawer()">✕</button></div>
+    <div style="padding:0 12px 16px">
+      <div style="font-family:var(--font-display);font-size:15px;font-weight:900;letter-spacing:0.15em;color:var(--gold3);text-transform:uppercase;margin-bottom:16px">World Forge</div>
+      <!-- Novel selector -->
+      <div style="font-family:var(--font-mono);font-size:9px;color:var(--text3);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:8px">Roman actif</div>
+      <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:16px">
+        <div class="novel-tab active" id="dnt-naples" onclick="switchNovel('naples',this);closeDrawer()"><span class="novel-dot" style="background:#4a8fd4"></span>Naples</div>
+        <div class="novel-tab" id="dnt-zima" onclick="switchNovel('zima',this);closeDrawer()"><span class="novel-dot" style="background:#b04040"></span>Zima Bratva</div>
+        <div class="novel-tab" id="dnt-heritiers" onclick="switchNovel('heritiers',this);closeDrawer()"><span class="novel-dot" style="background:#8a5cc7"></span>Héritiers d'Albion</div>
+        <div class="novel-tab" id="dnt-all" onclick="switchNovel('all',this);closeDrawer()"><span class="novel-dot" style="background:#c9a84c"></span>Tous</div>
+      </div>
+      <!-- All sections -->
+      <div style="font-family:var(--font-mono);font-size:9px;color:var(--text3);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:6px">Sections</div>
+      <div style="display:flex;flex-direction:column;gap:3px">
+        <div class="nav-item" onclick="drawerNav('personnages')"><span class="nav-icon">◈</span>Personnages</div>
+        <div class="nav-item" onclick="drawerNav('lieux')"><span class="nav-icon">◎</span>Lieux</div>
+        <div class="nav-item" onclick="drawerNav('timeline')"><span class="nav-icon">◇</span>Timeline</div>
+        <div class="nav-item" onclick="drawerNav('scenes')"><span class="nav-icon">✍</span>Scènes</div>
+        <div class="nav-item" onclick="drawerNav('graphe')"><span class="nav-icon">◉</span>Relations</div>
+        <div class="nav-item" onclick="drawerNav('recherches')"><span class="nav-icon">⊡</span>Références</div>
+        <div class="nav-item" onclick="drawerNav('moodboard')"><span class="nav-icon">◧</span>Moodboard</div>
+        <div class="nav-item" onclick="drawerNav('suivi')"><span class="nav-icon">◫</span>Suivi</div>
+        <div class="nav-item" onclick="drawerNav('coherence')"><span class="nav-icon">◬</span>Cohérence</div>
+        <div class="nav-item" onclick="drawerNav('ia')"><span class="nav-icon">✦</span>Assistant IA</div>
+      </div>
+      <!-- Export -->
+      <div style="margin-top:16px;display:flex;flex-direction:column;gap:6px">
+        <button class="exp-btn" onclick="exportData();closeDrawer()">↓ Exporter JSON</button>
+        <button class="exp-btn" onclick="importData()">↑ Importer JSON</button>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
