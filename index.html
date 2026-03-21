@@ -292,7 +292,97 @@ textarea{resize:vertical;min-height:65px;line-height:1.5;}
 .playlist-sub{font-size:12px;color:var(--text3);font-style:italic;}
 .playlist-actions{margin-left:auto;display:flex;gap:6px;}
 
-/* ========== RESPONSIVE MOBILE ========== */
+/* FRISE TEMPORELLE PERSONNAGES */
+.frise-wrap{margin-top:16px;overflow-x:auto;}
+.frise-wrap::-webkit-scrollbar{height:4px;}
+.frise-wrap::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
+.frise-table{min-width:800px;border-collapse:collapse;width:100%;}
+.frise-table th{font-family:var(--font-mono);font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);padding:6px 10px;border-bottom:1px solid var(--border);text-align:left;background:var(--bg2);white-space:nowrap;}
+.frise-table td{padding:7px 10px;border-bottom:1px solid var(--border);font-size:12px;color:var(--text2);vertical-align:top;}
+.frise-table tr:hover td{background:var(--bg3);}
+.frise-char-name{font-family:var(--font-display);font-size:12px;font-weight:600;color:var(--text);white-space:nowrap;}
+.frise-age-cell{font-family:var(--font-mono);font-size:11px;text-align:center;border-radius:3px;padding:3px 6px;}
+.frise-age-highlight{background:var(--bg4);color:var(--gold);border:1px solid var(--gold2);}
+.frise-age-normal{color:var(--text3);}
+.frise-age-absent{color:var(--border2);font-style:italic;}
+.frise-event-col{font-family:var(--font-mono);font-size:8px;letter-spacing:0.08em;color:var(--text3);writing-mode:initial;white-space:nowrap;}
+.frise-controls{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;align-items:center;}
+.frise-add-event{display:flex;gap:7px;margin-top:14px;padding-top:14px;border-top:1px solid var(--border);}
+
+/* ARBRE GÉNÉALOGIQUE */
+.arbre-layout{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:16px;}
+.arbre-family{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:18px;}
+.arbre-family-title{font-family:var(--font-display);font-size:14px;font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.arbre-wrap{overflow-x:auto;}
+.arbre-wrap::-webkit-scrollbar{height:3px;}
+.arbre-wrap::-webkit-scrollbar-thumb{background:var(--border2);}
+.arbre-svg{display:block;}
+.arbre-node{cursor:pointer;}
+.arbre-node rect{transition:all 0.2s;}
+.arbre-node:hover rect{opacity:0.85;}
+.arbre-node text{pointer-events:none;}
+
+/* JOURNAL DES SECRETS */
+.secrets-layout{margin-top:16px;}
+.secrets-filters{display:flex;gap:7px;margin-bottom:14px;flex-wrap:wrap;}
+.secret-card{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:16px;margin-bottom:10px;position:relative;}
+.secret-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:6px 0 0 6px;}
+.secret-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px;}
+.secret-owner{font-family:var(--font-display);font-size:13px;font-weight:600;color:var(--text);}
+.secret-text{font-size:13px;color:var(--text);line-height:1.6;margin-bottom:10px;font-style:italic;}
+.secret-knows{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:6px;}
+.secret-knows-label{font-family:var(--font-mono);font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);margin-bottom:4px;}
+.secret-pill{font-family:var(--font-mono);font-size:9px;padding:2px 8px;border-radius:10px;border:1px solid;}
+.secret-pill.sait{background:rgba(61,122,82,0.15);color:#3d7a52;border-color:#3d7a52;}
+.secret-pill.ignore{background:rgba(196,82,46,0.15);color:var(--red2);border-color:var(--red2);}
+.secret-pill.partiel{background:rgba(201,168,76,0.15);color:var(--gold);border-color:var(--gold2);}
+.secret-consequence{font-size:12px;color:var(--text3);font-style:italic;border-left:2px solid var(--border2);padding-left:10px;margin-top:8px;}
+.secret-gravite{font-family:var(--font-mono);font-size:9px;letter-spacing:0.1em;text-transform:uppercase;padding:2px 8px;border-radius:2px;}
+.gravite-haute{background:rgba(196,82,46,0.2);color:var(--red2);}
+.gravite-moyenne{background:rgba(201,168,76,0.2);color:var(--gold);}
+.gravite-basse{background:rgba(61,111,160,0.2);color:var(--blue2);}
+
+@media(max-width:768px){
+  .arbre-layout{grid-template-columns:1fr;}
+  .frise-controls{gap:5px;}
+}
+
+/* ACTES */
+.actes-layout{margin-top:16px;}
+.actes-header{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:18px;}
+.acte-card{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:16px;}
+.acte-title{font-family:var(--font-display);font-size:13px;font-weight:600;margin-bottom:4px;}
+.acte-desc{font-size:12px;color:var(--text3);font-style:italic;margin-bottom:10px;}
+.acte-scenes{display:flex;flex-direction:column;gap:5px;min-height:60px;}
+.acte-scene-chip{background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:6px 10px;font-size:12px;color:var(--text2);display:flex;justify-content:space-between;align-items:center;cursor:pointer;transition:all 0.2s;}
+.acte-scene-chip:hover{border-color:var(--border2);}
+.acte-count{font-family:var(--font-mono);font-size:9px;padding:2px 7px;border-radius:10px;background:var(--bg4);}
+.acte-empty{font-size:12px;color:var(--text3);font-style:italic;text-align:center;padding:12px 0;}
+.actes-bar{display:flex;height:12px;border-radius:4px;overflow:hidden;margin-bottom:16px;gap:2px;}
+.acte-bar-seg{transition:width 0.4s ease;border-radius:3px;}
+/* CHAPITRES */
+.chapitres-layout{margin-top:16px;}
+.chap-fiche{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:16px;margin-bottom:10px;cursor:pointer;transition:all 0.2s;}
+.chap-fiche:hover{border-color:var(--border2);}
+.chap-fiche.open{border-color:var(--gold2);}
+.chap-fiche-header{display:flex;align-items:center;gap:12px;}
+.chap-fiche-num{font-family:var(--font-mono);font-size:10px;color:var(--text3);letter-spacing:0.1em;width:50px;flex-shrink:0;}
+.chap-fiche-title{font-family:var(--font-display);font-size:13px;font-weight:600;color:var(--text);flex:1;}
+.chap-fiche-status{font-family:var(--font-mono);font-size:9px;padding:2px 8px;border-radius:2px;flex-shrink:0;}
+.chap-fiche-words{font-family:var(--font-mono);font-size:10px;color:var(--text3);}
+.chap-fiche-body{margin-top:12px;padding-top:12px;border-top:1px solid var(--border);display:none;}
+.chap-fiche.open .chap-fiche-body{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.chap-field-label{font-family:var(--font-mono);font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:var(--text3);margin-bottom:4px;}
+.chap-field-val{font-size:13px;color:var(--text);line-height:1.5;}
+.chap-field-val.editable{background:var(--bg3);border:1px solid var(--border);border-radius:3px;padding:5px 8px;outline:none;width:100%;font-family:var(--font-body);font-size:13px;color:var(--text);resize:vertical;}
+.chap-field-val.editable:focus{border-color:var(--gold2);}
+.chap-words-bar{display:flex;align-items:center;gap:8px;margin-top:4px;}
+.chap-words-progress{flex:1;height:4px;background:var(--bg4);border-radius:2px;overflow:hidden;}
+.chap-words-fill{height:100%;border-radius:2px;background:var(--gold2);transition:width 0.3s;}
+@media(max-width:768px){
+  .actes-header{grid-template-columns:1fr;}
+  .chap-fiche.open .chap-fiche-body{grid-template-columns:1fr;}
+}
 .bottom-nav{display:none;}
 
 @media (max-width: 768px) {
@@ -470,6 +560,11 @@ textarea{resize:vertical;min-height:65px;line-height:1.5;}
       <div class="nav-section-label">Pilotage</div>
       <div class="nav-item" onclick="showSection('suivi',this)"><span class="nav-icon">◫</span>Suivi</div>
       <div class="nav-item" onclick="showSection('coherence',this)"><span class="nav-icon">◬</span>Cohérence</div>
+      <div class="nav-item" onclick="showSection('frise',this)"><span class="nav-icon">⊞</span>Frise âges</div>
+      <div class="nav-item" onclick="showSection('arbre',this)"><span class="nav-icon">⋈</span>Arbres familiaux</div>
+      <div class="nav-item" onclick="showSection('secrets',this)"><span class="nav-icon">◐</span>Secrets</div>
+      <div class="nav-item" onclick="showSection('actes',this)"><span class="nav-icon">◑</span>Structure actes</div>
+      <div class="nav-item" onclick="showSection('chapitres',this)"><span class="nav-icon">◒</span>Fiches chapitres</div>
     </div>
   </nav>
   <div class="sidebar-footer">
@@ -716,7 +811,120 @@ textarea{resize:vertical;min-height:65px;line-height:1.5;}
       </div>
     </div>
 
+    <!-- FRISE ÂGES -->
+    <div class="section" id="section-frise" style="display:none">
+      <div class="section-header">
+        <div><div class="section-title">Frise des âges</div><div class="section-sub">Âge de chaque personnage à chaque période clé</div></div>
+        <button class="btn btn-ghost" onclick="openFriseEventModal()">+ Période</button>
+      </div>
+      <div class="frise-controls">
+        <select class="ia-select" id="friseNovelFilter" onchange="renderFrise()" style="max-width:180px">
+          <option value="naples">Naples</option>
+          <option value="zima">Zima Bratva</option>
+          <option value="heritiers">Héritiers d'Albion</option>
+        </select>
+        <span style="font-family:var(--font-mono);font-size:9px;color:var(--text3)">Cliquez sur un âge pour voir le personnage</span>
+      </div>
+      <div class="frise-wrap"><table class="frise-table" id="friseTable"></table></div>
+    </div>
+
+    <!-- ARBRE GÉNÉALOGIQUE -->
+    <div class="section" id="section-arbre" style="display:none">
+      <div class="section-header"><div><div class="section-title">Arbres familiaux</div><div class="section-sub">Visualisation des liens de parenté</div></div></div>
+      <div class="arbre-layout" id="arbreLayout"></div>
+    </div>
+
+    <!-- JOURNAL DES SECRETS -->
+    <div class="section" id="section-secrets" style="display:none">
+      <div class="section-header">
+        <div><div class="section-title">Journal des secrets</div><div class="section-sub">Qui sait quoi — gestion des révélations</div></div>
+        <button class="btn btn-primary" onclick="openSecretModal()">+ Secret</button>
+      </div>
+      <div class="secrets-filters" id="secretFilters">
+        <button class="filter-btn active" onclick="filterSecrets('all',this)">Tous</button>
+        <button class="filter-btn" onclick="filterSecrets('haute',this)">Gravité haute</button>
+        <button class="filter-btn" onclick="filterSecrets('moyenne',this)">Moyenne</button>
+        <button class="filter-btn" onclick="filterSecrets('basse',this)">Basse</button>
+      </div>
+      <div id="secretsList"></div>
+    </div>
+
+    <!-- STRUCTURE EN ACTES -->
+    <div class="section" id="section-actes" style="display:none">
+      <div class="section-header">
+        <div><div class="section-title">Structure en actes</div><div class="section-sub">Répartition des événements sur les 3 actes du roman</div></div>
+        <select class="ia-select" id="actesNovelFilter" onchange="renderActes()" style="max-width:160px">
+          <option value="naples">Naples</option><option value="zima">Zima Bratva</option><option value="heritiers">Héritiers d'Albion</option>
+        </select>
+      </div>
+      <div class="actes-bar" id="actesBar"></div>
+      <div class="actes-header" id="actesHeader"></div>
+    </div>
+
+    <!-- FICHES CHAPITRES -->
+    <div class="section" id="section-chapitres" style="display:none">
+      <div class="section-header">
+        <div><div class="section-title">Fiches chapitres</div><div class="section-sub">Résumé, POV, lieu, personnages, objectif narratif</div></div>
+        <select class="ia-select" id="chapNovelFilter" onchange="renderChapitres()" style="max-width:160px">
+          <option value="naples">Naples</option><option value="zima">Zima Bratva</option><option value="heritiers">Héritiers d'Albion</option>
+        </select>
+      </div>
+      <div class="chapitres-layout" id="chapitresList"></div>
+    </div>
+
 <!-- MODALS NOUVELLES -->
+<div class="modal-overlay" id="modalChap">
+  <div class="modal" style="width:560px">
+    <div class="modal-header"><div class="modal-title" id="chapNum">Chapitre</div><button class="modal-close" onclick="closeModal('modalChap')">✕</button></div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="field full"><label>Titre</label><input id="chapTitre" placeholder="Titre du chapitre…"></div>
+        <div class="field"><label>POV</label><input id="chapPov" placeholder="Elio, Thalia…"></div>
+        <div class="field"><label>Lieu principal</label><input id="chapLieu" placeholder="Stade, Boutique…"></div>
+        <div class="field full"><label>Personnages présents</label><input id="chapPersonnages" placeholder="Elio, Thalia, Leonardo…"></div>
+        <div class="field full"><label>Objectif narratif</label><textarea id="chapObjectif" placeholder="Ce que ce chapitre doit accomplir dans l'histoire…" style="min-height:55px"></textarea></div>
+        <div class="field"><label>Mots écrits</label><input type="number" id="chapMots" placeholder="0" min="0"></div>
+        <div class="field"><label>Statut</label><select id="chapStatus"><option value="a-ecrire">À écrire</option><option value="en-cours">En cours</option><option value="termine">Terminé</option><option value="a-reviser">À réviser</option></select></div>
+        <div class="field"><label>Acte</label><select id="chapActe"><option value="1">Acte I — Mise en place</option><option value="2">Acte II — Confrontation</option><option value="3">Acte III — Résolution</option></select></div>
+      </div>
+      <div class="form-actions"><button class="btn btn-ghost" onclick="closeModal('modalChap')">Annuler</button><button class="btn btn-primary" onclick="saveChap()">Enregistrer</button></div>
+    </div>
+  </div>
+</div>
+<div class="modal-overlay" id="modalFriseEvent">
+  <div class="modal" style="width:460px">
+    <div class="modal-header"><div class="modal-title">Nouvelle période clé</div><button class="modal-close" onclick="closeModal('modalFriseEvent')">✕</button></div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="field full"><label>Nom de la période</label><input id="friseEventName" placeholder="ex: Naissance de Paolo, Déménagement à Naples…"></div>
+        <div class="field"><label>Année réelle ou fictive</label><input id="friseEventYear" type="number" placeholder="2020"></div>
+        <div class="field"><label>Roman</label><select id="friseEventNovel"><option value="naples">Naples</option><option value="zima">Zima Bratva</option><option value="heritiers">Héritiers d'Albion</option></select></div>
+        <div class="field full"><label>Description courte</label><input id="friseEventDesc" placeholder="Ce qui se passe à cette période…"></div>
+      </div>
+      <div class="form-actions"><button class="btn btn-ghost" onclick="closeModal('modalFriseEvent')">Annuler</button><button class="btn btn-primary" onclick="saveFriseEvent()">Ajouter</button></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modalSecret">
+  <div class="modal" style="width:600px">
+    <div class="modal-header"><div class="modal-title" id="secretModalTitle">Nouveau secret</div><button class="modal-close" onclick="closeModal('modalSecret')">✕</button></div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="field"><label>Détenteur du secret</label><select id="secretOwner" style="width:100%"></select></div>
+        <div class="field"><label>Gravité narrative</label><select id="secretGravite"><option value="haute">Haute — bombe narrative</option><option value="moyenne">Moyenne — tension latente</option><option value="basse">Basse — détail de couleur</option></select></div>
+        <div class="field full"><label>Le secret</label><textarea id="secretText" placeholder="ex: Marie est revenue à Naples pour retrouver son amour de jeunesse, pas pour ses racines."></textarea></div>
+        <div class="field full"><label>Conséquence si révélé</label><input id="secretConsequence" placeholder="ex: L'image de sa mère s'effondre pour Thalia."></div>
+        <div class="field full"><label>Roman</label><select id="secretNovel"><option value="naples">Naples</option><option value="zima">Zima Bratva</option><option value="heritiers">Héritiers d'Albion</option></select></div>
+      </div>
+      <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border)">
+        <div class="detail-label" style="margin-bottom:10px">Qui sait ? (cochez)</div>
+        <div id="secretKnowsGrid" style="display:flex;flex-wrap:wrap;gap:7px"></div>
+      </div>
+      <div class="form-actions"><button class="btn btn-ghost" onclick="closeModal('modalSecret')">Annuler</button><button class="btn btn-primary" onclick="saveSecret()">Enregistrer</button></div>
+    </div>
+  </div>
+</div>
 <div class="modal-overlay" id="modalMood">
   <div class="modal" style="width:500px">
     <div class="modal-header"><div class="modal-title">Nouvelle image</div><button class="modal-close" onclick="closeModal('modalMood')">✕</button></div>
@@ -892,57 +1100,98 @@ const nNames={naples:'Naples — Elio & Thalia',zima:'Zima Bratva',heritiers:'H�
 
 let D={
   personnages:[
-    {id:1,name:'Elio Ferrara',novel:'naples',role:'protagoniste',age:'27 ans',desc:'Capitaine de la Curva Sud, tiraillé entre loyauté et amour interdit',physique:'Grand, mâchoire carrée, tatouages napolitains, regard sombre.',psycho:'Fier, protecteur, loyal. Cache une sensibilité profonde.',backstory:'Né à Spaccanapoli, grandi dans les tribunes du Maradona.',arc:'Apprend à distinguer amour véritable et loyauté aveugle.',tags:['ultra','capitaine','Naples','amour interdit'],color:'#2a4a6b'},
-    {id:2,name:'Thalia Moreau',novel:'naples',role:'protagoniste',age:'25 ans',desc:'Journaliste française à Naples, infiltre la culture ultra',physique:'Brune aux yeux clairs, allure déterminée.',psycho:'Curieuse, obsessionnelle, indépendante.',backstory:'Envoyée par un magazine parisien pour un reportage sur les ultras.',arc:'Comprend que certaines vérités ne doivent pas être publiées.',tags:['journaliste','française','Naples'],color:'#4a3a1a'},
-    {id:3,name:'Marco De Luca',novel:'naples',role:'secondaire',age:'30 ans',desc:'Bras droit d\'Elio, méfiant envers Thalia',physique:'Trapu, barbe épaisse, cicatrice sur le sourcil.',psycho:'Instinctif, protecteur du groupe.',backstory:'Ami d\'enfance d\'Elio. Connaît chaque secret de la Curva.',arc:'Finit par accepter Thalia quand il réalise ce qu\'elle protège.',tags:['ultra','ami','méfiant'],color:'#3a2a5a'}
+    {id:1,name:'Elio Castellani',novel:'naples',role:'protagoniste',age:'25 ans',naissance:2000,agesCles:[11,15,20,25],naissance:'2000',agesCles:[11,15,20,25],desc:'Capo du groupe ultra à 25 ans — tatoueur, père seul, tiraillé entre violence et désir de famille',physique:'1m90, silhouette de boxeur sculpté. Peau blanche, yeux bleus, cheveux noirs. Tatouages et cicatrices sur le corps, une cicatrice sur le visage. Style casual.',psycho:'Froid et taiseux en public, violent et méfiant. Déteste la violence mais y revient toujours — contradiction centrale. Peur profonde de l\'abandon et de devenir son père. Besoin caché : exister en dehors du rôle de capo. Désir profond : fonder une famille. Rapport viscéral au foot, presque une obsession.',backstory:'Enfance sous les coups d\'un père violent. À 11 ans, il perd son frère Alessio (13 ans) tué par leur père. À 15 ans, sa grand-mère Antonella le recueille après une violence grave. À 20 ans, naissance de Paolo — garde complète, la mère absente et sans droits. Devient capo par charisme et intelligence, pas par ancienneté.',arc:'S\'éloigne progressivement de la violence. Apprend à faire confiance à quelqu\'un extérieur au groupe. Découvre qu\'aimer Thalia ne trahit pas son identité.',tags:['ultra','capo','tatoueur','père','Naples','violence','famille'],color:'#2a4a6b'},
+    {id:2,name:'Thalia Sorrentino',novel:'naples',role:'protagoniste',age:'23 ans',naissance:2002,agesCles:[7,15,21,23],naissance:'2002',agesCles:[],desc:'Fleuriste napolitaine d\'origine française — prise en étau entre son père ultra Roma et son frère ultra Napoli',physique:'1m60, silhouette fine. Peau blanche, yeux verts, cheveux roux. Taches de rousseur. Style casual/chic selon les circonstances.',psycho:'Froide et distante avec les inconnus, douce et calme avec ses proches. Croit en l\'amour mais se méfie de quiconque s\'approche. Peur de l\'abandon et de la trahison — héritée de la tromperie paternelle. Besoin caché : arrêter de se définir par opposition au milieu ultra.',backstory:'Grandit à Rome dans la culture ultra AS Roma avec son père Lorenzo. Ses parents se séparent suite à la tromperie du père avec une amie proche. Sa mère Marie revient à Naples — officiellement pour ses racines, secrètement pour retrouver un amour de jeunesse. Thalia ignore cette raison. À Naples, elle tombe dans le conflit identitaire : intégrer le milieu napolitain trahit son père, le rejeter trahit son frère Leonardo. Aimer Elio cumule les deux.',arc:'Méfiante au début, s\'ouvre progressivement. Apprend à choisir par elle-même sans se définir par les camps familiaux.',tags:['fleuriste','française','Naples','Roma','conflit identitaire','famille'],color:'#7a3a2a'},
+    {id:3,name:'Leonardo Sorrentino',novel:'naples',role:'secondaire',age:'26 ans',desc:'Grand frère de Thalia et meilleur ami d\'Elio — loyal envers les deux, ne peut prendre parti',physique:'Napolitain, allure de son milieu ultra.',psycho:'Protecteur, loyal. Contradiction centrale : connaît les excès d\'Elio ET les peurs de sa sœur. Ne peut prendre parti sans perdre quelqu\'un.',backstory:'Membre actif du groupe d\'Elio. Frère aîné de Thalia. Sa loyauté le place en position impossible quand la relation Elio/Thalia commence.',arc:'Doit choisir comment être loyal à deux personnes qu\'il aime quand elles se retrouvent liées.',tags:['ultra','frère','loyal','groupe'],color:'#1a3a4a'},
+    {id:4,name:'Catalina Castellani',novel:'naples',role:'secondaire',age:'23 ans',desc:'Sœur cadette d\'Elio et meilleure amie de Thalia — soupape du roman, seule à voir la situation entière',physique:'Napolitaine, 23 ans.',psycho:'Entre les deux milieux — ni dedans ni vraiment dehors. Pour la relation mais ne prendra pas parti ouvertement. Seule à voir la globalité.',backstory:'A grandi avec Elio sous la même violence, recueillie par Antonella. Devenue la meilleure amie de Thalia indépendamment de la relation.',arc:'Rôle de passerelle et de soupape narrative entre les deux protagonistes.',tags:['sœur','amie','soupape','Thalia','Elio'],color:'#3a2a5a'},
+    {id:5,name:'Paolo Castellani',novel:'naples',role:'secondaire',age:'3 ans',desc:'Fils d\'Elio — révélateur de caractère, moment où les défenses de Thalia cèdent',physique:'Petit garçon de 3 ans.',psycho:'Veut une maman. Adore Thalia instinctivement. Innocent.',backstory:'Né quand Elio avait 20 ans. Sa mère est absente, sans droits, n\'en veut pas. Élevé seul par Elio avec le soutien d\'Antonella.',arc:'Sa présence est le catalyseur émotionnel entre Elio et Thalia.',tags:['fils','enfant','famille'],color:'#2a4a35'},
+    {id:6,name:'Antonella Castellani',novel:'naples',role:'secondaire',age:'75 ans',desc:'Grand-mère d\'Elio — l\'a recueilli à 15 ans, la seule figure stable de sa vie',physique:'Napolitaine, 75 ans.',psycho:'Connaît son petit-fils mieux que quiconque. Pour la relation avec Thalia. Sage, aimante.',backstory:'A recueilli Elio à 15 ans quand son père l\'a battu. Commande un bouquet de Thalia dealbata pour la fête des grands-mères — sachant qu\'Elio oubliera.',arc:'Figure d\'ancrage pour Elio. Catalyseur indirect de la rencontre Elio/Thalia.',tags:['grand-mère','famille','ancrage'],color:'#4a3a1a'},
+    {id:7,name:'Mauro Ambrosino',novel:'naples',role:'secondaire',age:'26 ans',desc:'Meilleur ami d\'enfance d\'Elio — le connaît avant le groupe, symbole de loyauté',physique:'26 ans, membre du groupe.',psycho:'Loyal, connaît Elio avant le mythe du capo. Pour la relation. Ancre dans le passé d\'Elio.',backstory:'Ami d\'enfance. A survécu à la même période difficile. Membre du groupe.',arc:'Soutien discret d\'Elio dans son évolution.',tags:['ami','enfance','loyal','groupe'],color:'#2a4a6b'},
+    {id:8,name:'Romeo Sorrentino',novel:'naples',role:'secondaire',age:'20 ans',desc:'Cousin de Thalia — nouvelle génération d\'ultras, impulsif, ignore les consignes au chapitre 3',physique:'20 ans, allure de jeune ultra.',psycho:'Impulsif, fonceur. Pas encore la maturité pour obéir aux consignes.',backstory:'Cousin de Thalia et Dario. Fils d\'Eleonora Sorrentino. Présent au match du chapitre 2. Blesse au chapitre 3 pour avoir ignoré les consignes d\'Elio.',arc:'Déclencheur de la scène hospitalière du chapitre 3.',tags:['cousin','ultra','jeune','impulsif'],color:'#4a2a2a'},
+    {id:9,name:'Dario Sorrentino',novel:'naples',role:'secondaire',age:'26 ans',desc:'Cousin de Thalia — membre du noyau dur du groupe d\'Elio',physique:'26 ans.',psycho:'Membre intégré du groupe. Frère de Romeo.',backstory:'Cousin de Thalia et frère de Romeo. Membre actif du noyau dur.',arc:'Présent dans les scènes de groupe et à l\'hôpital.',tags:['cousin','ultra','groupe'],color:'#3a2a1a'},
+    {id:10,name:'Vittoria Spinelli',novel:'naples',role:'secondaire',age:'45 ans',desc:'Mère d\'Elio — présente mais distante, contre la relation avec Thalia',physique:'45 ans.',psycho:'Aime son fils mais partie pour fuir Armando. Contre la relation — estime qu\'Elio n\'est pas prêt, refuse qu\'une inconnue entre dans la vie de Paolo.',backstory:'A fui Armando. Présente/distante dans la vie d\'Elio.',arc:'Opposition maternelle à la relation.',tags:['mère','contre','famille'],color:'#5a3a2a'},
+    {id:11,name:'Marie Sorrentino',novel:'naples',role:'secondaire',age:'41 ans',desc:'Mère de Thalia — aimante, présente, mais cache la vraie raison du déménagement à Naples',physique:'41 ans.',psycho:'Ses enfants avant tout. Secret : revenue à Naples pour retrouver son amour de jeunesse napolitain, officialisé peu après l\'installation.',backstory:'A quitté Lorenzo après sa tromperie. Officiellement revenue à Naples pour ses racines. En réalité pour un amour de jeunesse. Thalia l\'ignore.',arc:'Bombe narrative latente — si Thalia découvre la vérité.',tags:['mère','secret','Naples'],color:'#3a4a2a'},
+    {id:12,name:'Lorenzo De Luca',novel:'naples',role:'secondaire',age:'42 ans',desc:'Père de Thalia — ultra AS Roma, contre la relation par ennemi culturel direct',physique:'42 ans, à Rome.',psycho:'Conflictuel avec Leonardo depuis le déménagement. Contre Elio — un ultra napolitain est son ennemi culturel.',backstory:'A trompé Marie avec une amie proche — cause officielle de la séparation. Ultra actif AS Roma.',arc:'Opposition paternelle. Tension Roma/Napoli incarnée.',tags:['père','Roma','ultra','contre'],color:'#6a2a2a'},
+    {id:13,name:'Eleonora Sorrentino',novel:'naples',role:'secondaire',age:'47 ans',desc:'Tante de Thalia, mère de Romeo et Dario — figure maternelle, deuxième remontrance au chapitre 3',physique:'47 ans.',psycho:'Figure d\'autorité familiale. Aimante mais ferme.',backstory:'Tante de Thalia. Mère de Romeo et Dario. Présente à l\'hôpital au chapitre 3 pour remettre son fils à sa place.',arc:'Autorité familiale dans les scènes de groupe.',tags:['tante','famille','autorité'],color:'#4a3a2a'}
   ],
   lieux:[
-    {id:1,novel:'naples',name:'Stade Diego Armando Maradona',type:'stade',icon:'🏟️',desc:'Cœur battant de la Curva Sud.',importance:'Presque tous les moments décisifs s\'y déroulent.',chars:['Elio','Thalia','Marco']},
-    {id:2,novel:'naples',name:'Spaccanapoli',type:'ville',icon:'🏙️',desc:'Quartier d\'enfance d\'Elio. Ruelles étroites, autels à Maradona.',importance:'Représente les racines d\'Elio.',chars:['Elio','Marco']},
-    {id:3,novel:'naples',name:'Bar Nilo',type:'batiment',icon:'☕',desc:'Bar mythique Via San Biagio. La relique de Maradona y est exposée.',importance:'Première vraie conversation entre Elio et Thalia.',chars:['Elio','Thalia']},
-    {id:4,novel:'naples',name:'Golfe de Naples',type:'nature',icon:'🌊',desc:'Vue sur le Vésuve. Lieu de fuite et de vérité.',importance:'Scène-clé de l\'aveu entre les protagonistes.',chars:['Elio','Thalia']}
+    {id:1,novel:'naples',name:'Stade Diego Armando Maradona',type:'stade',icon:'🏟️',desc:'Cœur battant du groupe. Curva A pour les ultras. Tribune latérale pour Thalia au chapitre 2.',importance:'Lieu de la première tension visuelle entre Elio et Thalia. Romeo se blesse à la sortie du chapitre 3.',chars:['Elio','Thalia','Leonardo','Romeo','Dario']},
+    {id:2,novel:'naples',name:'Fleurs de Thalia',type:'batiment',icon:'🌸',desc:'Boutique de fleurs de Thalia. Lieu d\'ouverture du roman.',importance:'Chapitre 1 : rencontre avec la cliente habituelle (grand-mère d\'Elio). Chapitre 2 : arrivée paniquée d\'Elio.',chars:['Thalia','Antonella']},
+    {id:3,novel:'naples',name:'Café de Catalina et Thalia',type:'batiment',icon:'☕',desc:'Café préféré de Thalia et Catalina. Rendez-vous hebdomadaire.',importance:'Chapitre 1 : discussion entre les deux meilleures amies. Catalina évoque la fête des grands-mères.',chars:['Thalia','Catalina']},
+    {id:4,novel:'naples',name:'Local du groupe',type:'batiment',icon:'🔥',desc:'Local ultra — espace de réunion du groupe d\'Elio. Interdit aux non-membres.',importance:'Chapitre 2 soir : préparatifs du match, consignes d\'Elio aux plus jeunes.',chars:['Elio','Leonardo','Dario','Mauro']},
+    {id:5,novel:'naples',name:'Chez Antonella',type:'batiment',icon:'🏠',desc:'Maison de la grand-mère d\'Elio — ancrage familial, chaleur, mémoire.',importance:'Chapitre 2 : Elio passe la journée avec Antonella après l\'épisode de la boutique.',chars:['Elio','Antonella','Paolo']},
+    {id:6,novel:'naples',name:'Hôpital de Naples',type:'batiment',icon:'🏥',desc:'Lieu de la scène hospitalière du chapitre 3 suite aux affrontements.',importance:'Chapitre 3 : Romeo blessé (arcade sourcilière). Thalia arrive, remet son frère et ses cousins à leur place.',chars:['Thalia','Romeo','Leonardo','Dario','Eleonora']},
+    {id:7,novel:'naples',name:'Golfe de Naples',type:'nature',icon:'🌊',desc:'Vue sur le Vésuve depuis le front de mer. Lieu de fuite et de vérité.',importance:'Scène-clé de l\'aveu entre les deux protagonistes.',chars:['Elio','Thalia']}
   ],
   timeline:[
-    {id:1,novel:'naples',title:'Arrivée de Thalia à Naples',date:'Chap. 1 · Septembre',type:'plot',desc:'Thalia débarque avec sa mission : un reportage sur les ultras.',chars:['Thalia']},
-    {id:2,novel:'naples',title:'Premier match — Curva Sud',date:'Chap. 2 · Semaine 1',type:'plot',desc:'Thalia assiste à son premier match. Elle croise le regard d\'Elio dans un chaos de fumigènes.',chars:['Elio','Thalia']},
-    {id:3,novel:'naples',title:'La méfiance de Marco',date:'Chap. 3 · Semaine 2',type:'relation',desc:'Marco interpelle Thalia et l\'avertit de ne pas jouer avec le groupe.',chars:['Marco','Thalia']},
-    {id:4,novel:'naples',title:'Nuit au Bar Nilo',date:'Chap. 5 · Semaine 3',type:'relation',desc:'Premier moment seul entre Elio et Thalia. Il lui parle de son père et de Maradona.',chars:['Elio','Thalia']},
-    {id:5,novel:'naples',title:'Le Derby — Point de non-retour',date:'Chap. 12 · Décembre',type:'action',desc:'Des violences éclatent. Thalia est témoin de quelque chose qu\'elle ne peut pas publier.',chars:['Elio','Thalia','Marco']}
+    {id:1,novel:'naples',title:'Chapitre 1 — Introduction de Thalia',date:'Chap. 1',type:'plot',desc:'Introduction philosophique à la 3e personne. Catalina passe à la boutique, donne RDV au café. Cliente habituelle (Antonella) commande un bouquet de Thalia dealbata pour la fête des grands-mères — elle sait qu\'Elio oubliera. Thalia rejoint Catalina au café : discussion légère, puis Catalina demande si Thalia fête les grands-mères. Repas de famille prévu.',chars:['Thalia','Catalina','Antonella']},
+    {id:2,novel:'naples',title:'Chapitre 2 — Elio entre en scène',date:'Chap. 2 · Dimanche',type:'plot',desc:'Elio arrive en panique à la boutique pour la fête des grands-mères. Thalia lui apprend qu\'Antonella avait commandé à l\'avance. Elio réalise qu\'il s\'est ridiculisé grâce à sa propre grand-mère — rire de gêne. Il passe la journée chez Antonella. Le soir : réunion au local pour préparer le match, consignes aux plus jeunes. Nuit : match au Maradona — Elio en Curva A, Thalia en tribune latérale, Romeo présent en Curva A.',chars:['Elio','Thalia','Antonella','Paolo','Romeo','Leonardo','Dario']},
+    {id:3,novel:'naples',title:'Chapitre 3 — L\'hôpital',date:'Chap. 3 · Après match',type:'action',desc:'À la sortie du stade, le noyau dur se réunit. Consigne : les plus jeunes partent immédiatement en cas d\'affrontement. Romeo ignore la consigne. Il se retrouve blessé — arcade sourcilière ouverte. Thalia arrive à l\'hôpital. Phrase sèche à son frère et cousins : "j\'avais raison et vous aviez tort". Deuxième remontrance par Eleonora Sorrentino.',chars:['Elio','Leonardo','Dario','Romeo','Thalia','Eleonora']},
+    {id:4,novel:'naples',title:'Le Derby — Point de non-retour',date:'Chap. 12',type:'action',desc:'Derby décisif. Des violences éclatent. Thalia est témoin de quelque chose qu\'elle ne peut pas publier. Choix déchirant entre vérité et sentiment.',chars:['Elio','Thalia','Leonardo']}
   ],
   scenes:[],
   references:[
     {id:1,novel:'naples',title:'Documentaire Arte — Ultras de Naples',type:'video',cat:'Ultra culture',content:'Reportage Curva B et Sud. Ambiance, codes, hiérarchie.',url:'',chapter:'Roman entier'},
     {id:2,novel:'naples',title:'SSC Napoli et le mythe Maradona',type:'article',cat:'Histoire Naples',content:'Maradona comme religion napolitaine. Impact sociologique.',url:'',chapter:'Chapitres 1-3'},
-    {id:3,novel:'naples',title:'Chants de la Curva Sud',type:'note',cat:'Ultra culture',content:'Paroles et traductions. Pour authenticité des scènes de match.',url:'',chapter:'Chapitres 2, 8, 12'},
-    {id:4,novel:'naples',title:'Rivalités Napoli — Roma/Juve',type:'article',cat:'Rivalités',content:'Contexte historique et dimension nord/sud.',url:'',chapter:'Chapitre 12'},
-    {id:5,novel:'zima',title:'Bratva — Structure des organisations',type:'livre',cat:'Mafia russe',content:'Hiérarchie, codes, rites. Vorovskoy zakon.',url:'',chapter:'Structure de Zima'},
-    {id:6,novel:'heritiers',title:'Folklore celtique français',type:'note',cat:'Mythologie',content:'Légendes régionales françaises pour les clans magiques.',url:'',chapter:'Worldbuilding'}
+    {id:3,novel:'naples',title:'Chants de la Curva Sud',type:'note',cat:'Ultra culture',content:'Paroles et traductions. Pour authenticité des scènes de match.',url:'',chapter:'Chapitres 2, 3'},
+    {id:4,novel:'naples',title:'Rivalités Napoli — Roma',type:'article',cat:'Rivalités',content:'Contexte historique. Tension nord/sud. Insultes, incidents marquants. Fondement du conflit identitaire de Thalia.',url:'',chapter:'Tout le roman — arc Thalia'},
+    {id:5,novel:'naples',title:'Thalia dealbata — symbolique florale',type:'note',cat:'Détails',content:'Fleur blanche, symbole de pureté et de mémoire. Fleur préférée d\'Antonella. Déclencheur indirect de la rencontre Elio/Thalia.',url:'',chapter:'Chapitre 1-2'},
+    {id:6,novel:'zima',title:'Bratva — Structure des organisations',type:'livre',cat:'Mafia russe',content:'Hiérarchie, codes, rites. Vorovskoy zakon.',url:'',chapter:'Structure de Zima'},
+    {id:7,novel:'heritiers',title:'Folklore celtique français',type:'note',cat:'Mythologie',content:'Légendes régionales françaises pour les clans magiques.',url:'',chapter:'Worldbuilding'}
   ],
   relations:[
-    {id:1,charA:1,charB:2,type:'amour',strength:4,desc:'Attirance complexe — loyauté contre liberté'},
-    {id:2,charA:1,charB:3,type:'amitie',strength:5,desc:'Amis d\'enfance, loyauté absolue'},
-    {id:3,charA:2,charB:3,type:'conflit',strength:3,desc:'Méfiance mutuelle initiale'}
+    {id:1,charA:1,charB:2,type:'amour',strength:4,desc:'Attirance complexe — loyauté contre liberté, identité contre sentiment'},
+    {id:2,charA:1,charB:3,type:'amitie',strength:5,desc:'Meilleur ami — protecteur de Thalia, loyal envers les deux'},
+    {id:3,charA:1,charB:4,type:'amitie',strength:5,desc:'Sœur cadette — seul lien tendre sans condition'},
+    {id:4,charA:2,charB:4,type:'amitie',strength:5,desc:'Meilleures amies — lien indépendant d\'Elio'},
+    {id:5,charA:2,charB:3,type:'neutre',strength:2,desc:'Frère de Thalia et ami d\'Elio — position inconfortable'},
+    {id:6,charA:1,charB:6,type:'amitie',strength:5,desc:'Grand-mère — figure d\'ancrage absolue, la seule stabilité'},
+    {id:7,charA:1,charB:5,type:'amitie',strength:5,desc:'Son fils — raison de vivre et de changer'},
+    {id:8,charA:2,charB:8,type:'amitie',strength:4,desc:'Cousin / petit frère de cœur — protectrice'},
+    {id:9,charA:1,charB:10,type:'conflit',strength:2,desc:'Mère contre la relation — estime qu\'Elio n\'est pas prêt'},
+    {id:10,charA:2,charB:12,type:'conflit',strength:4,desc:'Père ultra Roma — ennemi culturel direct d\'Elio'}
   ],
   moodboard:[],
   playlists:[],
+  friseEvents:[
+    {id:1,novel:'naples',name:'Décès Alessio',year:2011,desc:'Alessio tué par le père d\'Elio'},
+    {id:2,novel:'naples',name:'Elio recueilli',year:2015,desc:'Antonella recueille Elio à 15 ans'},
+    {id:3,novel:'naples',name:'Naissance Paolo',year:2020,desc:'Paolo naît, garde complète Elio'},
+    {id:4,novel:'naples',name:'Déménagement Thalia',year:2022,desc:'Marie et Thalia s\'installent à Naples'},
+    {id:5,novel:'naples',name:'Début du roman',year:2025,desc:'Rencontre Elio / Thalia'}
+  ],
+  secrets:[
+    {id:1,ownerId:11,novel:'naples',gravite:'haute',text:'Marie est revenue à Naples pour retrouver son amour de jeunesse napolitain — pas uniquement pour ses racines. Cette relation est officialisée.',consequence:'Si Thalia l\'apprend, l\'image de sa mère s\'effondre. La raison du déménagement devient un mensonge.',knows:[{id:1,status:'ignore'},{id:2,status:'ignore'},{id:3,status:'ignore'},{id:4,status:'ignore'},{id:11,status:'sait'}]},
+    {id:2,ownerId:12,novel:'naples',gravite:'moyenne',text:'Lorenzo De Luca a trompé Marie avec une amie proche — cause officielle de la séparation.',consequence:'Thalia le sait déjà. Leonardo aussi probablement.',knows:[{id:1,status:'ignore'},{id:2,status:'sait'},{id:3,status:'sait'},{id:11,status:'sait'},{id:12,status:'sait'}]},
+    {id:3,ownerId:1,novel:'naples',gravite:'moyenne',text:'Elio déteste la violence mais y revient compulsivement — il a peur de devenir son père Armando.',consequence:'Si Thalia comprend cette contradiction, c\'est le moment de bascule de sa perception d\'Elio.',knows:[{id:1,status:'sait'},{id:2,status:'ignore'},{id:4,status:'partiel'},{id:7,status:'sait'},{id:6,status:'sait'}]}
+  ],
   glossaire:[
-    {id:1,novel:'naples',term:'Tifo',def:'Grande chorégraphie visuelle déployée par les ultras en tribune. Drapeaux, banderoles, fumigènes.'},
-    {id:2,novel:'naples',term:'Curva Sud',def:'Tribune sud du Stade Maradona, fief des ultras les plus ardents de la SSC Napoli.'},
-    {id:3,novel:'zima',term:'Bratva',def:'Organisation criminelle russe (fratrie). Structure hiérarchique stricte régie par le Vorovskoy zakon.'},
-    {id:4,novel:'heritiers',term:'Glamour',def:'Dans la tradition celtique : enchantement visuel, illusion magique. Don de certains clans.'}
+    {id:1,novel:'naples',term:'Curva A',def:'Tribune nord du Stade Maradona — secteur ultra du groupe d\'Elio.'},
+    {id:2,novel:'naples',term:'Thalia dealbata',def:'Fleur blanche (mimosa argenté). Fleur préférée d\'Antonella. Déclencheur indirect de la rencontre Elio/Thalia — Antonella avait commandé à l\'avance.'},
+    {id:3,novel:'naples',term:'Capo',def:'Chef du groupe ultra. Elio est capo à 25 ans — par charisme et intelligence, pas par ancienneté.'},
+    {id:4,novel:'naples',term:'Noyau dur',def:'Membres centraux et fiables du groupe. Leonardo, Dario, Mauro en font partie.'},
+    {id:5,novel:'naples',term:'Tifo',def:'Chorégraphie visuelle déployée en tribune — drapeaux, banderoles, fumigènes.'},
+    {id:6,novel:'zima',term:'Bratva',def:'Organisation criminelle russe (fratrie). Structure hiérarchique régie par le Vorovskoy zakon.'},
+    {id:7,novel:'heritiers',term:'Glamour',def:'Dans la tradition celtique : enchantement visuel, illusion magique. Don de certains clans.'}
   ],
   questions:[
-    {id:1,novel:'naples',text:'Pourquoi Thalia choisit-elle de ne pas publier l\'article final ?',done:false},
-    {id:2,novel:'naples',text:'Quel est le passé exact d\'Elio avec les affrontements inter-groupes ?',done:false}
+    {id:1,novel:'naples',text:'Quel est le prénom de l\'amour de jeunesse de Marie — beau-père de facto de Thalia ?',done:false},
+    {id:2,novel:'naples',text:'Quand exactement Thalia découvre-t-elle la vraie raison du déménagement de sa mère ?',done:false},
+    {id:3,novel:'naples',text:'Comment évolue la position de Vittoria Spinelli sur la relation au fil du roman ?',done:false},
+    {id:4,novel:'naples',text:'Y a-t-il une confrontation directe Lorenzo / Elio dans le roman ?',done:false},
+    {id:5,novel:'naples',text:'Quel est le statut exact de la mère de Paolo — a-t-elle un rôle dans l\'intrigue ?',done:false}
   ],
   conflicts:[
-    {id:1,charA:1,charB:2,novel:'naples',strength:4,desc:'Elio perçoit Thalia comme une menace pour le groupe ; Thalia doit choisir entre vérité professionnelle et sentiment.',resolution:'Résolution au chapitre 12 lors du derby.'}
+    {id:1,charA:1,charB:12,novel:'naples',strength:4,desc:'Lorenzo De Luca (père de Thalia, ultra Roma) vs Elio (ultra Napoli) — opposition culturelle directe incarnée. Lorenzo est l\'ennemi de tout ce qu\'Elio représente.',resolution:'Confrontation probable — à définir si directe ou indirecte.'},
+    {id:2,charA:2,charB:10,novel:'naples',strength:3,desc:'Vittoria Spinelli (mère d\'Elio) vs Thalia — Vittoria refuse qu\'une inconnue entre dans la vie de Paolo. Estime qu\'Elio n\'est pas prêt.',resolution:'Acceptation progressive quand Vittoria voit l\'effet de Thalia sur son fils.'},
+    {id:3,charA:1,charB:1,novel:'naples',strength:5,desc:'Elio contre lui-même — déteste la violence mais y revient. Peur de devenir son père (Armando). Doit exister hors du rôle de capo.',resolution:'Arc central — résolution progressive par la relation avec Thalia et Paolo.'}
   ],
   suivi:{
     naples:{objectif:80000,chapitres:Array.from({length:12},(_,i)=>({num:i+1,titre:'',status:'a-ecrire'}))},
     zima:{objectif:90000,chapitres:Array.from({length:12},(_,i)=>({num:i+1,titre:'',status:'a-ecrire'}))},
     heritiers:{objectif:100000,chapitres:Array.from({length:12},(_,i)=>({num:i+1,titre:'',status:'a-ecrire'}))}
-  }
+  },
+  chapitres:{}
 };
 
 // SAVE/LOAD
@@ -968,11 +1217,13 @@ function showSection(name,el){
   document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active'));
   el.classList.add('active');
   cSection=name;
-  const titles={personnages:'Personnages',lieux:'Lieux',timeline:'Timeline',scenes:'Scènes',graphe:'Relations',recherches:'Références',moodboard:'Moodboard',suivi:'Suivi',coherence:'Cohérence',ia:'Assistant IA'};
-  document.getElementById('topbarTitle').textContent=titles[name];
-  const addL={personnages:'+ Personnage',lieux:'+ Lieu',timeline:'+ Événement',scenes:'+ Scène',graphe:'+ Relation',recherches:'+ Référence',moodboard:'+ Image',suivi:'',coherence:'',ia:''};
+  const titles={personnages:'Personnages',lieux:'Lieux',timeline:'Timeline',scenes:'Scènes',graphe:'Relations',recherches:'Références',moodboard:'Moodboard',suivi:'Suivi',coherence:'Cohérence',frise:'Frise des âges',arbre:'Arbres familiaux',secrets:'Journal des secrets',actes:'Structure en actes',chapitres:'Fiches chapitres',ia:'Assistant IA'};
+  document.getElementById('topbarTitle').textContent=titles[name]||name;
+  const addL={personnages:'+ Personnage',lieux:'+ Lieu',timeline:'+ Événement',scenes:'+ Scène',graphe:'+ Relation',recherches:'+ Référence',moodboard:'+ Image',frise:'+ Période',secrets:'+ Secret'};
   const ab=document.getElementById('addBtn');
-  ab.textContent=addL[name]||'+ Ajouter';ab.style.display=(name==='ia'||name==='suivi'||name==='coherence')?'none':'';
+  const noAdd=['ia','suivi','coherence','arbre','actes','chapitres'];
+  ab.textContent=addL[name]||'+ Ajouter';
+  ab.style.display=noAdd.includes(name)?'none':'';
   renderSection(name);
 }
 function switchNovel(n,el){cNovel=n;document.querySelectorAll('.novel-tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');document.getElementById('topbarNovel').textContent=nNames[n];renderSection(cSection);updateStats();}
@@ -981,6 +1232,8 @@ function openAddModal(){
   if(cSection==='scenes'){addScene();return;}
   if(cSection==='graphe'){openRelModal();return;}
   if(cSection==='moodboard'){openMoodModal();return;}
+  if(cSection==='frise'){openFriseEventModal();return;}
+  if(cSection==='secrets'){openSecretModal();return;}
   const id=m[cSection];if(id){editId=null;document.getElementById(id).classList.add('open');}
 }
 function closeModal(id){document.getElementById(id).classList.remove('open');}
@@ -1168,6 +1421,11 @@ function renderSection(name){
   else if(name==='moodboard')renderMoodboard();
   else if(name==='suivi')renderSuivi();
   else if(name==='coherence'){renderGlossaire();renderQuestions();renderConflicts();}
+  else if(name==='frise')renderFrise();
+  else if(name==='arbre')renderArbre();
+  else if(name==='secrets')renderSecrets();
+  else if(name==='actes')renderActes();
+  else if(name==='chapitres')renderChapitres();
   updateStats();
 }
 
@@ -1271,6 +1529,318 @@ function renderConflicts(){
 function openConflictModal(){editId=null;document.getElementById('conflictModalTitle').textContent='Nouveau conflit';const opts=D.personnages.map(c=>`<option value="${c.id}">${c.name}</option>`).join('');document.getElementById('conflictA').innerHTML=opts;document.getElementById('conflictB').innerHTML=opts;document.getElementById('modalConflict').classList.add('open');}
 function saveConflict(){const a=parseInt(document.getElementById('conflictA').value),b=parseInt(document.getElementById('conflictB').value);if(a===b){alert('Deux personnages différents.');return;}D.conflicts.push({id:uid(),charA:a,charB:b,novel:document.getElementById('conflictNovel').value,strength:parseInt(document.getElementById('conflictStr').value)||3,desc:document.getElementById('conflictDesc').value,resolution:document.getElementById('conflictRes').value});saveD();closeModal('modalConflict');renderConflicts();}
 function delConflict(id){if(!confirm('Supprimer ?'))return;D.conflicts=D.conflicts.filter(c=>c.id!==id);saveD();renderConflicts();}
+
+// ========== FRISE DES ÂGES ==========
+function renderFrise(){
+  const novel=document.getElementById('friseNovelFilter').value;
+  const chars=D.personnages.filter(p=>p.novel===novel&&p.naissance);
+  const events=(D.friseEvents||[]).filter(e=>e.novel===novel).sort((a,b)=>a.year-b.year);
+  const table=document.getElementById('friseTable');
+  if(!chars.length||!events.length){table.innerHTML=`<tr><td colspan="99" style="padding:40px;text-align:center;color:var(--text3);font-style:italic">Ajoutez des périodes clés et assurez-vous que les personnages ont une date de naissance.</td></tr>`;return;}
+  const header=`<thead><tr><th>Personnage</th>${events.map(e=>`<th class="frise-event-col" title="${e.desc||''}">${e.name}<br><span style="color:var(--text3)">${e.year}</span></th>`).join('')}</tr></thead>`;
+  const rows=chars.map(c=>{
+    const birthYear=parseInt(c.naissance);
+    const cells=events.map(e=>{
+      const age=e.year-birthYear;
+      if(age<0)return`<td><span class="frise-age-absent">—</span></td>`;
+      const isKey=c.agesCles&&c.agesCles.some(a=>Math.abs(a-age)<=1);
+      return`<td><span class="${isKey?'frise-age-highlight':'frise-age-normal'} frise-age-cell">${age} ans</span></td>`;
+    }).join('');
+    return`<tr><td><div class="frise-char-name" style="color:${c.color}">${c.name}</div><div style="font-family:var(--font-mono);font-size:9px;color:var(--text3)">né·e ${c.naissance}</div></td>${cells}</tr>`;
+  }).join('');
+  table.innerHTML=header+`<tbody>${rows}</tbody>`;
+}
+function openFriseEventModal(){document.getElementById('modalFriseEvent').classList.add('open');}
+function saveFriseEvent(){
+  const name=document.getElementById('friseEventName').value.trim();
+  const year=parseInt(document.getElementById('friseEventYear').value);
+  if(!name||!year)return;
+  if(!D.friseEvents)D.friseEvents=[];
+  D.friseEvents.push({id:uid(),name,year,novel:document.getElementById('friseEventNovel').value,desc:document.getElementById('friseEventDesc').value});
+  saveD();closeModal('modalFriseEvent');
+  document.getElementById('friseEventName').value='';document.getElementById('friseEventYear').value='';
+  renderFrise();
+}
+
+// ========== ARBRE GÉNÉALOGIQUE ==========
+function renderArbre(){
+  const container=document.getElementById('arbreLayout');
+  const families=[
+    {key:'castellani',name:'Famille Castellani',color:'#4a8fd4',members:[
+      {id:'armando',name:'Armando Castellani',age:'40 ans',role:'Père violent — coupé',level:0,x:0},
+      {id:'vittoria',name:'Vittoria Spinelli',age:'45 ans',role:'Mère — distante',level:0,x:1},
+      {id:'alessio',name:'Alessio Castellani',age:'†13 ans',role:'Frère aîné décédé',level:1,x:0},
+      {id:'elio',name:'Elio Castellani',age:'25 ans',role:'Protagoniste',level:1,x:1,highlight:true},
+      {id:'catalina',name:'Catalina Castellani',age:'23 ans',role:'Sœur cadette',level:1,x:2},
+      {id:'antonella',name:'Antonella Spinelli',age:'75 ans',role:'Grand-mère maternelle',level:0,x:2},
+      {id:'paolo',name:'Paolo Castellani',age:'3 ans',role:'Fils d\'Elio',level:2,x:1}
+    ],edges:[
+      {from:'armando',to:'elio'},{from:'armando',to:'alessio'},{from:'armando',to:'catalina'},
+      {from:'vittoria',to:'elio'},{from:'vittoria',to:'alessio'},{from:'vittoria',to:'catalina'},
+      {from:'antonella',to:'vittoria',type:'parent'},
+      {from:'elio',to:'paolo',type:'parent'}
+    ]},
+    {key:'sorrentino',name:'Famille Sorrentino',color:'#b04040',members:[
+      {id:'lorenzo',name:'Lorenzo De Luca',age:'42 ans',role:'Père — ultra Roma',level:0,x:0},
+      {id:'marie',name:'Marie Sorrentino',age:'41 ans',role:'Mère — secret Naples',level:0,x:1},
+      {id:'amour',name:'Amour de jeunesse',age:'?',role:'Compagnon de Marie',level:0,x:2},
+      {id:'leonardo',name:'Leonardo Sorrentino',age:'26 ans',role:'Grand frère',level:1,x:0},
+      {id:'thalia',name:'Thalia Sorrentino',age:'23 ans',role:'Protagoniste',level:1,x:1,highlight:true},
+      {id:'gianni',name:'Gianni Sorrentino',age:'47 ans',role:'Oncle — figure paternelle',level:0,x:3},
+      {id:'eleonora',name:'Eleonora Sorrentino',age:'47 ans',role:'Tante — figure maternelle',level:0,x:4},
+      {id:'dario',name:'Dario Sorrentino',age:'26 ans',role:'Cousin — noyau dur',level:1,x:3},
+      {id:'romeo',name:'Romeo Sorrentino',age:'20 ans',role:'Cousin — nouveau',level:1,x:4}
+    ],edges:[
+      {from:'lorenzo',to:'leonardo'},{from:'lorenzo',to:'thalia'},
+      {from:'marie',to:'leonardo'},{from:'marie',to:'thalia'},
+      {from:'gianni',to:'dario'},{from:'gianni',to:'romeo'},
+      {from:'eleonora',to:'dario'},{from:'eleonora',to:'romeo'}
+    ]}
+  ];
+
+  container.innerHTML=families.map(fam=>{
+    const W=520,NODE_W=110,NODE_H=52,LEVEL_H=90,PAD=20;
+    const levels=[[],[],[],[]];
+    fam.members.forEach(m=>levels[m.level].push(m));
+    const maxPerLevel=Math.max(...levels.filter(l=>l.length).map(l=>l.length));
+    const svgW=Math.max(W,maxPerLevel*(NODE_W+16)+PAD*2);
+    const svgH=levels.filter(l=>l.length).length*LEVEL_H+PAD*2+NODE_H;
+
+    // Position nodes
+    const nodePos={};
+    levels.forEach((lvl,li)=>{
+      if(!lvl.length)return;
+      const totalW=lvl.length*(NODE_W+12)-12;
+      const startX=(svgW-totalW)/2;
+      lvl.forEach((m,mi)=>{nodePos[m.id]={x:startX+mi*(NODE_W+12),y:PAD+li*LEVEL_H};});
+    });
+
+    const edges=fam.edges.map(e=>{
+      const a=nodePos[e.from],b=nodePos[e.to];if(!a||!b)return'';
+      const ax=a.x+NODE_W/2,ay=a.y+NODE_H;
+      const bx=b.x+NODE_W/2,by=b.y;
+      const my=(ay+by)/2;
+      const color=e.type==='parent'?fam.color+'80':'rgba(90,80,72,0.4)';
+      return`<path d="M${ax},${ay} C${ax},${my} ${bx},${my} ${bx},${by}" fill="none" stroke="${color}" stroke-width="1.5" stroke-dasharray="${e.type==='parent'?'none':'4,3'}"/>`;
+    }).join('');
+
+    const nodes=fam.members.map(m=>{
+      const pos=nodePos[m.id];if(!pos)return'';
+      const fill=m.highlight?fam.color+'30':'rgba(26,23,19,0.9)';
+      const stroke=m.highlight?fam.color:'#3d3529';
+      const nameColor=m.highlight?fam.color:'#e8e0d0';
+      return`<g class="arbre-node" onclick="openCharDetail(${D.personnages.findIndex(p=>p.name.toLowerCase().includes(m.name.split(' ')[0].toLowerCase()))+1})">
+        <rect x="${pos.x}" y="${pos.y}" width="${NODE_W}" height="${NODE_H}" rx="5" fill="${fill}" stroke="${stroke}" stroke-width="${m.highlight?2:1}"/>
+        <text x="${pos.x+NODE_W/2}" y="${pos.y+16}" text-anchor="middle" font-family="Cinzel,serif" font-size="9" font-weight="600" fill="${nameColor}">${m.name.split(' ')[0]}</text>
+        <text x="${pos.x+NODE_W/2}" y="${pos.y+28}" text-anchor="middle" font-family="Cinzel,serif" font-size="8" fill="${nameColor}">${m.name.split(' ').slice(1).join(' ')}</text>
+        <text x="${pos.x+NODE_W/2}" y="${pos.y+40}" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="7.5" fill="rgba(160,144,128,0.8)">${m.age}</text>
+        <text x="${pos.x+NODE_W/2}" y="${pos.y+50}" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="7" fill="rgba(90,80,72,0.9)">${m.role.substring(0,22)}</text>
+      </g>`;
+    }).join('');
+
+    return`<div class="arbre-family">
+      <div class="arbre-family-title" style="color:${fam.color}">
+        <span style="width:8px;height:8px;border-radius:50%;background:${fam.color};display:inline-block"></span>
+        ${fam.name}
+      </div>
+      <div class="arbre-wrap">
+        <svg class="arbre-svg" viewBox="0 0 ${svgW} ${svgH}" width="${svgW}" height="${svgH}" xmlns="http://www.w3.org/2000/svg">
+          ${edges}${nodes}
+        </svg>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ========== JOURNAL DES SECRETS ==========
+let secretFilter='all';
+function filterSecrets(f,el){secretFilter=f;document.querySelectorAll('#secretFilters .filter-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');renderSecrets();}
+function renderSecrets(){
+  let list=D.secrets||[];
+  if(secretFilter!=='all')list=list.filter(s=>s.gravite===secretFilter);
+  const el=document.getElementById('secretsList');
+  if(!list.length){el.innerHTML='<div class="empty-state"><div class="empty-icon">◐</div><div class="empty-text">Aucun secret documenté.<br>Ajoutez le premier.</div></div>';return;}
+  const gravColors={haute:'var(--red2)',moyenne:'var(--gold)',basse:'var(--blue2)'};
+  el.innerHTML=list.map(s=>{
+    const owner=D.personnages.find(p=>p.id===s.ownerId);
+    const knows=s.knows||[];
+    const knowsPills=D.personnages.filter(p=>p.novel===s.novel).map(p=>{
+      const k=knows.find(kk=>kk.id===p.id);
+      const status=k?k.status:'ignore';
+      const labels={sait:'Sait',ignore:'Ignore',partiel:'Partiel'};
+      return`<span class="secret-pill ${status}">${p.name.split(' ')[0]} — ${labels[status]}</span>`;
+    }).join('');
+    return`<div class="secret-card" style="border-left-color:${gravColors[s.gravite]||'var(--border2)'}">
+      <div style="position:absolute;left:0;top:0;bottom:0;width:3px;background:${gravColors[s.gravite]||'var(--border2)'};border-radius:6px 0 0 6px"></div>
+      <div class="secret-header">
+        <div>
+          <div class="secret-owner">${owner?owner.name:'?'} <span style="font-family:var(--font-mono);font-size:9px;color:var(--text3);font-weight:400">détient ce secret</span></div>
+        </div>
+        <div style="display:flex;gap:6px;align-items:center">
+          <span class="secret-gravite gravite-${s.gravite}">${s.gravite}</span>
+          <button class="btn btn-danger" style="font-size:9px;padding:2px 7px" onclick="delSecret(${s.id})">✕</button>
+        </div>
+      </div>
+      <div class="secret-text">"${s.text}"</div>
+      <div class="secret-knows-label">Qui sait ?</div>
+      <div class="secret-knows">${knowsPills}</div>
+      ${s.consequence?`<div class="secret-consequence">→ Si révélé : ${s.consequence}</div>`:''}
+    </div>`;
+  }).join('');
+}
+function openSecretModal(){
+  const opts=D.personnages.map(p=>`<option value="${p.id}">${p.name}</option>`).join('');
+  document.getElementById('secretOwner').innerHTML=opts;
+  // Grille "qui sait"
+  const naplesChars=D.personnages.filter(p=>p.novel==='naples');
+  document.getElementById('secretKnowsGrid').innerHTML=naplesChars.map(p=>`
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:7px 10px;display:flex;flex-direction:column;gap:4px;min-width:120px">
+      <div style="font-family:var(--font-display);font-size:11px;color:var(--text)">${p.name.split(' ')[0]}</div>
+      <select data-charid="${p.id}" style="background:var(--bg4);border:1px solid var(--border);border-radius:2px;color:var(--text2);font-family:var(--font-mono);font-size:9px;padding:3px 5px;outline:none">
+        <option value="ignore">Ignore</option>
+        <option value="sait">Sait</option>
+        <option value="partiel">Partiel</option>
+      </select>
+    </div>`).join('');
+  document.getElementById('secretModalTitle').textContent='Nouveau secret';
+  document.getElementById('modalSecret').classList.add('open');
+}
+function saveSecret(){
+  const text=document.getElementById('secretText').value.trim();if(!text)return;
+  const knows=[];
+  document.querySelectorAll('#secretKnowsGrid select').forEach(sel=>{
+    knows.push({id:parseInt(sel.dataset.charid),status:sel.value});
+  });
+  if(!D.secrets)D.secrets=[];
+  D.secrets.push({
+    id:uid(),
+    ownerId:parseInt(document.getElementById('secretOwner').value),
+    novel:document.getElementById('secretNovel').value,
+    gravite:document.getElementById('secretGravite').value,
+    text,
+    consequence:document.getElementById('secretConsequence').value,
+    knows
+  });
+  saveD();closeModal('modalSecret');
+  document.getElementById('secretText').value='';
+  document.getElementById('secretConsequence').value='';
+  renderSecrets();
+}
+function delSecret(id){if(!confirm('Supprimer ?'))return;D.secrets=D.secrets.filter(s=>s.id!==id);saveD();renderSecrets();}
+
+// ========== STRUCTURE EN ACTES ==========
+function renderActes(){
+  const novel=document.getElementById('actesNovelFilter').value;
+  if(!D.chapitres)D.chapitres={};
+  if(!D.chapitres[novel])D.chapitres[novel]=Array.from({length:12},(_,i)=>({num:i+1,titre:'',pov:'',lieu:'',personnages:'',objectif:'',mots:0,status:'a-ecrire',acte:i<4?1:i<9?2:3}));
+  const chaps=D.chapitres[novel];
+  const actes=[1,2,3];
+  const acteTitles={1:'Acte I — Mise en place',2:'Acte II — Confrontation',3:'Acte III — Résolution'};
+  const acteColors={1:'#4a8fd4',2:'#c9a84c',3:'#3d7a52'};
+  const statusColors={'a-ecrire':'var(--text3)','en-cours':'var(--gold)','termine':'#3d7a52','a-reviser':'var(--blue2)'};
+
+  // Barre de progression globale
+  const total=chaps.reduce((s,c)=>s+(c.mots||0),0);
+  const obj=(D.suivi[novel]||{objectif:80000}).objectif;
+  const pct=Math.min(100,Math.round(total/obj*100));
+  const bar=document.getElementById('actesBar');
+  bar.innerHTML=`<div style="background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:14px 18px;margin-bottom:16px;display:flex;gap:20px;align-items:center">
+    <div><div style="font-family:var(--font-mono);font-size:18px;color:var(--gold)">${total.toLocaleString('fr')}</div><div style="font-family:var(--font-mono);font-size:8px;color:var(--text3);letter-spacing:0.1em;text-transform:uppercase">Mots saisis</div></div>
+    <div style="flex:1"><div style="height:6px;background:var(--bg4);border-radius:3px;overflow:hidden"><div style="height:100%;background:${acteColors[2]};border-radius:3px;width:${pct}%;transition:width 0.4s"></div></div><div style="font-family:var(--font-mono);font-size:9px;color:var(--text3);margin-top:4px">${pct}% de l'objectif (${obj.toLocaleString('fr')} mots)</div></div>
+    <div style="display:flex;gap:10px">${actes.map(a=>{const ac=chaps.filter(c=>c.acte===a);const done=ac.filter(c=>c.status==='termine').length;return`<div style="text-align:center"><div style="font-family:var(--font-mono);font-size:14px;color:${acteColors[a]}">${done}/${ac.length}</div><div style="font-family:var(--font-mono);font-size:8px;color:var(--text3)">Acte ${a}</div></div>`}).join('<div style="width:1px;background:var(--border);align-self:stretch"></div>')}</div>
+  </div>`;
+
+  // Colonnes par acte
+  const header=document.getElementById('actesHeader');
+  header.innerHTML=`<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">${actes.map(a=>{
+    const ac=chaps.filter(c=>c.acte===a);
+    return`<div style="background:var(--bg2);border:1px solid var(--border);border-radius:6px;overflow:hidden">
+      <div style="padding:12px 16px;border-bottom:1px solid var(--border);background:var(--bg3);display:flex;align-items:center;gap:8px">
+        <div style="width:8px;height:8px;border-radius:50%;background:${acteColors[a]}"></div>
+        <div style="font-family:var(--font-display);font-size:12px;font-weight:600;color:${acteColors[a]}">${acteTitles[a]}</div>
+      </div>
+      <div style="padding:10px">${ac.map(c=>`<div style="background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:10px 12px;margin-bottom:7px;cursor:pointer" onclick="openChapModal(${c.num},'${novel}')">
+        <div style="display:flex;align-items:center;gap:7px;margin-bottom:5px">
+          <span style="font-family:var(--font-mono);font-size:9px;color:var(--text3)">Ch.${c.num}</span>
+          <div style="width:7px;height:7px;border-radius:50%;background:${statusColors[c.status]};flex-shrink:0"></div>
+          <div style="font-family:var(--font-display);font-size:11px;color:var(--text);flex:1">${c.titre||'Sans titre'}</div>
+        </div>
+        ${c.pov?`<div style="font-family:var(--font-mono);font-size:9px;color:var(--text3)">POV : ${c.pov}</div>`:''}
+        ${c.mots?`<div style="font-family:var(--font-mono);font-size:9px;color:var(--gold2)">${c.mots.toLocaleString('fr')} mots</div>`:''}
+      </div>`).join('')}
+      </div>
+    </div>`;
+  }).join('')}</div>`;
+}
+
+// ========== FICHES CHAPITRES ==========
+let editChapKey=null;
+function renderChapitres(){
+  const novel=document.getElementById('chapNovelFilter').value;
+  if(!D.chapitres)D.chapitres={};
+  if(!D.chapitres[novel])D.chapitres[novel]=Array.from({length:12},(_,i)=>({num:i+1,titre:'',pov:'',lieu:'',personnages:'',objectif:'',mots:0,status:'a-ecrire',acte:i<4?1:i<9?2:3}));
+  const chaps=D.chapitres[novel];
+  const statusColors={'a-ecrire':'var(--text3)','en-cours':'var(--gold)','termine':'#3d7a52','a-reviser':'var(--blue2)'};
+  const statusLabels={'a-ecrire':'À écrire','en-cours':'En cours','termine':'Terminé','a-reviser':'À réviser'};
+  const el=document.getElementById('chapitresList');
+  el.innerHTML=`<div style="display:flex;flex-direction:column;gap:9px">${chaps.map(c=>`
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:14px 16px;display:grid;grid-template-columns:40px 1fr auto;gap:12px;align-items:start;cursor:pointer" onclick="openChapModal(${c.num},'${novel}')">
+      <div style="text-align:center">
+        <div style="font-family:var(--font-mono);font-size:14px;color:var(--gold)">${c.num}</div>
+        <div style="width:8px;height:8px;border-radius:50%;background:${statusColors[c.status]};margin:4px auto 0"></div>
+      </div>
+      <div>
+        <div style="font-family:var(--font-display);font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px">${c.titre||'Sans titre'}</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          ${c.pov?`<span style="font-family:var(--font-mono);font-size:9px;color:var(--text3)">POV : ${c.pov}</span>`:''}
+          ${c.lieu?`<span style="font-family:var(--font-mono);font-size:9px;color:var(--text3)">📍 ${c.lieu}</span>`:''}
+          ${c.personnages?`<span style="font-family:var(--font-mono);font-size:9px;color:var(--text3)">👥 ${c.personnages}</span>`:''}
+        </div>
+        ${c.objectif?`<div style="font-size:12px;color:var(--text2);font-style:italic;margin-top:5px">${c.objectif}</div>`:''}
+      </div>
+      <div style="text-align:right">
+        <div style="font-family:var(--font-mono);font-size:11px;color:${c.mots?'var(--gold2)':'var(--text3)'}">${c.mots?c.mots.toLocaleString('fr')+' mots':''}</div>
+        <div style="font-family:var(--font-mono);font-size:8px;color:${statusColors[c.status]};letter-spacing:0.08em;margin-top:3px">${statusLabels[c.status]}</div>
+      </div>
+    </div>`).join('')}</div>`;
+}
+
+function openChapModal(num,novel){
+  editChapKey={num,novel};
+  if(!D.chapitres||!D.chapitres[novel])return;
+  const c=D.chapitres[novel][num-1];
+  document.getElementById('chapNum').textContent='Chapitre '+num;
+  document.getElementById('chapTitre').value=c.titre||'';
+  document.getElementById('chapPov').value=c.pov||'';
+  document.getElementById('chapLieu').value=c.lieu||'';
+  document.getElementById('chapPersonnages').value=c.personnages||'';
+  document.getElementById('chapObjectif').value=c.objectif||'';
+  document.getElementById('chapMots').value=c.mots||0;
+  document.getElementById('chapStatus').value=c.status||'a-ecrire';
+  document.getElementById('chapActe').value=c.acte||1;
+  document.getElementById('modalChap').classList.add('open');
+}
+function saveChap(){
+  if(!editChapKey)return;
+  const {num,novel}=editChapKey;
+  if(!D.chapitres||!D.chapitres[novel])return;
+  const c=D.chapitres[novel][num-1];
+  c.titre=document.getElementById('chapTitre').value;
+  c.pov=document.getElementById('chapPov').value;
+  c.lieu=document.getElementById('chapLieu').value;
+  c.personnages=document.getElementById('chapPersonnages').value;
+  c.objectif=document.getElementById('chapObjectif').value;
+  c.mots=parseInt(document.getElementById('chapMots').value)||0;
+  c.status=document.getElementById('chapStatus').value;
+  c.acte=parseInt(document.getElementById('chapActe').value)||1;
+  // Sync avec suivi
+  if(D.suivi&&D.suivi[novel]&&D.suivi[novel].chapitres){
+    D.suivi[novel].chapitres[num-1].status=c.status;
+    D.suivi[novel].chapitres[num-1].titre=c.titre;
+  }
+  saveD();closeModal('modalChap');
+  renderChapitres();renderActes();renderSuivi();
+}
 
 loadD();
 renderSection('personnages');
