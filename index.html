@@ -749,7 +749,7 @@ textarea{resize:vertical;min-height:65px;line-height:1.5;}
 </div>
 
     <!-- MOODBOARD -->
-    <div class="section" id="section-moodboard" style="display:none">
+    <div class="section" id="section-moodboard">
       <div class="section-header">
         <div><div class="section-title">Moodboard</div><div class="section-sub">Visuels et playlists d'inspiration</div></div>
       </div>
@@ -774,12 +774,12 @@ textarea{resize:vertical;min-height:65px;line-height:1.5;}
       </div>
     </div>
     <!-- SUIVI -->
-    <div class="section" id="section-suivi" style="display:none">
+    <div class="section" id="section-suivi">
       <div class="section-header"><div><div class="section-title">Suivi de progression</div><div class="section-sub">Avancement par roman et statut des chapitres</div></div></div>
       <div class="suivi-grid" id="suiviGrid"></div>
     </div>
     <!-- COHÉRENCE -->
-    <div class="section" id="section-coherence" style="display:none">
+    <div class="section" id="section-coherence">
       <div class="section-header">
         <div><div class="section-title">Cohérence</div><div class="section-sub">Glossaire, questions en suspens, conflits</div></div>
       </div>
@@ -821,7 +821,7 @@ textarea{resize:vertical;min-height:65px;line-height:1.5;}
     </div>
 
     <!-- FRISE ÂGES -->
-    <div class="section" id="section-frise" style="display:none">
+    <div class="section" id="section-frise">
       <div class="section-header">
         <div><div class="section-title">Frise des âges</div><div class="section-sub">Âge de chaque personnage à chaque période clé</div></div>
         <button class="btn btn-ghost" onclick="openFriseEventModal()">+ Période</button>
@@ -838,13 +838,13 @@ textarea{resize:vertical;min-height:65px;line-height:1.5;}
     </div>
 
     <!-- ARBRE GÉNÉALOGIQUE -->
-    <div class="section" id="section-arbre" style="display:none">
+    <div class="section" id="section-arbre">
       <div class="section-header"><div><div class="section-title">Arbres familiaux</div><div class="section-sub">Visualisation des liens de parenté</div></div></div>
       <div class="arbre-layout" id="arbreLayout"></div>
     </div>
 
     <!-- JOURNAL DES SECRETS -->
-    <div class="section" id="section-secrets" style="display:none">
+    <div class="section" id="section-secrets">
       <div class="section-header">
         <div><div class="section-title">Journal des secrets</div><div class="section-sub">Qui sait quoi — gestion des révélations</div></div>
         <button class="btn btn-primary" onclick="openSecretModal()">+ Secret</button>
@@ -859,7 +859,7 @@ textarea{resize:vertical;min-height:65px;line-height:1.5;}
     </div>
 
     <!-- STRUCTURE EN ACTES -->
-    <div class="section" id="section-actes" style="display:none">
+    <div class="section" id="section-actes">
       <div class="section-header">
         <div><div class="section-title">Structure en actes</div><div class="section-sub">Répartition des événements sur les 3 actes du roman</div></div>
         <select class="ia-select" id="actesNovelFilter" onchange="renderActes()" style="max-width:160px">
@@ -871,7 +871,7 @@ textarea{resize:vertical;min-height:65px;line-height:1.5;}
     </div>
 
     <!-- FICHES CHAPITRES -->
-    <div class="section" id="section-chapitres" style="display:none">
+    <div class="section" id="section-chapitres">
       <div class="section-header">
         <div><div class="section-title">Fiches chapitres</div><div class="section-sub">Résumé, POV, lieu, personnages, objectif narratif</div></div>
         <select class="ia-select" id="chapNovelFilter" onchange="renderChapitres()" style="max-width:160px">
@@ -1220,14 +1220,12 @@ function fil(arr){if(cNovel==='all')return arr;return arr.filter(i=>i.novel===cN
 
 // NAV
 function showSection(name,el){
-  // Cacher TOUTES les sections sans exception
   document.querySelectorAll('.section').forEach(s=>{
     s.classList.remove('active');
     s.style.display='none';
   });
-  // Afficher uniquement la section cible
   const sec=document.getElementById('section-'+name);
-  if(sec){sec.classList.add('active');sec.style.display='block';}
+  if(sec){sec.style.display='block';sec.classList.add('active');}
   document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active'));
   if(el)el.classList.add('active');
   cSection=name;
