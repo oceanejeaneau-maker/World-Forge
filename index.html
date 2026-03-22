@@ -1745,6 +1745,14 @@ function saveSecret(){
 function delSecret(id){if(!confirm('Supprimer ?'))return;D.secrets=D.secrets.filter(s=>s.id!==id);saveD();renderSecrets();}
 
 // ========== STRUCTURE EN ACTES ==========
+function addChapitre(novel){
+  if(!D.chapitres)D.chapitres={};
+  if(!D.chapitres[novel])D.chapitres[novel]=[];
+  const num=D.chapitres[novel].length+1;
+  D.chapitres[novel].push({num,titre:'',pov:'',lieu:'',personnages:'',objectif:'',mots:0,status:'a-ecrire',acte:num<=4?1:num<=9?2:3});
+  saveD();renderActes();renderChapitres();renderSuivi();
+}
+
 function renderActes(){
   const novel=document.getElementById('actesNovelFilter').value;
   if(!D.chapitres)D.chapitres={};
@@ -1755,18 +1763,19 @@ function renderActes(){
   const acteColors={1:'#4a8fd4',2:'#c9a84c',3:'#3d7a52'};
   const statusColors={'a-ecrire':'var(--text3)','en-cours':'var(--gold)','termine':'#3d7a52','a-reviser':'var(--blue2)'};
 
-  // Barre de progression globale
   const total=chaps.reduce((s,c)=>s+(c.mots||0),0);
   const obj=(D.suivi[novel]||{objectif:80000}).objectif;
   const pct=Math.min(100,Math.round(total/obj*100));
   const bar=document.getElementById('actesBar');
-  bar.innerHTML=`<div style="background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:14px 18px;margin-bottom:16px;display:flex;gap:20px;align-items:center">
+  bar.innerHTML=`<div style="background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:14px 18px;margin-bottom:16px;display:flex;gap:20px;align-items:center;flex-wrap:wrap">
     <div><div style="font-family:var(--font-mono);font-size:18px;color:var(--gold)">${total.toLocaleString('fr')}</div><div style="font-family:var(--font-mono);font-size:8px;color:var(--text3);letter-spacing:0.1em;text-transform:uppercase">Mots saisis</div></div>
-    <div style="flex:1"><div style="height:6px;background:var(--bg4);border-radius:3px;overflow:hidden"><div style="height:100%;background:${acteColors[2]};border-radius:3px;width:${pct}%;transition:width 0.4s"></div></div><div style="font-family:var(--font-mono);font-size:9px;color:var(--text3);margin-top:4px">${pct}% de l'objectif (${obj.toLocaleString('fr')} mots)</div></div>
-    <div style="display:flex;gap:10px">${actes.map(a=>{const ac=chaps.filter(c=>c.acte===a);const done=ac.filter(c=>c.status==='termine').length;return`<div style="text-align:center"><div style="font-family:var(--font-mono);font-size:14px;color:${acteColors[a]}">${done}/${ac.length}</div><div style="font-family:var(--font-mono);font-size:8px;color:var(--text3)">Acte ${a}</div></div>`}).join('<div style="width:1px;background:var(--border);align-self:stretch"></div>')}</div>
+    <div style="flex:1;min-width:120px"><div style="height:6px;background:var(--bg4);border-radius:3px;overflow:hidden"><div style="height:100%;background:${acteColors[2]};border-radius:3px;width:${pct}%;transition:width 0.4s"></div></div><div style="font-family:var(--font-mono);font-size:9px;color:var(--text3);margin-top:4px">${pct}% de l'objectif (${obj.toLocaleString('fr')} mots)</div></div>
+    <div style="display:flex;gap:10px;align-items:center">
+      ${actes.map(a=>{const ac=chaps.filter(c=>c.acte===a);const done=ac.filter(c=>c.status==='termine').length;return`<div style="text-align:center"><div style="font-family:var(--font-mono);font-size:14px;color:${acteColors[a]}">${done}/${ac.length}</div><div style="font-family:var(--font-mono);font-size:8px;color:var(--text3)">Acte ${a}</div></div>`;}).join('<div style="width:1px;background:var(--border);align-self:stretch"></div>')}
+      <button class="btn btn-ghost" style="font-size:9px;margin-left:8px" onclick="addChapitre('${novel}')">+ Chapitre</button>
+    </div>
   </div>`;
 
-  // Colonnes par acte
   const header=document.getElementById('actesHeader');
   header.innerHTML=`<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">${actes.map(a=>{
     const ac=chaps.filter(c=>c.acte===a);
@@ -1799,7 +1808,8 @@ function renderChapitres(){
   const statusColors={'a-ecrire':'var(--text3)','en-cours':'var(--gold)','termine':'#3d7a52','a-reviser':'var(--blue2)'};
   const statusLabels={'a-ecrire':'À écrire','en-cours':'En cours','termine':'Terminé','a-reviser':'À réviser'};
   const el=document.getElementById('chapitresList');
-  el.innerHTML=`<div style="display:flex;flex-direction:column;gap:9px">${chaps.map(c=>`
+  el.innerHTML=`<div style="display:flex;flex-direction:column;gap:9px">
+    ${chaps.map(c=>`
     <div style="background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:14px 16px;display:grid;grid-template-columns:40px 1fr auto;gap:12px;align-items:start;cursor:pointer" onclick="openChapModal(${c.num},'${novel}')">
       <div style="text-align:center">
         <div style="font-family:var(--font-mono);font-size:14px;color:var(--gold)">${c.num}</div>
@@ -1818,7 +1828,9 @@ function renderChapitres(){
         <div style="font-family:var(--font-mono);font-size:11px;color:${c.mots?'var(--gold2)':'var(--text3)'}">${c.mots?c.mots.toLocaleString('fr')+' mots':''}</div>
         <div style="font-family:var(--font-mono);font-size:8px;color:${statusColors[c.status]};letter-spacing:0.08em;margin-top:3px">${statusLabels[c.status]}</div>
       </div>
-    </div>`).join('')}</div>`;
+    </div>`).join('')}
+    <button class="btn btn-ghost" style="width:100%;margin-top:4px" onclick="addChapitre('${novel}')">+ Ajouter un chapitre</button>
+  </div>`;
 }
 
 function openChapModal(num,novel){
