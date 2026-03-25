@@ -2033,7 +2033,7 @@ function saveChap(){
   c.status=document.getElementById('chapStatus').value;
   c.acte=parseInt(document.getElementById('chapActe').value)||1;
   // Sync avec suivi
-  if(D.suivi&&D.suivi[novel]&&D.suivi[novel].chapitres){
+ if(D.suivi&&D.suivi[novel]&&D.suivi[novel].chapitres&&D.suivi[novel].chapitres[num-1]){
     D.suivi[novel].chapitres[num-1].status=c.status;
     D.suivi[novel].chapitres[num-1].titre=c.titre;
   }
