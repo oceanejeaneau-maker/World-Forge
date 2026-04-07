@@ -1,4 +1,4 @@
-const CACHE = 'world-forge-v9';
+const CACHE = 'world-forge-v10';
 const ASSETS = [
   '/World-Forge/',
   '/World-Forge/index.html',

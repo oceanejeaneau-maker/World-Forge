@@ -184,21 +184,6 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .search-input{flex:1;background:var(--bg2);border:1px solid var(--border);border-radius:4px;color:var(--text);font-family:var(--font-body);font-size:13px;padding:6px 11px;outline:none;transition:border-color 0.2s;}
 .search-input:focus{border-color:var(--gold2);}
 .search-input::placeholder{color:var(--text3);font-style:italic;}
-/* IA */
-.ia-layout{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:14px;}
-.ia-card{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:18px;}
-.ia-card-title{font-family:var(--font-display);font-size:13px;font-weight:600;color:var(--gold3);margin-bottom:3px;}
-.ia-card-sub{font-size:12px;color:var(--text3);font-style:italic;margin-bottom:14px;}
-.ia-result{background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:13px;margin-top:12px;min-height:70px;font-size:13px;color:var(--text);line-height:1.7;}
-.ia-result.loading{color:var(--text3);font-style:italic;}
-.ia-result.empty{color:var(--text3);font-style:italic;}
-.ia-row{display:flex;gap:7px;margin-bottom:9px;}
-.ia-select{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:3px;color:var(--text2);font-family:var(--font-body);font-size:13px;padding:6px 9px;outline:none;}
-.ia-select:focus{border-color:var(--gold2);}
-.ia-names-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:9px;}
-.ia-name-pill{background:var(--bg3);border:1px solid var(--border);border-radius:3px;padding:6px 9px;font-family:var(--font-display);font-size:11px;color:var(--text);text-align:center;cursor:pointer;transition:all 0.2s;}
-.ia-name-pill:hover{border-color:var(--gold2);color:var(--gold3);}
-.ia-full{grid-column:1/-1;}
 /* MODAL */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);backdrop-filter:blur(4px);z-index:1000;display:none;align-items:center;justify-content:center;}
 .modal-overlay.open{display:flex;}
@@ -311,6 +296,10 @@ textarea{resize:vertical;min-height:65px;line-height:1.5;}
 .frise-event-col{font-family:var(--font-mono);font-size:8px;letter-spacing:0.08em;color:var(--text3);writing-mode:initial;white-space:nowrap;}
 .frise-controls{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;align-items:center;}
 .frise-add-event{display:flex;gap:7px;margin-top:14px;padding-top:14px;border-top:1px solid var(--border);}
+.frise-th-btns{display:flex;gap:3px;justify-content:center;margin-top:5px;}
+.frise-edit-btn{background:none;border:1px solid var(--border2);border-radius:3px;color:var(--text3);cursor:pointer;font-size:9px;padding:1px 5px;line-height:1.4;transition:background 0.15s,color 0.15s;}
+.frise-edit-btn:hover{background:var(--bg4);color:var(--text);}
+.frise-del-btn:hover{background:#4a2a2a44;color:#c97a7a;border-color:#c97a7a88;}
 
 /* ARBRE GÉNÉALOGIQUE */
 .arbre-layout{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:16px;}
@@ -364,24 +353,18 @@ textarea{resize:vertical;min-height:65px;line-height:1.5;}
 .actes-bar{margin-bottom:16px;}
 .acte-bar-seg{transition:width 0.4s ease;border-radius:3px;}
 /* CHAPITRES */
-.chapitres-layout{margin-top:16px;}
-.chap-fiche{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:16px;margin-bottom:10px;cursor:pointer;transition:all 0.2s;}
-.chap-fiche:hover{border-color:var(--border2);}
-.chap-fiche.open{border-color:var(--gold2);}
-.chap-fiche-header{display:flex;align-items:center;gap:12px;}
-.chap-fiche-num{font-family:var(--font-mono);font-size:10px;color:var(--text3);letter-spacing:0.1em;width:50px;flex-shrink:0;}
-.chap-fiche-title{font-family:var(--font-display);font-size:13px;font-weight:600;color:var(--text);flex:1;}
-.chap-fiche-status{font-family:var(--font-mono);font-size:9px;padding:2px 8px;border-radius:2px;flex-shrink:0;}
-.chap-fiche-words{font-family:var(--font-mono);font-size:10px;color:var(--text3);}
-.chap-fiche-body{margin-top:12px;padding-top:12px;border-top:1px solid var(--border);display:none;}
-.chap-fiche.open .chap-fiche-body{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-.chap-field-label{font-family:var(--font-mono);font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:var(--text3);margin-bottom:4px;}
-.chap-field-val{font-size:13px;color:var(--text);line-height:1.5;}
-.chap-field-val.editable{background:var(--bg3);border:1px solid var(--border);border-radius:3px;padding:5px 8px;outline:none;width:100%;font-family:var(--font-body);font-size:13px;color:var(--text);resize:vertical;}
-.chap-field-val.editable:focus{border-color:var(--gold2);}
-.chap-words-bar{display:flex;align-items:center;gap:8px;margin-top:4px;}
-.chap-words-progress{flex:1;height:4px;background:var(--bg4);border-radius:2px;overflow:hidden;}
-.chap-words-fill{height:100%;border-radius:2px;background:var(--gold2);transition:width 0.3s;}
+.chapitres-layout{margin-top:10px;}
+.chap-stats-bar{display:flex;gap:18px;align-items:center;padding:12px 16px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;margin-top:14px;margin-bottom:10px;flex-wrap:wrap;}
+.chap-stat{font-family:var(--font-mono);font-size:9px;letter-spacing:0.08em;color:var(--text3);text-transform:uppercase;}
+.chap-stat span{font-size:13px;font-weight:600;display:block;margin-bottom:1px;letter-spacing:0;}
+.chap-filter-bar{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;}
+.chap-card{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:14px 16px;transition:border-color 0.2s;}
+.chap-card:hover{border-color:var(--border2);}
+.chap-card-top{display:grid;grid-template-columns:44px 1fr auto;gap:12px;align-items:start;}
+.chap-num{font-family:var(--font-mono);font-size:18px;font-weight:700;color:var(--gold);line-height:1;}
+.chap-dot{width:7px;height:7px;border-radius:50%;margin:5px auto 0;}
+.chap-card-actions{display:flex;gap:6px;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);}
+.chap-progress-row{display:flex;gap:2px;height:3px;border-radius:2px;overflow:hidden;margin-top:4px;}
 @media(max-width:768px){
   .actes-header{grid-template-columns:1fr;}
   .chap-fiche.open .chap-fiche-body{grid-template-columns:1fr;}
@@ -420,9 +403,9 @@ textarea{resize:vertical;min-height:65px;line-height:1.5;}
   .section-header{flex-direction:column;gap:8px;align-items:flex-start;}
 
   .chars-grid{grid-template-columns:1fr;}
-  .places-layout,.suivi-grid,.coherence-layout,.research-layout,.ia-layout,.arbre-layout{grid-template-columns:1fr !important;}
+  .places-layout,.suivi-grid,.coherence-layout,.research-layout,.arbre-layout{grid-template-columns:1fr !important;}
   .place-detail{position:static !important;max-height:none;}
-  .coherence-full,.ia-full{grid-column:1/-1;}
+  .coherence-full{grid-column:1/-1;}
   .research-grid,.moodboard-grid{grid-template-columns:repeat(2,1fr) !important;}
   #section-moodboard>div{grid-template-columns:1fr !important;}
   .glossaire-list,.questions-list,.conflict-list{max-height:240px;}
@@ -566,7 +549,6 @@ textarea{resize:vertical;min-height:65px;line-height:1.5;}
       <div class="nav-section-label">Ressources</div>
       <div class="nav-item" onclick="showSection('recherches',this)"><span class="nav-icon">⊡</span>Références</div>
       <div class="nav-item" onclick="showSection('moodboard',this)"><span class="nav-icon">◧</span>Moodboard</div>
-      <div class="nav-item" onclick="showSection('ia',this)"><span class="nav-icon">✦</span>Assistant IA</div>
     </div>
     <div class="nav-section">
       <div class="nav-section-label">Pilotage</div>
@@ -575,6 +557,7 @@ textarea{resize:vertical;min-height:65px;line-height:1.5;}
       <div class="nav-item" onclick="showSection('frise',this)"><span class="nav-icon">⊞</span>Frise âges</div>
       <div class="nav-item" onclick="showSection('arbre',this)"><span class="nav-icon">⋈</span>Arbres familiaux</div>
       <div class="nav-item" onclick="showSection('secrets',this)"><span class="nav-icon">◐</span>Secrets</div>
+    </div>
     <div class="nav-section">
       <div class="nav-section-label">Ecriture</div>
       <div class="nav-item" onclick="showSection('actes',this)"><span class="nav-icon">◑</span>Structure actes</div>
@@ -716,40 +699,6 @@ textarea{resize:vertical;min-height:65px;line-height:1.5;}
         </div>
       </div>
     </div>
-    <!-- IA -->
-    <div class="section" id="section-ia">
-      <div class="section-header"><div><div class="section-title">Assistant IA</div><div class="section-sub">Génération d'idées et de noms via Claude</div></div></div>
-      <div class="ia-layout">
-        <div class="ia-card">
-          <div class="ia-card-title">✦ Générateur de noms</div>
-          <div class="ia-card-sub">Noms cohérents avec l'univers du roman</div>
-          <div class="ia-row">
-            <select class="ia-select" id="nameNovel"><option value="naples">Naples (napolitain)</option><option value="zima">Zima (russe/slave)</option><option value="heritiers">Héritiers (celtique/fantasy)</option></select>
-            <select class="ia-select" id="nameGender"><option value="mixte">Mixte</option><option value="masculin">Masculin</option><option value="féminin">Féminin</option></select>
-          </div>
-          <button class="btn btn-ai" style="width:100%" onclick="generateNames()">Générer des noms</button>
-          <div class="ia-names-grid" id="namesGrid"></div>
-        </div>
-        <div class="ia-card">
-          <div class="ia-card-title">✦ Idées de scènes</div>
-          <div class="ia-card-sub">Propositions basées sur vos personnages</div>
-          <div class="ia-row">
-            <select class="ia-select" id="sceneIdeaNovel"><option value="naples">Naples</option><option value="zima">Zima Bratva</option><option value="heritiers">Héritiers d'Albion</option></select>
-            <select class="ia-select" id="sceneIdeaType"><option value="tension">Tension</option><option value="romance">Romance</option><option value="conflit">Conflit</option><option value="révélation">Révélation</option><option value="tournant">Tournant</option></select>
-          </div>
-          <button class="btn btn-ai" style="width:100%" onclick="generateSceneIdeas()">Générer des idées</button>
-          <div class="ia-result empty" id="sceneIdeasResult">Les idées apparaîtront ici</div>
-        </div>
-        <div class="ia-card ia-full">
-          <div class="ia-card-title">✦ Brainstorming narratif</div>
-          <div class="ia-card-sub">Décrivez un blocage — l'IA propose 3 directions</div>
-          <textarea class="ia-select" style="width:100%;min-height:75px;font-size:13px;resize:vertical;margin-bottom:9px" id="brainstormInput" placeholder="Ex: Je ne sais pas comment faire évoluer la relation entre Elio et Marco après le derby…"></textarea>
-          <button class="btn btn-ai" onclick="generateBrainstorm()">Brainstormer</button>
-          <div class="ia-result empty" id="brainstormResult">Les suggestions apparaîtront ici</div>
-        </div>
-      </div>
-    </div>
-
     <!-- MOODBOARD -->
     <div class="section" id="section-moodboard">
       <div class="section-header">
@@ -878,10 +827,21 @@ textarea{resize:vertical;min-height:65px;line-height:1.5;}
     <!-- FICHES CHAPITRES -->
     <div class="section" id="section-chapitres">
       <div class="section-header">
-        <div><div class="section-title">Fiches chapitres</div><div class="section-sub">Résumé, POV, lieu, personnages, objectif narratif</div></div>
-        <select class="ia-select" id="chapNovelFilter" onchange="renderChapitres()" style="max-width:160px">
-          <option value="naples">Naples</option><option value="zima">Zima Bratva</option><option value="heritiers">Héritiers d'Albion</option>
-        </select>
+        <div><div class="section-title">Fiches chapitres</div><div class="section-sub">Résumé, POV, lieu, intention, objectif narratif</div></div>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <select class="ia-select" id="chapNovelFilter" onchange="renderChapitres()" style="max-width:160px">
+            <option value="naples">Naples</option><option value="zima">Zima Bratva</option><option value="heritiers">Héritiers d'Albion</option>
+          </select>
+          <button class="btn btn-ghost" style="font-size:10px" onclick="addChapitre(document.getElementById('chapNovelFilter').value)">+ Chapitre</button>
+        </div>
+      </div>
+      <div id="chapStatsBar"></div>
+      <div class="chap-filter-bar" id="chapFilterBar">
+        <button class="filter-btn active" onclick="filterChapStatus('all',this)">Tous</button>
+        <button class="filter-btn" onclick="filterChapStatus('a-ecrire',this)">À écrire</button>
+        <button class="filter-btn" onclick="filterChapStatus('en-cours',this)">En cours</button>
+        <button class="filter-btn" onclick="filterChapStatus('termine',this)">Terminés</button>
+        <button class="filter-btn" onclick="filterChapStatus('a-reviser',this)">À réviser</button>
       </div>
       <div class="chapitres-layout" id="chapitresList"></div>
     </div>
@@ -892,18 +852,20 @@ textarea{resize:vertical;min-height:65px;line-height:1.5;}
 
 <!-- MODALS NOUVELLES -->
 <div class="modal-overlay" id="modalChap">
-  <div class="modal" style="width:560px">
+  <div class="modal" style="width:600px">
     <div class="modal-header"><div class="modal-title" id="chapNum">Chapitre</div><button class="modal-close" onclick="closeModal('modalChap')">✕</button></div>
     <div class="modal-body">
       <div class="form-grid">
         <div class="field full"><label>Titre</label><input id="chapTitre" placeholder="Titre du chapitre…"></div>
+        <div class="field"><label>Statut</label><select id="chapStatus"><option value="a-ecrire">À écrire</option><option value="en-cours">En cours</option><option value="termine">Terminé</option><option value="a-reviser">À réviser</option></select></div>
+        <div class="field"><label>Mots écrits</label><input type="number" id="chapMots" placeholder="0" min="0"></div>
         <div class="field"><label>POV</label><input id="chapPov" placeholder="Elio, Thalia…"></div>
         <div class="field"><label>Lieu principal</label><input id="chapLieu" placeholder="Stade, Boutique…"></div>
         <div class="field full"><label>Personnages présents</label><input id="chapPersonnages" placeholder="Elio, Thalia, Leonardo…"></div>
-        <div class="field full"><label>Objectif narratif</label><textarea id="chapObjectif" placeholder="Ce que ce chapitre doit accomplir dans l'histoire…" style="min-height:55px"></textarea></div>
-        <div class="field"><label>Mots écrits</label><input type="number" id="chapMots" placeholder="0" min="0"></div>
-        <div class="field"><label>Statut</label><select id="chapStatus"><option value="a-ecrire">À écrire</option><option value="en-cours">En cours</option><option value="termine">Terminé</option><option value="a-reviser">À réviser</option></select></div>
-        <div class="field"><label>Acte</label><select id="chapActe"></select></div>
+        <div class="field full"><label>Résumé</label><textarea id="chapResume" placeholder="Ce qui se passe dans ce chapitre…" style="min-height:70px"></textarea></div>
+        <div class="field full"><label>Objectif narratif</label><textarea id="chapObjectif" placeholder="Ce que ce chapitre doit accomplir dans l'histoire…" style="min-height:50px"></textarea></div>
+        <div class="field full"><label>Intention / ambiance</label><input id="chapIntention" placeholder="Tension, douceur, révélation, confrontation…"></div>
+        <div class="field full"><label>Notes</label><textarea id="chapNotes" placeholder="Idées, questions en suspens, détails à ne pas oublier…" style="min-height:50px"></textarea></div>
       </div>
       <div class="form-actions"><button class="btn btn-ghost" onclick="closeModal('modalChap')">Annuler</button><button class="btn btn-primary" onclick="saveChap()">Enregistrer</button></div>
     </div>
@@ -919,7 +881,20 @@ textarea{resize:vertical;min-height:65px;line-height:1.5;}
         <div class="field"><label>Roman</label><select id="friseEventNovel"><option value="naples">Naples</option><option value="zima">Zima Bratva</option><option value="heritiers">Héritiers d'Albion</option></select></div>
         <div class="field full"><label>Description courte</label><input id="friseEventDesc" placeholder="Ce qui se passe à cette période…"></div>
       </div>
-      <div class="form-actions"><button class="btn btn-ghost" onclick="closeModal('modalFriseEvent')">Annuler</button><button class="btn btn-primary" onclick="saveFriseEvent()">Ajouter</button></div>
+      <div class="form-actions"><button class="btn btn-ghost" onclick="closeModal('modalFriseEvent')">Annuler</button><button class="btn btn-primary" id="btnSaveFriseEvent" onclick="saveFriseEvent()">Ajouter</button></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modalFriseChar">
+  <div class="modal" style="width:360px">
+    <div class="modal-header"><div class="modal-title">Modifier le personnage</div><button class="modal-close" onclick="closeModal('modalFriseChar')">✕</button></div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="field full"><label>Personnage</label><div id="friseCharNameLabel" style="font-family:var(--font-display);font-size:13px;font-weight:600;color:var(--text);padding:4px 0 8px"></div><input type="hidden" id="friseCharId"></div>
+        <div class="field full"><label>Année de naissance</label><input id="friseCharNaissance" type="number" placeholder="ex: 1998"></div>
+      </div>
+      <div class="form-actions"><button class="btn btn-ghost" onclick="closeModal('modalFriseChar')">Annuler</button><button class="btn btn-primary" onclick="saveFriseChar()">Enregistrer</button></div>
     </div>
   </div>
 </div>
@@ -1442,11 +1417,11 @@ function showSection(name,el){
   document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active'));
   if(el)el.classList.add('active');
   cSection=name;
-  const titles={personnages:'Personnages',lieux:'Lieux',timeline:'Timeline',scenes:'Scènes',graphe:'Relations',recherches:'Références',moodboard:'Moodboard',suivi:'Suivi',coherence:'Cohérence',frise:'Frise des âges',arbre:'Arbres familiaux',secrets:'Journal des secrets',actes:'Structure en actes',chapitres:'Fiches chapitres',ia:'Assistant IA'};
+  const titles={personnages:'Personnages',lieux:'Lieux',timeline:'Timeline',scenes:'Scènes',graphe:'Relations',recherches:'Références',moodboard:'Moodboard',suivi:'Suivi',coherence:'Cohérence',frise:'Frise des âges',arbre:'Arbres familiaux',secrets:'Journal des secrets',actes:'Structure en actes',chapitres:'Fiches chapitres'};
   document.getElementById('topbarTitle').textContent=titles[name]||name;
   const addL={personnages:'+ Personnage',lieux:'+ Lieu',timeline:'+ Événement',scenes:'+ Scène',graphe:'+ Relation',recherches:'+ Référence',moodboard:'+ Image',frise:'+ Période',secrets:'+ Secret'};
   const ab=document.getElementById('addBtn');
-  const noAdd=['ia','suivi','coherence','arbre','actes','chapitres'];
+  const noAdd=['suivi','coherence','arbre','actes','chapitres'];
   ab.textContent=addL[name]||'+ Ajouter';
   ab.style.display=noAdd.includes(name)?'none':'';
   renderSection(name);
@@ -1598,36 +1573,6 @@ function delRef(id){if(!confirm('Supprimer ?'))return;D.references=D.references.
 function searchRefs(v){searchQ=v.toLowerCase();renderRefs();}
 function saveRef(){const title=document.getElementById('refTitle').value.trim();if(!title)return;const obj={id:editId||uid(),title,type:document.getElementById('refType').value,cat:document.getElementById('refCat').value||'Général',novel:document.getElementById('refNovel').value,content:document.getElementById('refContent').value,url:document.getElementById('refUrl').value,chapter:document.getElementById('refChapter').value};if(editId){const i=D.references.findIndex(r=>r.id===editId);D.references[i]=obj;}else{D.references.push(obj);}editId=null;document.getElementById('modalRef').querySelector('.modal-title').textContent='Nouvelle référence';saveD();closeModal('modalRef');renderSearches();updateStats();}
 
-// IA
-const nCtx={
-  naples:'Roman romance football à Naples, Italie. Univers ultra SSC Napoli, culture napolitaine passionnée.',
-  zima:'Roman mafia russe (Bratva). Noms slaves/russes. Ambiance sombre, Europe de l\'Est.',
-  heritiers:'Roman fantasy celtique français. Clans magiques liés aux villes françaises. Noms celtiques/bretons.'
-};
-async function callIA(prompt){
-  const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})});
-  const d=await r.json();return d.content?.[0]?.text||'Erreur.';
-}
-async function generateNames(){
-  const novel=document.getElementById('nameNovel').value,gender=document.getElementById('nameGender').value;
-  const grid=document.getElementById('namesGrid');
-  grid.innerHTML='<div style="grid-column:1/-1;font-family:var(--font-mono);font-size:10px;color:var(--text3);padding:8px 0">Génération…</div>';
-  try{const t=await callIA(`Contexte: ${nCtx[novel]}\nGénère exactement 9 prénoms ${gender==='mixte'?'(mixtes masculins/féminins)':gender+'s'} cohérents avec cet univers.\nRéponds UNIQUEMENT avec les 9 prénoms séparés par des virgules, sans numéros ni explications.`);const names=t.split(',').map(n=>n.trim()).filter(Boolean).slice(0,9);grid.innerHTML=names.map(n=>`<div class="ia-name-pill">${n}</div>`).join('');}catch(e){grid.innerHTML='<div style="grid-column:1/-1;color:var(--red2);font-size:12px">Erreur IA.</div>';}
-}
-async function generateSceneIdeas(){
-  const novel=document.getElementById('sceneIdeaNovel').value,type=document.getElementById('sceneIdeaType').value;
-  const res=document.getElementById('sceneIdeasResult');res.className='ia-result loading';res.textContent='Génération…';
-  const chars=fil(D.personnages).map(c=>c.name).join(', ');
-  try{const t=await callIA(`Contexte: ${nCtx[novel]}\nPersonnages: ${chars||'non définis'}.\nPropose 3 idées de scènes de type "${type}". Format: une idée par ligne commençant par "—". Max 2 lignes par idée.`);res.className='ia-result';res.innerHTML=t.split('\n').filter(l=>l.trim()).map(l=>`<div style="margin-bottom:7px">${l}</div>`).join('');}catch(e){res.className='ia-result';res.textContent='Erreur IA.';}
-}
-async function generateBrainstorm(){
-  const input=document.getElementById('brainstormInput').value.trim();const res=document.getElementById('brainstormResult');
-  if(!input){alert('Décrivez votre blocage d\'abord.');return;}
-  res.className='ia-result loading';res.textContent='Réflexion…';
-  const chars=D.personnages.map(c=>`${c.name} (${c.role}, ${c.novel})`).join(', ');
-  try{const t=await callIA(`Tu es un assistant narratif expert.\nRomans en cours: Naples (romance football ultras SSC Napoli), Zima Bratva (mafia russe), Héritiers d'Albion (fantasy celtique).\nPersonnages: ${chars}.\nBlocage: "${input}"\nPropose 3 directions narratives concrètes et différentes. Numérote 1. 2. 3.`);res.className='ia-result';res.innerHTML=t.split('\n').filter(l=>l.trim()).map(l=>`<div style="margin-bottom:9px">${l}</div>`).join('');}catch(e){res.className='ia-result';res.textContent='Erreur IA.';}
-}
-
 // STATS
 function updateStats(){
   document.getElementById('statP').textContent=fil(D.personnages).length;
@@ -1762,7 +1707,7 @@ function renderFrise(){
   const events=(D.friseEvents||[]).filter(e=>e.novel===novel).sort((a,b)=>a.year-b.year);
   const table=document.getElementById('friseTable');
   if(!chars.length||!events.length){table.innerHTML=`<tr><td colspan="99" style="padding:40px;text-align:center;color:var(--text3);font-style:italic">Ajoutez des périodes clés et assurez-vous que les personnages ont une date de naissance.</td></tr>`;return;}
-  const header=`<thead><tr><th>Personnage</th>${events.map(e=>`<th class="frise-event-col" title="${e.desc||''}">${e.name}<br><span style="color:var(--text3)">${e.year}</span></th>`).join('')}</tr></thead>`;
+  const header=`<thead><tr><th>Personnage</th>${events.map(e=>`<th class="frise-event-col" title="${e.desc||''}">${e.name}<br><span style="color:var(--text3)">${e.year}</span><div class="frise-th-btns"><button class="frise-edit-btn" onclick="editFriseEvent('${e.id}')" title="Modifier">✎</button><button class="frise-edit-btn frise-del-btn" onclick="delFriseEvent('${e.id}')" title="Supprimer">✕</button></div></th>`).join('')}</tr></thead>`;
   const rows=chars.map(c=>{
     const birthYear=parseInt(c.naissance);
     const cells=events.map(e=>{
@@ -1771,20 +1716,65 @@ function renderFrise(){
       const isKey=c.agesCles&&c.agesCles.some(a=>Math.abs(a-age)<=1);
       return`<td><span class="${isKey?'frise-age-highlight':'frise-age-normal'} frise-age-cell">${age} ans</span></td>`;
     }).join('');
-    return`<tr><td><div class="frise-char-name" style="color:${c.color}">${c.name}</div><div style="font-family:var(--font-mono);font-size:9px;color:var(--text3)">né·e ${c.naissance}</div></td>${cells}</tr>`;
+    return`<tr><td><div class="frise-char-name" style="color:${c.color}">${c.name}</div><div style="font-family:var(--font-mono);font-size:9px;color:var(--text3)">né·e ${c.naissance}</div><div class="frise-th-btns" style="justify-content:flex-start;margin-top:3px"><button class="frise-edit-btn" onclick="editFriseChar('${c.id}')" title="Modifier l\'année de naissance">✎</button></div></td>${cells}</tr>`;
   }).join('');
   table.innerHTML=header+`<tbody>${rows}</tbody>`;
 }
-function openFriseEventModal(){document.getElementById('modalFriseEvent').classList.add('open');}
+let friseEditId=null;
+function openFriseEventModal(){
+  friseEditId=null;
+  document.querySelector('#modalFriseEvent .modal-title').textContent='Nouvelle période clé';
+  document.getElementById('btnSaveFriseEvent').textContent='Ajouter';
+  document.getElementById('friseEventName').value='';
+  document.getElementById('friseEventYear').value='';
+  document.getElementById('friseEventDesc').value='';
+  document.getElementById('modalFriseEvent').classList.add('open');
+}
+function editFriseEvent(id){
+  const e=(D.friseEvents||[]).find(ev=>ev.id==id);if(!e)return;
+  friseEditId=id;
+  document.querySelector('#modalFriseEvent .modal-title').textContent='Modifier la période';
+  document.getElementById('btnSaveFriseEvent').textContent='Enregistrer';
+  document.getElementById('friseEventName').value=e.name;
+  document.getElementById('friseEventYear').value=e.year;
+  document.getElementById('friseEventNovel').value=e.novel;
+  document.getElementById('friseEventDesc').value=e.desc||'';
+  document.getElementById('modalFriseEvent').classList.add('open');
+}
+function delFriseEvent(id){
+  if(!confirm('Supprimer cette période ?'))return;
+  D.friseEvents=(D.friseEvents||[]).filter(e=>e.id!=id);
+  saveD();renderFrise();
+}
 function saveFriseEvent(){
   const name=document.getElementById('friseEventName').value.trim();
   const year=parseInt(document.getElementById('friseEventYear').value);
   if(!name||!year)return;
   if(!D.friseEvents)D.friseEvents=[];
-  D.friseEvents.push({id:uid(),name,year,novel:document.getElementById('friseEventNovel').value,desc:document.getElementById('friseEventDesc').value});
+  if(friseEditId){
+    const i=D.friseEvents.findIndex(e=>e.id==friseEditId);
+    if(i>=0)D.friseEvents[i]={...D.friseEvents[i],name,year,novel:document.getElementById('friseEventNovel').value,desc:document.getElementById('friseEventDesc').value};
+  }else{
+    D.friseEvents.push({id:uid(),name,year,novel:document.getElementById('friseEventNovel').value,desc:document.getElementById('friseEventDesc').value});
+  }
   saveD();closeModal('modalFriseEvent');
   document.getElementById('friseEventName').value='';document.getElementById('friseEventYear').value='';
   renderFrise();
+}
+function editFriseChar(id){
+  const c=D.personnages.find(p=>p.id==id);if(!c)return;
+  document.getElementById('friseCharId').value=id;
+  document.getElementById('friseCharNameLabel').textContent=c.name;
+  document.getElementById('friseCharNaissance').value=c.naissance||'';
+  document.getElementById('modalFriseChar').classList.add('open');
+}
+function saveFriseChar(){
+  const id=document.getElementById('friseCharId').value;
+  const naissance=document.getElementById('friseCharNaissance').value.trim();
+  if(!naissance)return;
+  const i=D.personnages.findIndex(p=>p.id==id);
+  if(i>=0)D.personnages[i].naissance=naissance;
+  saveD();closeModal('modalFriseChar');renderFrise();
 }
 
 // ========== ARBRE GÉNÉALOGIQUE ==========
@@ -1958,13 +1948,8 @@ function addChapitre(novel){
   if(!D.chapitres)D.chapitres={};
   if(!D.chapitres[novel])D.chapitres[novel]=[];
   const num=D.chapitres[novel].length+1;
-  const actes=getActes(novel);
-  // Acte par défaut : dernier acte si plus de chapitres que 2/3 de la structure
-  const tercio=Math.ceil(num/(actes.length));
-  const defaultActeIdx=Math.min(actes.length-1,Math.floor((num-1)/(Math.max(1,Math.ceil(12/actes.length)))));
-  const defaultActe=actes[defaultActeIdx]?.id||actes[0].id;
-  D.chapitres[novel].push({num,titre:'',pov:'',lieu:'',personnages:'',objectif:'',mots:0,status:'a-ecrire',acte:defaultActe});
-  saveD();renderActes();renderChapitres();renderSuivi();
+  D.chapitres[novel].push({num,titre:'',pov:'',lieu:'',personnages:'',resume:'',objectif:'',intention:'',notes:'',mots:0,status:'a-ecrire'});
+  saveD();renderChapitres();renderSuivi();
 }
 
 function moveChap(num,novel,newActe){
@@ -2046,24 +2031,9 @@ function toRoman(n){const v=[1000,900,500,400,100,90,50,40,10,9,5,4,1];const s=[
 function renderActes(){
   const novel=document.getElementById('actesNovelFilter').value;
   if(!D.chapitres)D.chapitres={};
-  // Initialiser les chapitres à partir des données de suivi si vides
-  if(!D.chapitres[novel]||D.chapitres[novel].length===0){
-    const suiviChaps=(D.suivi[novel]||{chapitres:[]}).chapitres;
-    if(suiviChaps.length>0){
-      const actes=getActes(novel);
-      D.chapitres[novel]=suiviChaps.map((sc,i)=>{
-        // Déterminer l'acte selon la partie
-        let acteId=1;
-        if(novel==='naples'){acteId=i<7?1:i<15?2:i<24?3:4;}
-        else{acteId=i<4?1:i<9?2:3;}
-        return{num:sc.num,titre:sc.titre||'',pov:'',lieu:'',personnages:'',objectif:'',mots:0,status:sc.status||'a-ecrire',acte:acteId};
-      });
-    } else {
-      D.chapitres[novel]=Array.from({length:12},(_,i)=>({num:i+1,titre:'',pov:'',lieu:'',personnages:'',objectif:'',mots:0,status:'a-ecrire',acte:i<4?1:i<9?2:3}));
-    }
-  }
-  const chaps=D.chapitres[novel];
   const actes=getActes(novel);
+  // Lire les chapitres existants — ne pas les réinitialiser ici
+  const chaps=(D.chapitres[novel]||[]).map(c=>({...c,acte:c.acte||actes[0].id}));
   const statusColors={'a-ecrire':'var(--text3)','en-cours':'var(--gold)','termine':'#3d7a52','a-reviser':'var(--blue2)'};
 
   const total=chaps.reduce((s,c)=>s+(c.mots||0),0);
@@ -2076,12 +2046,10 @@ function renderActes(){
     <div style="flex:1;min-width:120px"><div style="height:6px;background:var(--bg4);border-radius:3px;overflow:hidden"><div style="height:100%;background:${mainColor};border-radius:3px;width:${pct}%;transition:width 0.4s"></div></div><div style="font-family:var(--font-mono);font-size:9px;color:var(--text3);margin-top:4px">${pct}% de l'objectif (${obj.toLocaleString('fr')} mots)</div></div>
     <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
       ${actes.map((a,i)=>{const ac=chaps.filter(c=>c.acte===a.id);const done=ac.filter(c=>c.status==='termine').length;return`${i>0?'<div style="width:1px;background:var(--border);align-self:stretch"></div>':''}<div style="text-align:center"><div style="font-family:var(--font-mono);font-size:14px;color:${a.color}">${done}/${ac.length}</div><div style="font-family:var(--font-mono);font-size:8px;color:var(--text3)">Acte ${i+1}</div></div>`;}).join('')}
-      <button class="btn btn-ghost" style="font-size:9px;margin-left:8px" onclick="addChapitre('${novel}')">+ Chapitre</button>
     </div>
   </div>`;
 
   const header=document.getElementById('actesHeader');
-  const cols=actes.length;
   header.innerHTML=`<div>${actes.map(a=>{
     const ac=chaps.filter(c=>c.acte===a.id);
     const canDelete=actes.length>1;
@@ -2093,18 +2061,17 @@ function renderActes(){
           <button title="Renommer" onclick="startRenameActe('${novel}',${a.id})" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:11px;padding:2px 4px;border-radius:2px;transition:color 0.2s" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text3)'">✎</button>
           ${canDelete?`<button title="Supprimer cet acte" onclick="deleteActe('${novel}',${a.id})" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:12px;padding:2px 4px;border-radius:2px;transition:color 0.2s" onmouseover="this.style.color='var(--red2)'" onmouseout="this.style.color='var(--text3)'">✕</button>`:''}
         </div>
-        ${a.chapitres||a.mots?`<div style="font-family:var(--font-mono);font-size:8px;color:var(--text3);margin-top:4px">${a.chapitres?'Ch. '+a.chapitres:''}${a.chapitres&&a.mots?' · ':''}${a.mots||''}</div>`:''}
         ${a.desc?`<div style="font-size:11px;color:var(--text2);font-style:italic;line-height:1.4;margin-top:4px">${a.desc}</div>`:''}
       </div>
       <div style="padding:10px">${ac.length===0?`<div style="font-size:12px;color:var(--text3);font-style:italic;text-align:center;padding:14px 0">Aucun chapitre</div>`:ac.map(c=>{
         const aIdx=actes.findIndex(x=>x.id===a.id);
         const prevActe=aIdx>0?actes[aIdx-1]:null;
         const nextActe=aIdx<actes.length-1?actes[aIdx+1]:null;
-        return`<div style="background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:10px 12px;margin-bottom:7px;">
-          <div style="display:flex;align-items:center;gap:7px;margin-bottom:5px;cursor:pointer" onclick="openChapModal(${c.num},'${novel}')">
+        return`<div style="background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:10px 12px;margin-bottom:7px">
+          <div style="display:flex;align-items:center;gap:7px;margin-bottom:${c.pov||c.mots?'5px':'2px'}">
             <span style="font-family:var(--font-mono);font-size:9px;color:var(--text3)">Ch.${c.num}</span>
             <div style="width:7px;height:7px;border-radius:50%;background:${statusColors[c.status]};flex-shrink:0"></div>
-            <div style="font-family:var(--font-display);font-size:11px;color:var(--text);flex:1">${c.titre||'Sans titre'}</div>
+            <div style="font-family:var(--font-display);font-size:11px;color:var(--text);flex:1">${c.titre||'<span style="color:var(--text3);font-style:italic">Sans titre</span>'}</div>
           </div>
           ${c.pov?`<div style="font-family:var(--font-mono);font-size:9px;color:var(--text3);margin-bottom:4px">POV : ${c.pov}</div>`:''}
           ${c.mots?`<div style="font-family:var(--font-mono);font-size:9px;color:var(--gold2);margin-bottom:6px">${c.mots.toLocaleString('fr')} mots</div>`:''}
@@ -2121,104 +2088,154 @@ function renderActes(){
 
 // ========== FICHES CHAPITRES ==========
 let editChapKey=null;
+let chapStatusFilter='all';
+function filterChapStatus(status,el){
+  chapStatusFilter=status;
+  document.querySelectorAll('#chapFilterBar .filter-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  renderChapitres();
+}
 function renderChapitres(){
   const novel=document.getElementById('chapNovelFilter').value;
   if(!D.chapitres)D.chapitres={};
-  // Initialiser à partir de suivi si vide
   if(!D.chapitres[novel]||D.chapitres[novel].length===0){
     const suiviChaps=(D.suivi[novel]||{chapitres:[]}).chapitres;
     if(suiviChaps.length>0){
-      D.chapitres[novel]=suiviChaps.map((sc,i)=>{
-        let acteId=1;
-        if(novel==='naples'){acteId=i<7?1:i<15?2:i<24?3:4;}
-        else{acteId=i<4?1:i<9?2:3;}
-        return{num:sc.num,titre:sc.titre||'',pov:'',lieu:'',personnages:'',objectif:'',mots:0,status:sc.status||'a-ecrire',acte:acteId};
-      });
-    } else {
-      D.chapitres[novel]=Array.from({length:12},(_,i)=>({num:i+1,titre:'',pov:'',lieu:'',personnages:'',objectif:'',mots:0,status:'a-ecrire',acte:i<4?1:i<9?2:3}));
+      D.chapitres[novel]=suiviChaps.map(sc=>({num:sc.num,titre:sc.titre||'',pov:'',lieu:'',personnages:'',resume:'',objectif:'',intention:'',notes:'',mots:0,status:sc.status||'a-ecrire'}));
+    }else{
+      D.chapitres[novel]=Array.from({length:12},(_,i)=>({num:i+1,titre:'',pov:'',lieu:'',personnages:'',resume:'',objectif:'',intention:'',notes:'',mots:0,status:'a-ecrire'}));
     }
   }
   const chaps=D.chapitres[novel];
-  const statusColors={'a-ecrire':'var(--text3)','en-cours':'var(--gold)','termine':'#3d7a52','a-reviser':'var(--blue2)'};
-  const statusLabels={'a-ecrire':'À écrire','en-cours':'En cours','termine':'Terminé','a-reviser':'À réviser'};
+  const SC={'a-ecrire':'var(--text3)','en-cours':'var(--gold)','termine':'#3d7a52','a-reviser':'var(--blue2)'};
+  const SL={'a-ecrire':'À écrire','en-cours':'En cours','termine':'Terminé','a-reviser':'À réviser'};
+  // Stats
+  const total=chaps.length;
+  const nT=chaps.filter(c=>c.status==='termine').length;
+  const nE=chaps.filter(c=>c.status==='en-cours').length;
+  const nR=chaps.filter(c=>c.status==='a-reviser').length;
+  const nA=chaps.filter(c=>c.status==='a-ecrire').length;
+  const totalMots=chaps.reduce((s,c)=>s+(c.mots||0),0);
+  const objectif=(D.suivi[novel]||{}).objectif||80000;
+  const pct=Math.min(100,Math.round(totalMots/objectif*100));
+  const sw=n=>n&&total?Math.round(n/total*100)+'%':'0%';
+  document.getElementById('chapStatsBar').innerHTML=`<div class="chap-stats-bar">
+    <div class="chap-stat"><span>${total}</span>chapitres</div>
+    <div class="chap-stat" style="color:#3d7a52"><span>${nT}</span>terminés</div>
+    <div class="chap-stat" style="color:var(--gold)"><span>${nE}</span>en cours</div>
+    <div class="chap-stat" style="color:var(--blue2)"><span>${nR}</span>à réviser</div>
+    <div style="flex:1;min-width:140px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:3px">
+        <span style="font-family:var(--font-mono);font-size:8px;color:var(--text3);letter-spacing:0.08em;text-transform:uppercase">Mots</span>
+        <span style="font-family:var(--font-mono);font-size:8px;color:var(--text3)">${totalMots.toLocaleString('fr')} / ${objectif.toLocaleString('fr')} — ${pct}%</span>
+      </div>
+      <div style="height:4px;background:var(--bg4);border-radius:2px;overflow:hidden;margin-bottom:3px">
+        <div style="height:100%;width:${pct}%;background:var(--gold2);border-radius:2px;transition:width 0.4s"></div>
+      </div>
+      <div class="chap-progress-row">
+        <div style="height:3px;width:${sw(nT)};background:#3d7a52;transition:width 0.4s"></div>
+        <div style="height:3px;width:${sw(nE)};background:var(--gold);transition:width 0.4s"></div>
+        <div style="height:3px;width:${sw(nR)};background:var(--blue2);transition:width 0.4s"></div>
+        <div style="height:3px;width:${sw(nA)};background:var(--border2);transition:width 0.4s"></div>
+      </div>
+    </div>
+  </div>`;
+  // Filter
+  const filtered=chapStatusFilter==='all'?chaps:chaps.filter(c=>c.status===chapStatusFilter);
   const el=document.getElementById('chapitresList');
-  el.innerHTML=`<div style="display:flex;flex-direction:column;gap:9px">
-    ${chaps.map(c=>{
-      const fiche=D.chapitresFiches&&D.chapitresFiches[novel+'-'+c.num];
-      const partieColor=fiche?{
-        'Partie 1 — La rencontre':'#4a8fd4',
-        'Partie 2 — L\'attraction':'#c9a84c',
-        'Partie 3 — La fracture':'#c4522e',
-        'Partie 4 — La reconstruction':'#3d7a52'
-      }[fiche.partie]||'var(--text3)':'var(--text3)';
-      return`
-    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:14px 16px;cursor:pointer;transition:border-color 0.2s" onclick="openChapModal(${c.num},'${novel}')" onmouseover="this.style.borderColor='var(--border2)'" onmouseout="this.style.borderColor='var(--border)'">
-      <div style="display:grid;grid-template-columns:40px 1fr auto;gap:12px;align-items:start">
-        <div style="text-align:center">
-          <div style="font-family:var(--font-mono);font-size:14px;color:var(--gold)">${c.num}</div>
-          <div style="width:8px;height:8px;border-radius:50%;background:${statusColors[c.status]};margin:4px auto 0"></div>
+  if(!filtered.length){el.innerHTML='<div style="text-align:center;padding:36px;font-style:italic;color:var(--text3);font-size:12px">Aucun chapitre pour ce filtre.</div>';return;}
+  el.innerHTML=`<div style="display:flex;flex-direction:column;gap:8px">${filtered.map(c=>{
+    const fiche=D.chapitresFiches&&D.chapitresFiches[novel+'-'+c.num];
+    const resume=c.resume||(fiche?.resume)||'';
+    const intention=c.intention||'';
+    const notes=c.notes||'';
+    const sc=SC[c.status];const sl=SL[c.status];
+    const pers=c.personnages||(fiche?.personnages?.join(', '))||'';
+    const pivot=fiche?.pivot||'';
+    const badges=fiche?.badges||[];
+    const partie=fiche?.partie||'';
+    return`<div class="chap-card">
+      <div class="chap-card-top">
+        <div style="text-align:center;padding-top:2px">
+          <div class="chap-num">${String(c.num).padStart(2,'0')}</div>
+          <div class="chap-dot" style="background:${sc}"></div>
         </div>
         <div>
-          ${fiche?.partie?`<div style="font-family:var(--font-mono);font-size:8px;letter-spacing:0.12em;text-transform:uppercase;color:${partieColor};margin-bottom:3px">${fiche.partie}</div>`:''}
-          <div style="font-family:var(--font-display);font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px">${c.titre||'Sans titre'}</div>
-          <div style="display:flex;gap:10px;flex-wrap:wrap">
+          ${partie?`<div style="font-family:var(--font-mono);font-size:8px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);margin-bottom:3px">${partie}</div>`:''}
+          <div style="font-family:var(--font-display);font-size:13px;font-weight:600;color:var(--text);margin-bottom:5px">${c.titre||`<span style="color:var(--text3);font-style:italic">Sans titre</span>`}</div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap${resume||intention||pivot?';margin-bottom:7px':''}">
             ${c.pov?`<span style="font-family:var(--font-mono);font-size:9px;color:var(--text3)">POV : ${c.pov}</span>`:''}
             ${c.lieu?`<span style="font-family:var(--font-mono);font-size:9px;color:var(--text3)">📍 ${c.lieu}</span>`:''}
-            ${fiche?.personnages?.length?`<span style="font-family:var(--font-mono);font-size:9px;color:var(--text3)">👥 ${fiche.personnages.slice(0,4).join(', ')}${fiche.personnages.length>4?'…':''}</span>`:(c.personnages?`<span style="font-family:var(--font-mono);font-size:9px;color:var(--text3)">👥 ${c.personnages}</span>`:'')}
+            ${pers?`<span style="font-family:var(--font-mono);font-size:9px;color:var(--text3)">👥 ${pers}</span>`:''}
           </div>
-          ${fiche?.resume?`<div style="font-size:12px;color:var(--text2);font-style:italic;margin-top:6px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${fiche.resume}</div>`:(c.objectif?`<div style="font-size:12px;color:var(--text2);font-style:italic;margin-top:5px">${c.objectif}</div>`:'')}
-          ${fiche?.pivot?`<div style="font-family:var(--font-mono);font-size:9px;color:${partieColor};margin-top:5px;font-style:normal">→ ${fiche.pivot}</div>`:''}
-          ${fiche?.badges?.length?`<div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px">${fiche.badges.map(b=>{const bc={'Romance':'#72243E','Conflit':'#791F1F','Pivot narratif':'#633806','Installation':'#444441','Personnages secondaires':'#085041','Résolution':'#27500A','Identité Roma/Napoli':'#3C3489'};const bg={'Romance':'#FBEAF0','Conflit':'#FCEBEB','Pivot narratif':'#FAEEDA','Installation':'#F1EFE8','Personnages secondaires':'#E1F5EE','Résolution':'#EAF3DE','Identité Roma/Napoli':'#EEEDFE'};return`<span style="font-size:9px;padding:2px 6px;border-radius:10px;background:${bg[b]||'var(--bg4)'};color:${bc[b]||'var(--text3)'}">${b}</span>`;}).join('')}</div>`:''}
+          ${resume?`<div style="font-size:12px;color:var(--text2);line-height:1.55;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden${intention||pivot?';margin-bottom:5px':''}">${resume}</div>`:''}
+          ${intention?`<div style="font-family:var(--font-mono);font-size:9px;color:var(--text3)${pivot?';margin-bottom:4px':''}">↝ ${intention}</div>`:''}
+          ${pivot?`<div style="font-family:var(--font-mono);font-size:9px;color:var(--gold2)${badges.length?';margin-bottom:5px':''}">→ ${pivot}</div>`:''}
+          ${badges.length?`<div style="display:flex;gap:4px;flex-wrap:wrap">${badges.map(b=>`<span style="font-size:8px;padding:2px 6px;border-radius:10px;background:var(--bg4);color:var(--text3)">${b}</span>`).join('')}</div>`:''}
+          ${notes?`<div style="font-size:11px;color:var(--text3);font-style:italic;margin-top:6px;padding:6px 8px;background:var(--bg3);border-radius:3px;border-left:2px solid var(--border2)">📝 ${notes}</div>`:''}
         </div>
-        <div style="text-align:right">
-          <div style="font-family:var(--font-mono);font-size:11px;color:${c.mots?'var(--gold2)':'var(--text3)'}">${c.mots?c.mots.toLocaleString('fr')+' mots':''}</div>
-          <div style="font-family:var(--font-mono);font-size:8px;color:${statusColors[c.status]};letter-spacing:0.08em;margin-top:3px">${statusLabels[c.status]}</div>
+        <div style="text-align:right;flex-shrink:0;padding-top:2px">
+          <div style="font-family:var(--font-mono);font-size:11px;color:${c.mots?'var(--gold2)':'var(--text3)'};white-space:nowrap">${c.mots?c.mots.toLocaleString('fr')+' mots':''}</div>
+          <div style="font-family:var(--font-mono);font-size:8px;color:${sc};letter-spacing:0.06em;margin-top:3px;white-space:nowrap">${sl}</div>
         </div>
       </div>
-    </div>`}).join('')}
-    <button class="btn btn-ghost" style="width:100%;margin-top:4px" onclick="addChapitre('${novel}')">+ Ajouter un chapitre</button>
-  </div>`;
+      <div class="chap-card-actions">
+        <button class="btn btn-ghost" style="font-size:10px;padding:4px 12px" onclick="openChapModal(${c.num},'${novel}')">Modifier</button>
+        <button class="btn btn-danger" style="font-size:10px;padding:4px 12px" onclick="deleteChap(${c.num},'${novel}',event)">Supprimer</button>
+      </div>
+    </div>`;
+  }).join('')}</div>`;
 }
-
 function openChapModal(num,novel){
   editChapKey={num,novel};
   if(!D.chapitres||!D.chapitres[novel])return;
-  const c=D.chapitres[novel][num-1];
+  const c=D.chapitres[novel].find(ch=>ch.num===num)||{};
   document.getElementById('chapNum').textContent='Chapitre '+num;
   document.getElementById('chapTitre').value=c.titre||'';
   document.getElementById('chapPov').value=c.pov||'';
   document.getElementById('chapLieu').value=c.lieu||'';
   document.getElementById('chapPersonnages').value=c.personnages||'';
+  document.getElementById('chapResume').value=c.resume||'';
   document.getElementById('chapObjectif').value=c.objectif||'';
+  document.getElementById('chapIntention').value=c.intention||'';
+  document.getElementById('chapNotes').value=c.notes||'';
   document.getElementById('chapMots').value=c.mots||0;
   document.getElementById('chapStatus').value=c.status||'a-ecrire';
-  // Peupler le select des actes dynamiquement
-  const actes=getActes(novel);
-  const sel=document.getElementById('chapActe');
-  sel.innerHTML=actes.map(a=>`<option value="${a.id}">${a.titre}</option>`).join('');
-  sel.value=c.acte||actes[0].id;
   document.getElementById('modalChap').classList.add('open');
 }
 function saveChap(){
   if(!editChapKey)return;
   const {num,novel}=editChapKey;
   if(!D.chapitres||!D.chapitres[novel])return;
-  const c=D.chapitres[novel][num-1];
+  const idx=D.chapitres[novel].findIndex(ch=>ch.num===num);
+  if(idx<0)return;
+  const c=D.chapitres[novel][idx];
   c.titre=document.getElementById('chapTitre').value;
   c.pov=document.getElementById('chapPov').value;
   c.lieu=document.getElementById('chapLieu').value;
   c.personnages=document.getElementById('chapPersonnages').value;
+  c.resume=document.getElementById('chapResume').value;
   c.objectif=document.getElementById('chapObjectif').value;
+  c.intention=document.getElementById('chapIntention').value;
+  c.notes=document.getElementById('chapNotes').value;
   c.mots=parseInt(document.getElementById('chapMots').value)||0;
   c.status=document.getElementById('chapStatus').value;
-  c.acte=parseInt(document.getElementById('chapActe').value)||1;
-  // Sync avec suivi
- if(D.suivi&&D.suivi[novel]&&D.suivi[novel].chapitres&&D.suivi[novel].chapitres[num-1]){
-    D.suivi[novel].chapitres[num-1].status=c.status;
-    D.suivi[novel].chapitres[num-1].titre=c.titre;
+  if(D.suivi&&D.suivi[novel]&&D.suivi[novel].chapitres){
+    const si=D.suivi[novel].chapitres.findIndex(s=>s.num===num);
+    if(si>=0){D.suivi[novel].chapitres[si].status=c.status;D.suivi[novel].chapitres[si].titre=c.titre;}
   }
-  saveD();closeModal('modalChap');
-  renderChapitres();renderActes();renderSuivi();
+  saveD();closeModal('modalChap');renderChapitres();renderSuivi();
+}
+function deleteChap(num,novel,e){
+  e.stopPropagation();
+  if(!confirm('Supprimer le chapitre '+num+' ?'))return;
+  D.chapitres[novel]=D.chapitres[novel].filter(c=>c.num!==num);
+  D.chapitres[novel].forEach((c,i)=>c.num=i+1);
+  if(D.suivi&&D.suivi[novel]&&D.suivi[novel].chapitres){
+    D.suivi[novel].chapitres=D.suivi[novel].chapitres.filter(c=>c.num!==num);
+    D.suivi[novel].chapitres.forEach((c,i)=>c.num=i+1);
+  }
+  saveD();renderChapitres();renderSuivi();
 }
 
 loadD().then(()=>{
@@ -2346,7 +2363,6 @@ function drawerNav(name){
         <div class="drawer-nav-item" id="dni-recherches" onclick="drawerNav('recherches')"><span>⊡</span>Références</div>
         <div class="drawer-nav-item" id="dni-moodboard" onclick="drawerNav('moodboard')"><span>◧</span>Moodboard</div>
         <div class="drawer-nav-item" id="dni-suivi" onclick="drawerNav('suivi')"><span>◫</span>Suivi</div>
-        <div class="drawer-nav-item" id="dni-ia" onclick="drawerNav('ia')"><span>✦</span>Assistant IA</div>
       </div>
     </div>
     <div class="drawer-footer">
