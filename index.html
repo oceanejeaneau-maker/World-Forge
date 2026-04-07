@@ -2190,13 +2190,14 @@ function openChapModal(num,novel){
   editChapKey={num,novel};
   if(!D.chapitres||!D.chapitres[novel])return;
   const c=D.chapitres[novel].find(ch=>ch.num===num)||{};
+  const fiche=(D.chapitresFiches&&D.chapitresFiches[novel+'-'+num])||{};
   document.getElementById('chapNum').textContent='Chapitre '+num;
-  document.getElementById('chapTitre').value=c.titre||'';
+  document.getElementById('chapTitre').value=c.titre||fiche.titre||'';
   document.getElementById('chapPov').value=c.pov||'';
   document.getElementById('chapLieu').value=c.lieu||'';
-  document.getElementById('chapPersonnages').value=c.personnages||'';
-  document.getElementById('chapResume').value=c.resume||'';
-  document.getElementById('chapObjectif').value=c.objectif||'';
+  document.getElementById('chapPersonnages').value=c.personnages||(fiche.personnages?fiche.personnages.join(', '):'')||'';
+  document.getElementById('chapResume').value=c.resume||fiche.resume||'';
+  document.getElementById('chapObjectif').value=c.objectif||fiche.pivot||'';
   document.getElementById('chapIntention').value=c.intention||'';
   document.getElementById('chapNotes').value=c.notes||'';
   document.getElementById('chapMots').value=c.mots||0;
@@ -2382,4 +2383,6 @@ if('serviceWorker' in navigator){
 }
 </script>
 </body>
+</html>
+
 </html>
