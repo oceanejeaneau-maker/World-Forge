@@ -1292,6 +1292,10 @@ let D={
   }
 };
 
+// Snapshot des données structurelles par défaut — protégées contre l'écrasement par IndexedDB
+window._DEFAULT_FICHES = JSON.parse(JSON.stringify(D.chapitresFiches));
+window._DEFAULT_ACTES_NAPLES = JSON.parse(JSON.stringify(D.actes.naples));
+
 // SAVE/LOAD — IndexedDB (persistant) + localStorage fallback
 const DB_NAME='worldforge_db', DB_STORE='data', DB_KEY='main';
 let _db=null;
@@ -1352,6 +1356,70 @@ function loadD(){
 function exportData(){const b=new Blob([JSON.stringify(D,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='world-forge.json';a.click();}
 function importData(){document.getElementById('importFile').click();}
 function loadImport(inp){const f=inp.files[0];if(!f)return;const r=new FileReader();r.onload=e=>{try{D=JSON.parse(e.target.result);saveD();renderSection(cSection);updateStats();alert('Import réussi !');}catch(err){alert('Fichier invalide.');}};r.readAsText(f);}
+
+// MIGRATION — force mise à jour des données structurelles Naples v2
+const DATA_VERSION=2;
+function migrateData(){
+  if((D._version||0)>=DATA_VERSION)return;
+  // 1. Actes Naples → 4 parties
+  if(!D.actes)D.actes={};
+  D.actes.naples=window._DEFAULT_ACTES_NAPLES;
+  // 2. Suivi Naples → 31 chapitres
+  const CHAPS31=[
+    {num:1,titre:'Thalia, la boutique, Naples',status:'a-ecrire'},
+    {num:2,titre:'Elio entre en scène',status:'a-ecrire'},
+    {num:3,titre:'Le match. Le sang de Roméo.',status:'a-ecrire'},
+    {num:4,titre:'La famille Sorrentino au complet',status:'a-ecrire'},
+    {num:5,titre:'Rapprochement indirect',status:'a-ecrire'},
+    {num:6,titre:'Ce que Catalina voit',status:'a-ecrire'},
+    {num:7,titre:'Lorenzo appelle. L\'identité d\'Elio révélée.',status:'a-ecrire'},
+    {num:8,titre:'Thalia évite. Elio revient.',status:'a-ecrire'},
+    {num:9,titre:'Gianni, l\'oncle qui remplace',status:'a-ecrire'},
+    {num:10,titre:'Mauro, la mémoire vivante d\'Elio',status:'a-ecrire'},
+    {num:11,titre:'Paolo comme pont',status:'a-ecrire'},
+    {num:12,titre:'Antonella juge. Antonella approuve.',status:'a-ecrire'},
+    {num:13,titre:'Le local. La culture ultra de l\'intérieur.',status:'a-ecrire'},
+    {num:14,titre:'Premier baiser. Première limite.',status:'a-ecrire'},
+    {num:15,titre:'Marie et son secret à demi-mot',status:'a-ecrire'},
+    {num:16,titre:'Ce qu\'Elio cache vraiment',status:'a-ecrire'},
+    {num:17,titre:'Eleonora et le poids des femmes du milieu',status:'a-ecrire'},
+    {num:18,titre:'Lorenzo débarque à Naples',status:'a-ecrire'},
+    {num:19,titre:'Ce que Leonardo transmet',status:'a-ecrire'},
+    {num:20,titre:'L\'affrontement après le match',status:'a-ecrire'},
+    {num:21,titre:'Discussion frontale. Mots qu\'on ne reprend pas.',status:'a-ecrire'},
+    {num:22,titre:'Elio se coupe. Thalia disparaît.',status:'a-ecrire'},
+    {num:23,titre:'Roméo, la génération qui regarde',status:'a-ecrire'},
+    {num:24,titre:'Antonella dit la vérité',status:'a-ecrire'},
+    {num:25,titre:'Le secret de Marie éclate',status:'a-ecrire'},
+    {num:26,titre:'Elio face à Mauro',status:'a-ecrire'},
+    {num:27,titre:'Catalina, le pas simultané',status:'a-ecrire'},
+    {num:28,titre:'Le geste d\'Elio',status:'a-ecrire'},
+    {num:29,titre:'Thalia appelle Lorenzo',status:'a-ecrire'},
+    {num:30,titre:'Intime d\'abord',status:'a-ecrire'},
+    {num:31,titre:'Naples. Le stade. La Curva A.',status:'a-ecrire'}
+  ];
+  if(!D.suivi)D.suivi={};
+  if(!D.suivi.naples)D.suivi.naples={};
+  // Conserver les statuts déjà saisis s'il y en a
+  const oldChaps=D.suivi.naples.chapitres||[];
+  D.suivi.naples.chapitres=CHAPS31.map(nc=>{
+    const old=oldChaps.find(o=>o.num===nc.num);
+    return old?{...nc,status:old.status,titre:old.titre||nc.titre}:nc;
+  });
+  D.suivi.naples.objectif=D.suivi.naples.objectif||120000;
+  // 3. Réinitialiser D.chapitres['naples'] pour forcer la reconstruction
+  if(!D.chapitres)D.chapitres={};
+  D.chapitres.naples=CHAPS31.map((sc,i)=>({
+    num:sc.num,titre:sc.titre,pov:'',lieu:'',personnages:'',objectif:'',mots:0,
+    status:sc.status,acte:i<7?1:i<15?2:i<24?3:4
+  }));
+  // 4. chapitresFiches déjà dans D par défaut — on s'assure qu'ils ne sont pas écrasés
+  if(!D.chapitresFiches||Object.keys(D.chapitresFiches).length<31){
+    D.chapitresFiches=window._DEFAULT_FICHES;
+  }
+  D._version=DATA_VERSION;
+  saveD();
+}
 
 // UTILS
 function uid(){return Date.now()+Math.random();}
@@ -2152,6 +2220,7 @@ function saveChap(){
 }
 
 loadD().then(()=>{
+  migrateData();
   renderSection('personnages');
   updateStats();
 });
