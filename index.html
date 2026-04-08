@@ -857,6 +857,7 @@ textarea{resize:vertical;min-height:65px;line-height:1.5;}
     <div class="modal-body">
       <div class="form-grid">
         <div class="field full"><label>Titre</label><input id="chapTitre" placeholder="Titre du chapitre…"></div>
+        <div class="field"><label>Numéro</label><input type="number" id="chapNumEdit" min="1" placeholder="N°"></div>
         <div class="field"><label>Statut</label><select id="chapStatus"><option value="a-ecrire">À écrire</option><option value="en-cours">En cours</option><option value="termine">Terminé</option><option value="a-reviser">À réviser</option></select></div>
         <div class="field"><label>Mots écrits</label><input type="number" id="chapMots" placeholder="0" min="0"></div>
         <div class="field"><label>POV</label><input id="chapPov" placeholder="Elio, Thalia…"></div>
@@ -2192,6 +2193,7 @@ function openChapModal(num,novel){
   const c=D.chapitres[novel].find(ch=>ch.num===num)||{};
   const fiche=(D.chapitresFiches&&D.chapitresFiches[novel+'-'+num])||{};
   document.getElementById('chapNum').textContent='Chapitre '+num;
+  document.getElementById('chapNumEdit').value=num;
   document.getElementById('chapTitre').value=c.titre||fiche.titre||'';
   document.getElementById('chapPov').value=c.pov||'';
   document.getElementById('chapLieu').value=c.lieu||'';
@@ -2211,6 +2213,7 @@ function saveChap(){
   const idx=D.chapitres[novel].findIndex(ch=>ch.num===num);
   if(idx<0)return;
   const c=D.chapitres[novel][idx];
+  const newNum=parseInt(document.getElementById('chapNumEdit').value)||num;
   c.titre=document.getElementById('chapTitre').value;
   c.pov=document.getElementById('chapPov').value;
   c.lieu=document.getElementById('chapLieu').value;
@@ -2221,9 +2224,25 @@ function saveChap(){
   c.notes=document.getElementById('chapNotes').value;
   c.mots=parseInt(document.getElementById('chapMots').value)||0;
   c.status=document.getElementById('chapStatus').value;
-  if(D.suivi&&D.suivi[novel]&&D.suivi[novel].chapitres){
-    const si=D.suivi[novel].chapitres.findIndex(s=>s.num===num);
-    if(si>=0){D.suivi[novel].chapitres[si].status=c.status;D.suivi[novel].chapitres[si].titre=c.titre;}
+  // Renumérotation
+  if(newNum!==num){
+    const conflict=D.chapitres[novel].find(ch=>ch.num===newNum);
+    if(conflict){conflict.num=num;}// échange
+    c.num=newNum;
+    D.chapitres[novel].sort((a,b)=>a.num-b.num);
+    // Sync suivi
+    if(D.suivi&&D.suivi[novel]&&D.suivi[novel].chapitres){
+      const sc=D.suivi[novel].chapitres.find(s=>s.num===num);
+      const sc2=D.suivi[novel].chapitres.find(s=>s.num===newNum);
+      if(sc){sc.num=newNum;sc.status=c.status;sc.titre=c.titre;}
+      if(sc2)sc2.num=num;
+      D.suivi[novel].chapitres.sort((a,b)=>a.num-b.num);
+    }
+  } else {
+    if(D.suivi&&D.suivi[novel]&&D.suivi[novel].chapitres){
+      const si=D.suivi[novel].chapitres.findIndex(s=>s.num===num);
+      if(si>=0){D.suivi[novel].chapitres[si].status=c.status;D.suivi[novel].chapitres[si].titre=c.titre;}
+    }
   }
   saveD();closeModal('modalChap');renderChapitres();renderSuivi();
 }
